@@ -31,7 +31,7 @@ const App = () => (
             <Route path="/pipeline" element={<BuyerPipeline />} />
             <Route path="/team" element={<TeamPerformance />} />
             <Route path="/analytics" element={<Dashboard />} />
-            <Route path="/settings" element={<Dashboard />} />
+            <Route path="/settings" element={<Settings />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
