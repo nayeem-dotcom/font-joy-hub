@@ -17,14 +17,14 @@ export interface BuyerData {
 }
 
 const initialBuyers: BuyerData[] = [
-  { name: "Alexander Wright", company: "Stellar Dynamics Inc.", owner: "Sarah J.", vertical: "FINTECH", tier: "Direct Buyer", stage: "Live", stageColor: "bg-primary-container", active: true, inDate: "Oct 12, 2023", liveDate: "Oct 15, 2023" },
-  { name: "Elena Rodriguez", company: "Vortex Systems", owner: "Marc K.", vertical: "SAAS", tier: "Network", stage: "Onboarding", stageColor: "bg-primary-container", active: true, inDate: "Nov 01, 2023", liveDate: "Pending..." },
-  { name: "Marcus Chen", company: "GreenLeaf Logistics", owner: "David L.", vertical: "ECO-TECH", tier: "Broker", stage: "Paused", stageColor: "bg-destructive", active: false, inDate: "Sept 15, 2023", liveDate: "Oct 01, 2023" },
-  { name: "Sophia Miller", company: "Miller-Direct Marketing", owner: "Sarah J.", vertical: "E-COMMERCE", tier: "Aggregator", stage: "Live", stageColor: "bg-primary-container", active: true, inDate: "Nov 05, 2023", liveDate: "Nov 10, 2023" },
-  { name: "Jameson Ford", company: "AutoLink International", owner: "Marc K.", vertical: "AUTOMOTIVE", tier: "Agency", stage: "Review", stageColor: "bg-primary-container", active: true, inDate: "Oct 30, 2023", liveDate: "Reviewing..." },
-  { name: "Lila Thorne", company: "Bloom AI", owner: "Sarah J.", vertical: "AI/ML", tier: "Direct Buyer", stage: "Live", stageColor: "bg-primary-container", active: true, inDate: "Oct 05, 2023", liveDate: "Oct 08, 2023" },
-  { name: "Robert King", company: "RealEstate Hub", owner: "David L.", vertical: "REAL ESTATE", tier: "Network", stage: "Technical Setup", stageColor: "bg-primary-container", active: true, inDate: "Nov 12, 2023", liveDate: "ETA: Nov 18" },
-  { name: "Catherine Wu", company: "Pacific Bio", owner: "Sarah J.", vertical: "MEDICAL", tier: "Agency", stage: "Live", stageColor: "bg-primary-container", active: true, inDate: "Oct 20, 2023", liveDate: "Oct 25, 2023" },
+  { name: "Alexander Wright", company: "Stellar Dynamics Inc.", owner: "Nayeem A.", vertical: "FINTECH", tier: "Direct Buyer", stage: "Live", stageColor: "bg-primary-container", active: true, inDate: "Oct 12, 2023", liveDate: "Oct 15, 2023" },
+  { name: "Elena Rodriguez", company: "Vortex Systems", owner: "Daniela N.", vertical: "SAAS", tier: "Network", stage: "Onboarding", stageColor: "bg-primary-container", active: true, inDate: "Nov 01, 2023", liveDate: "Pending..." },
+  { name: "Marcus Chen", company: "GreenLeaf Logistics", owner: "Mariela P.", vertical: "ECO-TECH", tier: "Broker", stage: "Paused", stageColor: "bg-destructive", active: false, inDate: "Sept 15, 2023", liveDate: "Oct 01, 2023" },
+  { name: "Sophia Miller", company: "Miller-Direct Marketing", owner: "Nayeem A.", vertical: "E-COMMERCE", tier: "Aggregator", stage: "Live", stageColor: "bg-primary-container", active: true, inDate: "Nov 05, 2023", liveDate: "Nov 10, 2023" },
+  { name: "Jameson Ford", company: "AutoLink International", owner: "Daniela N.", vertical: "AUTOMOTIVE", tier: "Agency", stage: "Review", stageColor: "bg-primary-container", active: true, inDate: "Oct 30, 2023", liveDate: "Reviewing..." },
+  { name: "Lila Thorne", company: "Bloom AI", owner: "Nayeem A.", vertical: "AI/ML", tier: "Direct Buyer", stage: "Live", stageColor: "bg-primary-container", active: true, inDate: "Oct 05, 2023", liveDate: "Oct 08, 2023" },
+  { name: "Robert King", company: "RealEstate Hub", owner: "Mariela P.", vertical: "REAL ESTATE", tier: "Network", stage: "Technical Setup", stageColor: "bg-primary-container", active: true, inDate: "Nov 12, 2023", liveDate: "ETA: Nov 18" },
+  { name: "Catherine Wu", company: "Pacific Bio", owner: "Nayeem A.", vertical: "MEDICAL", tier: "Agency", stage: "Live", stageColor: "bg-primary-container", active: true, inDate: "Oct 20, 2023", liveDate: "Oct 25, 2023" },
 ];
 
 const verticalColors: Record<string, string> = {

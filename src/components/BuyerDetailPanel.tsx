@@ -32,13 +32,13 @@ const tabs = ["Overview", "Contact", "Business Info", "Timeline", "Documents", "
 
 const timelineEvents = [
   { icon: CheckCircle2, color: "text-primary-container", title: "Stage Changed: Negotiation", sub: "Moved from Consideration after successful demo session.", time: "Today, 2:45 PM" },
-  { icon: FileText, color: "text-tertiary", title: "Document Uploaded", sub: "Sarah Chen uploaded Acme_Proposal_v2.pdf", time: "Oct 23, 11:20 AM" },
+  { icon: FileText, color: "text-tertiary", title: "Document Uploaded", sub: "Nayeem Ahmad uploaded Acme_Proposal_v2.pdf", time: "Oct 23, 11:20 AM" },
   { icon: UserPlus, color: "text-muted-foreground", title: "New Contact Added", sub: "Michael Scott (CTO) was added as a stakeholder.", time: "Oct 22, 4:15 PM" },
   { icon: MessageSquare, color: "text-primary", title: "Note Added", sub: "Follow-up call scheduled for next week regarding contract terms.", time: "Oct 21, 3:00 PM" },
   { icon: AlertTriangle, color: "text-amber-500", title: "Risk Flag Raised", sub: "Legal review pending for more than 3 business days.", time: "Oct 19, 9:30 AM" },
   { icon: Mail, color: "text-tertiary", title: "Email Sent", sub: "Proposal document sent to buyer's procurement team.", time: "Oct 18, 2:15 PM" },
   { icon: Calendar, color: "text-primary-container", title: "Meeting Scheduled", sub: "Demo call booked with CTO and VP of Engineering.", time: "Oct 15, 10:00 AM" },
-  { icon: UserPlus, color: "text-primary-container", title: "Buyer Created", sub: "Account initialized and assigned to Sarah Chen.", time: "Oct 12, 9:00 AM" },
+  { icon: UserPlus, color: "text-primary-container", title: "Buyer Created", sub: "Account initialized and assigned to Nayeem Ahmad.", time: "Oct 12, 9:00 AM" },
 ];
 
 const documents = [
@@ -50,10 +50,10 @@ const documents = [
 ];
 
 const notes = [
-  { author: "Sarah Chen", date: "Oct 24, 2023 at 3:15 PM", content: "Client expressed strong interest in the premium tier. They want to start with a 6-month pilot program before committing to annual. Need to prepare a custom pricing proposal by EOW." },
-  { author: "Marc Kellner", date: "Oct 22, 2023 at 11:00 AM", content: "Had a productive call with their CTO. Technical requirements are straightforward — standard API integration with their existing CRM. No major blockers identified." },
-  { author: "Sarah Chen", date: "Oct 19, 2023 at 4:30 PM", content: "Legal team flagged a clause in section 4.2 of the NDA regarding data residency. Need to coordinate with our legal to provide alternative language." },
-  { author: "David Liu", date: "Oct 15, 2023 at 10:45 AM", content: "Initial discovery call went well. Key decision makers: CTO (Michael Scott) and VP Engineering (Jim Palmer). Budget approved internally, timeline is Q1 next year." },
+  { author: "Nayeem Ahmad", date: "Oct 24, 2023 at 3:15 PM", content: "Client expressed strong interest in the premium tier. They want to start with a 6-month pilot program before committing to annual. Need to prepare a custom pricing proposal by EOW." },
+  { author: "Daniela Navarrete", date: "Oct 22, 2023 at 11:00 AM", content: "Had a productive call with their CTO. Technical requirements are straightforward — standard API integration with their existing CRM. No major blockers identified." },
+  { author: "Nayeem Ahmad", date: "Oct 19, 2023 at 4:30 PM", content: "Legal team flagged a clause in section 4.2 of the NDA regarding data residency. Need to coordinate with our legal to provide alternative language." },
+  { author: "Mariela Perez", date: "Oct 15, 2023 at 10:45 AM", content: "Initial discovery call went well. Key decision makers: CTO (Michael Scott) and VP Engineering (Jim Palmer). Budget approved internally, timeline is Q1 next year." },
 ];
 
 export default function BuyerDetailPanel({ buyer, onClose, onUpdate }: BuyerDetailPanelProps) {
@@ -162,7 +162,7 @@ export default function BuyerDetailPanel({ buyer, onClose, onUpdate }: BuyerDeta
                 <div className="flex items-center justify-between mb-4">
                   <div>
                     <h3 className="text-base font-bold text-foreground">Opportunity Status</h3>
-                    <p className="text-xs text-muted-foreground">Last updated by Sarah Chen • Oct 24, 2023</p>
+                    <p className="text-xs text-muted-foreground">Last updated by Nayeem Ahmad • Oct 24, 2023</p>
                   </div>
                   <div className="flex items-center bg-surface-container rounded-lg p-1">
                     <button
@@ -207,7 +207,7 @@ export default function BuyerDetailPanel({ buyer, onClose, onUpdate }: BuyerDeta
                     <Users className="w-5 h-5 text-muted-foreground" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-foreground">{buyer.owner || "Sarah Chen"}</p>
+                    <p className="text-sm font-semibold text-foreground">{buyer.owner || "Nayeem Ahmad"}</p>
                     <p className="text-xs text-muted-foreground">Senior Account Exec</p>
                   </div>
                 </div>

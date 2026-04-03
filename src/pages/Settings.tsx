@@ -25,10 +25,10 @@ interface TeamMember {
 }
 
 const initialMembers: TeamMember[] = [
-  { id: "1", name: "Sarah Chen", email: "sarah@adfunnel.io", role: "Admin", status: "Active", lastActive: "Just now" },
-  { id: "2", name: "Marc Kellner", email: "marc@adfunnel.io", role: "Manager", status: "Active", lastActive: "2 hours ago" },
-  { id: "3", name: "David Liu", email: "david@adfunnel.io", role: "Onboarder", status: "Active", lastActive: "1 day ago" },
-  { id: "4", name: "Elena Rodriguez", email: "elena@adfunnel.io", role: "Onboarder", status: "Pending", lastActive: "Invited" },
+  { id: "1", name: "Nayeem Ahmad", email: "nayeem@rayfunnel.io", role: "Admin", status: "Active", lastActive: "Just now" },
+  { id: "2", name: "Daniela Navarrete", email: "daniela@rayfunnel.io", role: "Manager", status: "Active", lastActive: "2 hours ago" },
+  { id: "3", name: "Mariela Perez", email: "mariela@rayfunnel.io", role: "Onboarder", status: "Active", lastActive: "1 day ago" },
+  { id: "4", name: "Elena Rodriguez", email: "elena@rayfunnel.io", role: "Onboarder", status: "Pending", lastActive: "Invited" },
 ];
 
 const roles = [
