@@ -3,7 +3,7 @@ import {
   Zap,
   MinusCircle,
   Clock,
-  TrendingUp,
+  
   FileText,
   AlertTriangle,
   UserPlus,
