@@ -1,16 +1,16 @@
 import { TrendingUp, User, UserPlus } from "lucide-react";
 
 const velocityData = [
-  { name: "Alex Rivera", units: 342, max: 342 },
-  { name: "Sarah Jenkins", units: 289, max: 342 },
-  { name: "Michael Chen", units: 212, max: 342 },
+  { name: "Dan Davies", units: 342, max: 342 },
+  { name: "Nayeem Ahmad", units: 289, max: 342 },
+  { name: "Joe Austin", units: 212, max: 342 },
   { name: "Elena Rodriguez", units: 198, max: 342 },
 ];
 
 const leaderboard = [
-  { name: "Alex Rivera", role: "Senior Lead", onboarded: 42, yr: 412, conv: "92.4%", days: "3.1" },
-  { name: "Sarah Jenkins", role: "Success Manager", onboarded: 38, yr: 356, conv: "88.1%", days: "4.2" },
-  { name: "Michael Chen", role: "Operations Analyst", onboarded: 31, yr: 298, conv: "76.5%", days: "5.5" },
+  { name: "Dan Davies", role: "Senior Lead", onboarded: 42, yr: 412, conv: "92.4%", days: "3.1" },
+  { name: "Nayeem Ahmad", role: "Success Manager", onboarded: 38, yr: 356, conv: "88.1%", days: "4.2" },
+  { name: "Joe Austin", role: "Operations Analyst", onboarded: 31, yr: 298, conv: "76.5%", days: "5.5" },
   { name: "Elena Rodriguez", role: "Account Executive", onboarded: 29, yr: 242, conv: "81.2%", days: "4.8" },
 ];
 

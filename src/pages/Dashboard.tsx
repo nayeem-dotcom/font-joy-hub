@@ -18,16 +18,16 @@ const kpis = [
 ];
 
 const activities = [
-  { icon: CheckCircle2, color: "text-primary-container", title: "Buyer Onboarded: SolarTech Inc.", sub: "Managed by Sarah J.", time: "2 hours ago" },
+  { icon: CheckCircle2, color: "text-primary-container", title: "Buyer Onboarded: SolarTech Inc.", sub: "Managed by Nayeem A.", time: "2 hours ago" },
   { icon: FileText, color: "text-tertiary", title: 'Note added to "BlueWave Logistics"', sub: "Pending final documentation.", time: "5 hours ago" },
   { icon: AlertTriangle, color: "text-amber-500", title: "Drop-off Alert: Nexus Retail", sub: "Stuck in 'Qualification' for 5 days.", time: "Yesterday" },
-  { icon: UserPlus, color: "text-primary-container", title: "New Buyer Assigned", sub: "Assigned to Mark T.", time: "2 days ago" },
+  { icon: UserPlus, color: "text-primary-container", title: "New Buyer Assigned", sub: "Assigned to Joe Austin", time: "2 days ago" },
 ];
 
 const teamData = [
-  { name: "Sarah J.", value: 24, max: 24 },
-  { name: "Mark T.", value: 18, max: 24 },
-  { name: "Linda K.", value: 12, max: 24 },
+  { name: "Nayeem A.", value: 24, max: 24 },
+  { name: "Joe Austin", value: 18, max: 24 },
+  { name: "Ripon Kumar", value: 12, max: 24 },
 ];
 
 export default function Dashboard() {

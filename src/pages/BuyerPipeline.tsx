@@ -23,9 +23,9 @@ const initialColumns: Column[] = [
     title: "MEETING CLOSED",
     dotColor: "bg-tertiary",
     cards: [
-      { id: "c1", name: "Lumina Flow", vertical: "Fintech", days: 4, progress: 15, owner: "Sarah J." },
-      { id: "c2", name: "Vortex Digital", vertical: "Creative", days: 2, progress: 8, owner: "Marc K." },
-      { id: "c3", name: "Apex Solutions", vertical: "SaaS", days: 7, progress: 22, owner: "David L." },
+      { id: "c1", name: "Lumina Flow", vertical: "Fintech", days: 4, progress: 15, owner: "Nayeem A." },
+      { id: "c2", name: "Vortex Digital", vertical: "Creative", days: 2, progress: 8, owner: "Daniela N." },
+      { id: "c3", name: "Apex Solutions", vertical: "SaaS", days: 7, progress: 22, owner: "Mariela P." },
     ],
   },
   {
@@ -33,8 +33,8 @@ const initialColumns: Column[] = [
     title: "PAPERWORK STATUS",
     dotColor: "bg-primary-container",
     cards: [
-      { id: "c4", name: "Helix Logistics", vertical: "Retail", days: 11, progress: 32, owner: "Sarah J." },
-      { id: "c5", name: "Quantum Media", vertical: "AdTech", days: 5, progress: 28, owner: "Marc K." },
+      { id: "c4", name: "Helix Logistics", vertical: "Retail", days: 11, progress: 32, owner: "Nayeem A." },
+      { id: "c5", name: "Quantum Media", vertical: "AdTech", days: 5, progress: 28, owner: "Daniela N." },
     ],
   },
   {
@@ -42,7 +42,7 @@ const initialColumns: Column[] = [
     title: "CREATIVE SUBMISSION",
     dotColor: "",
     cards: [
-      { id: "c6", name: "Nova Brands", vertical: "E-commerce", days: 6, progress: 48, owner: "David L." },
+      { id: "c6", name: "Nova Brands", vertical: "E-commerce", days: 6, progress: 48, owner: "Mariela P." },
     ],
   },
   {
@@ -50,7 +50,7 @@ const initialColumns: Column[] = [
     title: "TECHNICAL SETUP",
     dotColor: "",
     cards: [
-      { id: "c7", name: "Skyline Tech", vertical: "AI/ML", days: 3, progress: 60, owner: "Sarah J." },
+      { id: "c7", name: "Skyline Tech", vertical: "AI/ML", days: 3, progress: 60, owner: "Nayeem A." },
     ],
   },
   {
@@ -58,8 +58,8 @@ const initialColumns: Column[] = [
     title: "LIVE",
     dotColor: "bg-primary-container",
     cards: [
-      { id: "c8", name: "BlueWave Corp", vertical: "Fintech", days: 0, progress: 100, owner: "Marc K." },
-      { id: "c9", name: "GreenLeaf Inc", vertical: "Eco-Tech", days: 0, progress: 100, owner: "David L." },
+      { id: "c8", name: "BlueWave Corp", vertical: "Fintech", days: 0, progress: 100, owner: "Daniela N." },
+      { id: "c9", name: "GreenLeaf Inc", vertical: "Eco-Tech", days: 0, progress: 100, owner: "Mariela P." },
     ],
   },
 ];
