@@ -4,7 +4,7 @@ import {
   Filter,
   Users,
   BarChart3,
-  TrendingUp,
+  
   Settings,
   HelpCircle,
   LogOut,
