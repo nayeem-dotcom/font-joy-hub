@@ -4,7 +4,7 @@ import {
   Filter,
   Users,
   BarChart3,
-  TrendingUp,
+  
   Settings,
   HelpCircle,
   LogOut,
@@ -19,7 +19,7 @@ const navItems = [
   { icon: Users, label: "All Buyers", path: "/buyers" },
   { icon: BarChart3, label: "Team Performance", path: "/team" },
   { icon: Scale, label: "Legal & Compliance", path: "/legal" },
-  { icon: TrendingUp, label: "Analytics", path: "/analytics" },
+  
   { icon: Settings, label: "Settings", path: "/settings" },
 ];
 
