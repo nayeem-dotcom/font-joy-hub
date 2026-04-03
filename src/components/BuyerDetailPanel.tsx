@@ -527,9 +527,19 @@ export default function BuyerDetailPanel({ buyer, onClose, onUpdate }: BuyerDeta
             <button className="flex-1 py-3 rounded-xl border border-outline-variant/20 text-sm font-semibold text-foreground hover:bg-accent transition-colors">
               Save as PDF
             </button>
-            <button className="flex-1 py-3 rounded-xl gradient-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity">
-              Generate New Proposal
-            </button>
+            {hasChanges ? (
+              <button
+                onClick={handleSave}
+                className="flex-1 py-3 rounded-xl gradient-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+              >
+                <Save className="w-4 h-4" />
+                Save Changes
+              </button>
+            ) : (
+              <button className="flex-1 py-3 rounded-xl gradient-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity">
+                Generate New Proposal
+              </button>
+            )}
           </div>
         </div>
       </div>
