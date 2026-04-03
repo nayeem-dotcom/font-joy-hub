@@ -358,22 +358,47 @@ export default function BuyerDetailPanel({ buyer, onClose, onUpdate }: BuyerDeta
                 <div className="grid grid-cols-2 gap-4">
                   <div className="p-3 bg-input rounded-xl">
                     <p className="text-[10px] font-label uppercase tracking-wider text-muted-foreground mb-1">Buyer Tier</p>
-                    <p className="text-sm font-semibold text-foreground">{buyer.tier || "Direct Buyer"}</p>
+                    <select
+                      value={editData.tier}
+                      onChange={(e) => updateField("tier", e.target.value)}
+                      className="w-full bg-transparent text-sm font-semibold text-foreground outline-none cursor-pointer"
+                    >
+                      {["Direct Buyer", "Network", "Broker", "Aggregator", "Agency"].map((t) => (
+                        <option key={t} value={t}>{t}</option>
+                      ))}
+                    </select>
                   </div>
                   <div className="p-3 bg-input rounded-xl">
                     <p className="text-[10px] font-label uppercase tracking-wider text-muted-foreground mb-1">Current Stage</p>
-                    <div className="flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-primary-container" />
-                      <p className="text-sm font-semibold text-foreground">{buyer.stage}</p>
-                    </div>
+                    <select
+                      value={editData.stage}
+                      onChange={(e) => updateField("stage", e.target.value)}
+                      className="w-full bg-transparent text-sm font-semibold text-foreground outline-none cursor-pointer"
+                    >
+                      {["Live", "Onboarding", "Paused", "Review", "Technical Setup"].map((s) => (
+                        <option key={s} value={s}>{s}</option>
+                      ))}
+                    </select>
                   </div>
                   <div className="p-3 bg-input rounded-xl">
-                    <p className="text-[10px] font-label uppercase tracking-wider text-muted-foreground mb-1">Onboard Date</p>
-                    <p className="text-sm font-semibold text-foreground">{buyer.inDate || "Oct 12, 2023"}</p>
+                    <p className="text-[10px] font-label uppercase tracking-wider text-muted-foreground mb-1">Vertical</p>
+                    <select
+                      value={editData.vertical}
+                      onChange={(e) => updateField("vertical", e.target.value)}
+                      className="w-full bg-transparent text-sm font-semibold text-foreground outline-none cursor-pointer"
+                    >
+                      {["FINTECH", "SAAS", "ECO-TECH", "E-COMMERCE", "AUTOMOTIVE", "AI/ML", "REAL ESTATE", "MEDICAL"].map((v) => (
+                        <option key={v} value={v}>{v}</option>
+                      ))}
+                    </select>
                   </div>
                   <div className="p-3 bg-input rounded-xl">
-                    <p className="text-[10px] font-label uppercase tracking-wider text-muted-foreground mb-1">Live Date</p>
-                    <p className="text-sm font-semibold text-foreground">{buyer.liveDate || "Pending"}</p>
+                    <p className="text-[10px] font-label uppercase tracking-wider text-muted-foreground mb-1">Owner</p>
+                    <input
+                      value={editData.owner}
+                      onChange={(e) => updateField("owner", e.target.value)}
+                      className="w-full bg-transparent text-sm font-semibold text-foreground outline-none"
+                    />
                   </div>
                 </div>
               </div>
