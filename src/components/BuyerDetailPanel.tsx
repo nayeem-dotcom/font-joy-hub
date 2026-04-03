@@ -18,20 +18,14 @@ import {
   Briefcase,
   Users,
   StickyNote,
+  Save,
 } from "lucide-react";
+import type { BuyerData } from "@/pages/AllBuyers";
 
 interface BuyerDetailPanelProps {
-  buyer: {
-    name: string;
-    company: string;
-    stage: string;
-    owner?: string;
-    vertical?: string;
-    tier?: string;
-    inDate?: string;
-    liveDate?: string;
-  };
+  buyer: BuyerData;
   onClose: () => void;
+  onUpdate: (updated: BuyerData) => void;
 }
 
 const tabs = ["Overview", "Contact", "Business Info", "Timeline", "Documents", "Notes"];
