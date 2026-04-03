@@ -18,20 +18,14 @@ import {
   Briefcase,
   Users,
   StickyNote,
+  Save,
 } from "lucide-react";
+import type { BuyerData } from "@/pages/AllBuyers";
 
 interface BuyerDetailPanelProps {
-  buyer: {
-    name: string;
-    company: string;
-    stage: string;
-    owner?: string;
-    vertical?: string;
-    tier?: string;
-    inDate?: string;
-    liveDate?: string;
-  };
+  buyer: BuyerData;
   onClose: () => void;
+  onUpdate: (updated: BuyerData) => void;
 }
 
 const tabs = ["Overview", "Contact", "Business Info", "Timeline", "Documents", "Notes"];
@@ -62,12 +56,30 @@ const notes = [
   { author: "David Liu", date: "Oct 15, 2023 at 10:45 AM", content: "Initial discovery call went well. Key decision makers: CTO (Michael Scott) and VP Engineering (Jim Palmer). Budget approved internally, timeline is Q1 next year." },
 ];
 
-export default function BuyerDetailPanel({ buyer, onClose }: BuyerDetailPanelProps) {
+export default function BuyerDetailPanel({ buyer, onClose, onUpdate }: BuyerDetailPanelProps) {
   const [activeTab, setActiveTab] = useState(0);
-  const [isActive, setIsActive] = useState(true);
+  const [editData, setEditData] = useState<BuyerData>({ ...buyer });
+  const [isActive, setIsActive] = useState(buyer.active);
   const [statusNote, setStatusNote] = useState("");
   const [newNote, setNewNote] = useState("");
   const [allNotes, setAllNotes] = useState(notes);
+  const [hasChanges, setHasChanges] = useState(false);
+
+  const updateField = (field: keyof BuyerData, value: string | boolean) => {
+    setEditData((prev) => ({ ...prev, [field]: value }));
+    setHasChanges(true);
+  };
+
+  const handleSave = () => {
+    const updated = { ...editData, active: isActive };
+    onUpdate(updated);
+    setHasChanges(false);
+  };
+
+  const handleToggleActive = (val: boolean) => {
+    setIsActive(val);
+    setHasChanges(true);
+  };
 
   const handleAddNote = () => {
     if (!newNote.trim()) return;
@@ -154,7 +166,7 @@ export default function BuyerDetailPanel({ buyer, onClose }: BuyerDetailPanelPro
                   </div>
                   <div className="flex items-center bg-surface-container rounded-lg p-1">
                     <button
-                      onClick={() => setIsActive(true)}
+                      onClick={() => handleToggleActive(true)}
                       className={`px-4 py-1.5 rounded-md text-xs font-semibold transition-all ${
                         isActive ? "gradient-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
                       }`}
@@ -162,7 +174,7 @@ export default function BuyerDetailPanel({ buyer, onClose }: BuyerDetailPanelPro
                       Active
                     </button>
                     <button
-                      onClick={() => setIsActive(false)}
+                      onClick={() => handleToggleActive(false)}
                       className={`px-4 py-1.5 rounded-md text-xs font-semibold transition-all ${
                         !isActive ? "bg-destructive text-destructive-foreground" : "text-muted-foreground hover:text-foreground"
                       }`}
@@ -346,22 +358,47 @@ export default function BuyerDetailPanel({ buyer, onClose }: BuyerDetailPanelPro
                 <div className="grid grid-cols-2 gap-4">
                   <div className="p-3 bg-input rounded-xl">
                     <p className="text-[10px] font-label uppercase tracking-wider text-muted-foreground mb-1">Buyer Tier</p>
-                    <p className="text-sm font-semibold text-foreground">{buyer.tier || "Direct Buyer"}</p>
+                    <select
+                      value={editData.tier}
+                      onChange={(e) => updateField("tier", e.target.value)}
+                      className="w-full bg-transparent text-sm font-semibold text-foreground outline-none cursor-pointer"
+                    >
+                      {["Direct Buyer", "Network", "Broker", "Aggregator", "Agency"].map((t) => (
+                        <option key={t} value={t}>{t}</option>
+                      ))}
+                    </select>
                   </div>
                   <div className="p-3 bg-input rounded-xl">
                     <p className="text-[10px] font-label uppercase tracking-wider text-muted-foreground mb-1">Current Stage</p>
-                    <div className="flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-primary-container" />
-                      <p className="text-sm font-semibold text-foreground">{buyer.stage}</p>
-                    </div>
+                    <select
+                      value={editData.stage}
+                      onChange={(e) => updateField("stage", e.target.value)}
+                      className="w-full bg-transparent text-sm font-semibold text-foreground outline-none cursor-pointer"
+                    >
+                      {["Live", "Onboarding", "Paused", "Review", "Technical Setup"].map((s) => (
+                        <option key={s} value={s}>{s}</option>
+                      ))}
+                    </select>
                   </div>
                   <div className="p-3 bg-input rounded-xl">
-                    <p className="text-[10px] font-label uppercase tracking-wider text-muted-foreground mb-1">Onboard Date</p>
-                    <p className="text-sm font-semibold text-foreground">{buyer.inDate || "Oct 12, 2023"}</p>
+                    <p className="text-[10px] font-label uppercase tracking-wider text-muted-foreground mb-1">Vertical</p>
+                    <select
+                      value={editData.vertical}
+                      onChange={(e) => updateField("vertical", e.target.value)}
+                      className="w-full bg-transparent text-sm font-semibold text-foreground outline-none cursor-pointer"
+                    >
+                      {["FINTECH", "SAAS", "ECO-TECH", "E-COMMERCE", "AUTOMOTIVE", "AI/ML", "REAL ESTATE", "MEDICAL"].map((v) => (
+                        <option key={v} value={v}>{v}</option>
+                      ))}
+                    </select>
                   </div>
                   <div className="p-3 bg-input rounded-xl">
-                    <p className="text-[10px] font-label uppercase tracking-wider text-muted-foreground mb-1">Live Date</p>
-                    <p className="text-sm font-semibold text-foreground">{buyer.liveDate || "Pending"}</p>
+                    <p className="text-[10px] font-label uppercase tracking-wider text-muted-foreground mb-1">Owner</p>
+                    <input
+                      value={editData.owner}
+                      onChange={(e) => updateField("owner", e.target.value)}
+                      className="w-full bg-transparent text-sm font-semibold text-foreground outline-none"
+                    />
                   </div>
                 </div>
               </div>
@@ -515,9 +552,19 @@ export default function BuyerDetailPanel({ buyer, onClose }: BuyerDetailPanelPro
             <button className="flex-1 py-3 rounded-xl border border-outline-variant/20 text-sm font-semibold text-foreground hover:bg-accent transition-colors">
               Save as PDF
             </button>
-            <button className="flex-1 py-3 rounded-xl gradient-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity">
-              Generate New Proposal
-            </button>
+            {hasChanges ? (
+              <button
+                onClick={handleSave}
+                className="flex-1 py-3 rounded-xl gradient-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+              >
+                <Save className="w-4 h-4" />
+                Save Changes
+              </button>
+            ) : (
+              <button className="flex-1 py-3 rounded-xl gradient-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity">
+                Generate New Proposal
+              </button>
+            )}
           </div>
         </div>
       </div>

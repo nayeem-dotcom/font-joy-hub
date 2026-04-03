@@ -3,7 +3,20 @@ import { Download, Plus, ChevronRight, ChevronLeft, ChevronsLeft, ChevronsRight,
 import { Link } from "react-router-dom";
 import BuyerDetailPanel from "@/components/BuyerDetailPanel";
 
-const buyers = [
+export interface BuyerData {
+  name: string;
+  company: string;
+  owner: string;
+  vertical: string;
+  tier: string;
+  stage: string;
+  stageColor: string;
+  active: boolean;
+  inDate: string;
+  liveDate: string;
+}
+
+const initialBuyers: BuyerData[] = [
   { name: "Alexander Wright", company: "Stellar Dynamics Inc.", owner: "Sarah J.", vertical: "FINTECH", tier: "Direct Buyer", stage: "Live", stageColor: "bg-primary-container", active: true, inDate: "Oct 12, 2023", liveDate: "Oct 15, 2023" },
   { name: "Elena Rodriguez", company: "Vortex Systems", owner: "Marc K.", vertical: "SAAS", tier: "Network", stage: "Onboarding", stageColor: "bg-primary-container", active: true, inDate: "Nov 01, 2023", liveDate: "Pending..." },
   { name: "Marcus Chen", company: "GreenLeaf Logistics", owner: "David L.", vertical: "ECO-TECH", tier: "Broker", stage: "Paused", stageColor: "bg-destructive", active: false, inDate: "Sept 15, 2023", liveDate: "Oct 01, 2023" },
@@ -26,7 +39,15 @@ const verticalColors: Record<string, string> = {
 };
 
 export default function AllBuyers() {
-  const [selectedBuyer, setSelectedBuyer] = useState<typeof buyers[0] | null>(null);
+  const [buyers, setBuyers] = useState<BuyerData[]>(initialBuyers);
+  const [selectedBuyer, setSelectedBuyer] = useState<BuyerData | null>(null);
+
+  const handleUpdateBuyer = (updated: BuyerData) => {
+    setBuyers((prev) =>
+      prev.map((b) => (b.name === updated.name && b.company === updated.company ? updated : b))
+    );
+    setSelectedBuyer(updated);
+  };
 
   return (
     <div className="animate-fade-in">
@@ -168,7 +189,7 @@ export default function AllBuyers() {
 
       {/* Side Panel */}
       {selectedBuyer && (
-        <BuyerDetailPanel buyer={selectedBuyer} onClose={() => setSelectedBuyer(null)} />
+        <BuyerDetailPanel buyer={selectedBuyer} onClose={() => setSelectedBuyer(null)} onUpdate={handleUpdateBuyer} />
       )}
     </div>
   );
