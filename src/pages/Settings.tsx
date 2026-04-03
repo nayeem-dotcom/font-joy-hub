@@ -242,13 +242,16 @@ export default function Settings() {
             </div>
           )}
 
-          {activeTab !== 0 && (
-            <div className="surface-card p-12 text-center">
-              <settingsTabs[activeTab].icon className="w-12 h-12 text-muted-foreground/30 mx-auto mb-4" />
-              <h2 className="text-xl font-bold text-foreground mb-2">{settingsTabs[activeTab].label}</h2>
-              <p className="text-sm text-muted-foreground">This section is coming soon.</p>
-            </div>
-          )}
+          {activeTab !== 0 && (() => {
+            const TabIcon = settingsTabs[activeTab].icon;
+            return (
+              <div className="surface-card p-12 text-center">
+                <TabIcon className="w-12 h-12 text-muted-foreground/30 mx-auto mb-4" />
+                <h2 className="text-xl font-bold text-foreground mb-2">{settingsTabs[activeTab].label}</h2>
+                <p className="text-sm text-muted-foreground">This section is coming soon.</p>
+              </div>
+            );
+          })()}
         </div>
       </div>
 
