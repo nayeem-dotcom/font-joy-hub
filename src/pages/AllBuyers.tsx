@@ -189,7 +189,7 @@ export default function AllBuyers() {
 
       {/* Side Panel */}
       {selectedBuyer && (
-        <BuyerDetailPanel buyer={selectedBuyer} onClose={() => setSelectedBuyer(null)} />
+        <BuyerDetailPanel buyer={selectedBuyer} onClose={() => setSelectedBuyer(null)} onUpdate={handleUpdateBuyer} />
       )}
     </div>
   );
