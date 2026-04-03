@@ -10,6 +10,7 @@ import AllBuyers from "./pages/AllBuyers";
 import BuyerPipeline from "./pages/BuyerPipeline";
 import TeamPerformance from "./pages/TeamPerformance";
 import AddNewBuyer from "./pages/AddNewBuyer";
+import LegalPaperwork from "./pages/LegalPaperwork";
 import AppLayout from "./components/layout/AppLayout";
 import NotFound from "./pages/NotFound";
 
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/buyers/new" element={<AddNewBuyer />} />
             <Route path="/pipeline" element={<BuyerPipeline />} />
             <Route path="/team" element={<TeamPerformance />} />
+            <Route path="/legal" element={<LegalPaperwork />} />
             <Route path="/analytics" element={<Dashboard />} />
             <Route path="/settings" element={<Settings />} />
           </Route>

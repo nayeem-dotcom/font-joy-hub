@@ -10,6 +10,7 @@ import {
   LogOut,
   Plus,
   Rocket,
+  Scale,
 } from "lucide-react";
 
 const navItems = [
@@ -17,6 +18,7 @@ const navItems = [
   { icon: Filter, label: "Buyer Funnel", path: "/pipeline" },
   { icon: Users, label: "All Buyers", path: "/buyers" },
   { icon: BarChart3, label: "Team Performance", path: "/team" },
+  { icon: Scale, label: "Legal & Compliance", path: "/legal" },
   { icon: TrendingUp, label: "Analytics", path: "/analytics" },
   { icon: Settings, label: "Settings", path: "/settings" },
 ];
