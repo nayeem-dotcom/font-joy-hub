@@ -166,7 +166,7 @@ export default function BuyerDetailPanel({ buyer, onClose, onUpdate }: BuyerDeta
                   </div>
                   <div className="flex items-center bg-surface-container rounded-lg p-1">
                     <button
-                      onClick={() => setIsActive(true)}
+                      onClick={() => handleToggleActive(true)}
                       className={`px-4 py-1.5 rounded-md text-xs font-semibold transition-all ${
                         isActive ? "gradient-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
                       }`}
@@ -174,7 +174,7 @@ export default function BuyerDetailPanel({ buyer, onClose, onUpdate }: BuyerDeta
                       Active
                     </button>
                     <button
-                      onClick={() => setIsActive(false)}
+                      onClick={() => handleToggleActive(false)}
                       className={`px-4 py-1.5 rounded-md text-xs font-semibold transition-all ${
                         !isActive ? "bg-destructive text-destructive-foreground" : "text-muted-foreground hover:text-foreground"
                       }`}
