@@ -39,7 +39,15 @@ const verticalColors: Record<string, string> = {
 };
 
 export default function AllBuyers() {
-  const [selectedBuyer, setSelectedBuyer] = useState<typeof buyers[0] | null>(null);
+  const [buyers, setBuyers] = useState<BuyerData[]>(initialBuyers);
+  const [selectedBuyer, setSelectedBuyer] = useState<BuyerData | null>(null);
+
+  const handleUpdateBuyer = (updated: BuyerData) => {
+    setBuyers((prev) =>
+      prev.map((b) => (b.name === updated.name && b.company === updated.company ? updated : b))
+    );
+    setSelectedBuyer(updated);
+  };
 
   return (
     <div className="animate-fade-in">
