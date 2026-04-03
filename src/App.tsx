@@ -10,6 +10,7 @@ import AllBuyers from "./pages/AllBuyers";
 import BuyerPipeline from "./pages/BuyerPipeline";
 import TeamPerformance from "./pages/TeamPerformance";
 import AddNewBuyer from "./pages/AddNewBuyer";
+import LegalPaperwork from "./pages/LegalPaperwork";
 import AppLayout from "./components/layout/AppLayout";
 import NotFound from "./pages/NotFound";
 
