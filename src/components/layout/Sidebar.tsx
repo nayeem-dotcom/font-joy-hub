@@ -33,7 +33,7 @@ export default function Sidebar() {
             <Rocket className="w-5 h-5 text-primary-foreground" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-foreground leading-tight">AdFunnel</h1>
+            <h1 className="text-xl font-bold text-foreground leading-tight">Ray Funnel</h1>
             <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Growth Engine</p>
           </div>
         </div>

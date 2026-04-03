@@ -271,7 +271,7 @@ export default function Settings() {
             </div>
 
             <p className="text-sm text-muted-foreground mb-6">
-              Send an invitation to join your AdFunnel workspace. They'll receive an email with access instructions.
+              Send an invitation to join your Ray Funnel workspace. They'll receive an email with access instructions.
             </p>
 
             <div className="mb-5">
