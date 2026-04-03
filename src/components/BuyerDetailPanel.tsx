@@ -56,12 +56,30 @@ const notes = [
   { author: "David Liu", date: "Oct 15, 2023 at 10:45 AM", content: "Initial discovery call went well. Key decision makers: CTO (Michael Scott) and VP Engineering (Jim Palmer). Budget approved internally, timeline is Q1 next year." },
 ];
 
-export default function BuyerDetailPanel({ buyer, onClose }: BuyerDetailPanelProps) {
+export default function BuyerDetailPanel({ buyer, onClose, onUpdate }: BuyerDetailPanelProps) {
   const [activeTab, setActiveTab] = useState(0);
-  const [isActive, setIsActive] = useState(true);
+  const [editData, setEditData] = useState<BuyerData>({ ...buyer });
+  const [isActive, setIsActive] = useState(buyer.active);
   const [statusNote, setStatusNote] = useState("");
   const [newNote, setNewNote] = useState("");
   const [allNotes, setAllNotes] = useState(notes);
+  const [hasChanges, setHasChanges] = useState(false);
+
+  const updateField = (field: keyof BuyerData, value: string | boolean) => {
+    setEditData((prev) => ({ ...prev, [field]: value }));
+    setHasChanges(true);
+  };
+
+  const handleSave = () => {
+    const updated = { ...editData, active: isActive };
+    onUpdate(updated);
+    setHasChanges(false);
+  };
+
+  const handleToggleActive = (val: boolean) => {
+    setIsActive(val);
+    setHasChanges(true);
+  };
 
   const handleAddNote = () => {
     if (!newNote.trim()) return;
