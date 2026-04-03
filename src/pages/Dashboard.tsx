@@ -169,9 +169,8 @@ export default function Dashboard() {
       </div>
 
       {/* Bottom KPIs */}
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 gap-6">
         {[
-          { icon: TrendingUp, label: "Pipeline Value", value: "$1.2M" },
           { icon: Zap, label: "Efficiency Score", value: "94.2%" },
           { icon: Clock, label: "Market Uptime", value: "99.9%" },
         ].map((item) => (
