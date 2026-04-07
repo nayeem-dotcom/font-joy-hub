@@ -22,7 +22,7 @@ export default function Login() {
               <span className="text-primary-container">growth engine</span> with precision.
             </h2>
             <p className="text-inverse-on-surface/70 text-base leading-relaxed">
-              Join over 2,500+ high-growth teams using Ray Funnel to track, analyze, and optimize every stage of their buyer journey.
+              Join over 2,500+ high-growth teams using Buyerly to track, analyze, and optimize every stage of their buyer journey.
             </p>
           </div>
           <div className="relative z-10 glass-panel rounded-xl p-4 flex items-center gap-3">
@@ -98,7 +98,7 @@ export default function Login() {
             to="/dashboard"
             className="w-full gradient-primary text-primary-foreground rounded-xl py-3.5 text-sm font-semibold hover:opacity-90 transition-opacity text-center block"
           >
-            {isSignUp ? "Create Account" : "Sign in to Ray Funnel"}
+            {isSignUp ? "Create Account" : "Sign in to Buyerly"}
           </Link>
 
           <p className="text-sm text-center text-muted-foreground mt-6">
