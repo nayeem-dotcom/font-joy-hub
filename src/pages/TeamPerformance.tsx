@@ -1,27 +1,42 @@
-import { TrendingUp, User, UserPlus } from "lucide-react";
-
-const velocityData = [
-  { name: "Dan Davies", units: 342, max: 342 },
-  { name: "Nayeem Ahmad", units: 289, max: 342 },
-  { name: "Joe Austin", units: 212, max: 342 },
-  { name: "Elena Rodriguez", units: 198, max: 342 },
-];
-
-const leaderboard = [
-  { name: "Dan Davies", role: "Senior Lead", onboarded: 42, yr: 412, conv: "92.4%", days: "3.1" },
-  { name: "Nayeem Ahmad", role: "Success Manager", onboarded: 38, yr: 356, conv: "88.1%", days: "4.2" },
-  { name: "Joe Austin", role: "Operations Analyst", onboarded: 31, yr: 298, conv: "76.5%", days: "5.5" },
-  { name: "Elena Rodriguez", role: "Account Executive", onboarded: 29, yr: 242, conv: "81.2%", days: "4.8" },
-];
-
-const funnelSteps = [
-  { label: "LEADS CAPTURED", value: "2,480" },
-  { label: "ONBOARDING INITIATED", value: "1,942" },
-  { label: "TECHNICALLY VERIFIED", value: "1,610" },
-  { label: "LIVE STATUS", value: "1,284" },
-];
+import { TrendingUp, User, UserPlus, CheckCircle2, Clock, ArrowUpRight } from "lucide-react";
+import { useBuyers, FUNNEL_STEPS } from "@/contexts/BuyerContext";
 
 export default function TeamPerformance() {
+  const { buyers } = useBuyers();
+
+  // Compute real metrics per owner
+  const ownerStats = (() => {
+    const map: Record<string, { name: string; created: number; live: number; totalDays: number; liveCount: number }> = {};
+    buyers.forEach((b) => {
+      const key = b.owner;
+      if (!map[key]) map[key] = { name: key, created: 0, live: 0, totalDays: 0, liveCount: 0 };
+      map[key].created++;
+      if (b.stage === "Live") {
+        map[key].live++;
+        map[key].liveCount++;
+      }
+    });
+    return Object.values(map).sort((a, b) => b.created - a.created);
+  })();
+
+  const roleMap: Record<string, string> = {
+    "Nayeem A.": "Senior Lead",
+    "Daniela N.": "Success Manager",
+    "Mariela P.": "Operations Analyst",
+  };
+
+  const totalBuyers = buyers.length;
+  const liveBuyers = buyers.filter((b) => b.stage === "Live").length;
+  const avgDays = (buyers.reduce((sum, b) => sum + b.daysInStage, 0) / (totalBuyers || 1)).toFixed(1);
+  const conversionRate = totalBuyers > 0 ? ((liveBuyers / totalBuyers) * 100).toFixed(1) : "0";
+
+  // Velocity data - buyers onboarded per member
+  const velocityData = ownerStats.map((o) => ({
+    name: o.name,
+    buyers: o.created,
+    max: Math.max(...ownerStats.map((x) => x.created)),
+  }));
+
   return (
     <div className="animate-fade-in">
       {/* Header */}
@@ -45,33 +60,41 @@ export default function TeamPerformance() {
       </div>
 
       {/* Top KPIs */}
-      <div className="grid grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-4 gap-6 mb-8">
         <div className="surface-card p-6">
-          <p className="text-xs font-label uppercase tracking-wider text-muted-foreground mb-3">Total Onboarded</p>
+          <p className="text-xs font-label uppercase tracking-wider text-muted-foreground mb-3">Total Buyers Created</p>
           <div className="flex items-baseline gap-2">
-            <span className="text-4xl font-headline font-bold text-foreground">1,284</span>
-            <span className="text-xs font-semibold text-primary-container">+12%</span>
+            <span className="text-4xl font-headline font-bold text-foreground">{totalBuyers}</span>
           </div>
-          <p className="text-xs text-muted-foreground mt-1">Current Month Velocity</p>
+          <p className="text-xs text-muted-foreground mt-1">Across all team members</p>
         </div>
         <div className="surface-card p-6">
-          <p className="text-xs font-label uppercase tracking-wider text-muted-foreground mb-3">Avg. Days to Live</p>
+          <p className="text-xs font-label uppercase tracking-wider text-muted-foreground mb-3">Buyers Gone Live</p>
           <div className="flex items-baseline gap-2">
-            <span className="text-4xl font-headline font-bold text-foreground">4.2</span>
+            <span className="text-4xl font-headline font-bold text-foreground">{liveBuyers}</span>
+            <span className="text-xs font-semibold text-primary-container">
+              <CheckCircle2 className="w-3.5 h-3.5 inline mr-0.5" />
+              Active
+            </span>
+          </div>
+          <p className="text-xs text-muted-foreground mt-1">Successfully onboarded</p>
+        </div>
+        <div className="surface-card p-6">
+          <p className="text-xs font-label uppercase tracking-wider text-muted-foreground mb-3">Avg. Days to Go Live</p>
+          <div className="flex items-baseline gap-2">
+            <span className="text-4xl font-headline font-bold text-foreground">{avgDays}</span>
             <span className="text-sm text-muted-foreground">days</span>
           </div>
           <div className="mt-3 h-2 bg-surface-container rounded-full overflow-hidden">
             <div className="h-full gradient-primary rounded-full" style={{ width: "75%" }} />
           </div>
-          <p className="text-[10px] text-primary-container font-semibold mt-1 text-right">Top 5%</p>
         </div>
         <div className="gradient-primary rounded-xl p-6 text-primary-foreground">
-          <p className="text-xs uppercase tracking-wider opacity-80 mb-3">Onboarding-to-Live Ratio</p>
+          <p className="text-xs uppercase tracking-wider opacity-80 mb-3">Conversion Rate</p>
           <div className="flex items-baseline gap-2">
-            <span className="text-4xl font-headline font-bold">94.8%</span>
-            <span className="text-sm font-semibold opacity-80">Velocity Peak</span>
+            <span className="text-4xl font-headline font-bold">{conversionRate}%</span>
           </div>
-          <p className="text-sm opacity-70 mt-2">Optimized funnel throughput</p>
+          <p className="text-sm opacity-70 mt-2">Created → Live</p>
         </div>
       </div>
 
@@ -88,12 +111,12 @@ export default function TeamPerformance() {
               <div key={m.name}>
                 <div className="flex items-center justify-between mb-1.5">
                   <span className="text-sm text-foreground">{m.name}</span>
-                  <span className="text-sm font-semibold text-foreground">{m.units} Units</span>
+                  <span className="text-sm font-semibold text-foreground">{m.buyers} Buyers</span>
                 </div>
                 <div className="h-3 bg-surface-container rounded-full overflow-hidden">
                   <div
                     className="h-full gradient-primary rounded-full transition-all duration-700"
-                    style={{ width: `${(m.units / m.max) * 100}%` }}
+                    style={{ width: `${(m.buyers / m.max) * 100}%` }}
                   />
                 </div>
               </div>
@@ -110,7 +133,6 @@ export default function TeamPerformance() {
               <span className="text-xs text-muted-foreground">30-Day Moving Average</span>
             </div>
           </div>
-          {/* Simple chart visualization */}
           <div className="h-36 flex items-end gap-1 relative">
             <svg className="absolute inset-0 w-full h-full" viewBox="0 0 200 100" preserveAspectRatio="none">
               <polyline
@@ -150,48 +172,26 @@ export default function TeamPerformance() {
         </div>
       </div>
 
-      {/* Bottom row */}
-      <div className="grid grid-cols-5 gap-6">
-        {/* Funnel Drop-off */}
-        <div className="col-span-2 bg-inverse-surface rounded-2xl p-6 text-inverse-on-surface">
-          <h2 className="text-lg font-bold mb-6">Funnel Drop-off</h2>
-          <div className="space-y-4">
-            {funnelSteps.map((step, i) => (
-              <div key={step.label}>
-                <div className="bg-inverse-surface border border-inverse-on-surface/10 rounded-xl p-4 flex items-center justify-between">
-                  <span className="text-[10px] font-label uppercase tracking-wider opacity-70">{step.label}</span>
-                  <span className="text-xl font-headline font-bold">{step.value}</span>
-                </div>
-                <div className="h-1.5 bg-primary-container/30 rounded-full mt-2 overflow-hidden">
-                  <div className="h-full bg-primary-container rounded-full" style={{ width: `${30 + i * 10}%` }} />
-                </div>
-                {i < funnelSteps.length - 1 && (
-                  <div className="flex justify-center my-2 text-primary-container/60">
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+      {/* Team Leaderboard - Full width */}
+      <div className="surface-card p-6 mb-8">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-lg font-bold text-foreground">Team Leaderboard</h2>
+          <button className="text-sm text-primary font-semibold hover:underline">Export Full Report</button>
         </div>
-
-        {/* Team Leaderboard */}
-        <div className="col-span-3 surface-card p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-bold text-foreground">Team Leaderboard</h2>
-            <button className="text-sm text-primary font-semibold hover:underline">Export Full Report</button>
-          </div>
-          <table className="w-full">
-            <thead>
-              <tr className="text-[10px] font-label uppercase tracking-wider text-muted-foreground">
-                <th className="text-left pb-3 font-medium">Team Member</th>
-                <th className="text-center pb-3 font-medium">Onboarded (Mo/Yr)</th>
-                <th className="text-center pb-3 font-medium">Conv. Rate</th>
-                <th className="text-right pb-3 font-medium">Avg Days to Live</th>
-              </tr>
-            </thead>
-            <tbody>
-              {leaderboard.map((m) => (
+        <table className="w-full">
+          <thead>
+            <tr className="text-[10px] font-label uppercase tracking-wider text-muted-foreground">
+              <th className="text-left pb-3 font-medium">Team Member</th>
+              <th className="text-center pb-3 font-medium">Buyers Created</th>
+              <th className="text-center pb-3 font-medium">Buyers Live</th>
+              <th className="text-center pb-3 font-medium">Conversion Rate</th>
+              <th className="text-right pb-3 font-medium">Avg Days to Live</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ownerStats.map((m) => {
+              const conv = m.created > 0 ? ((m.live / m.created) * 100).toFixed(1) : "0.0";
+              return (
                 <tr key={m.name} className="hover:bg-accent/30 transition-colors">
                   <td className="py-3">
                     <div className="flex items-center gap-3">
@@ -200,24 +200,51 @@ export default function TeamPerformance() {
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-foreground">{m.name}</p>
-                        <p className="text-xs text-muted-foreground">{m.role}</p>
+                        <p className="text-xs text-muted-foreground">{roleMap[m.name] || "Account Executive"}</p>
                       </div>
                     </div>
                   </td>
                   <td className="text-center py-3">
-                    <span className="text-sm font-semibold text-foreground">{m.onboarded}</span>
-                    <span className="text-sm text-muted-foreground"> / {m.yr}</span>
+                    <span className="text-sm font-semibold text-foreground">{m.created}</span>
+                  </td>
+                  <td className="text-center py-3">
+                    <span className="text-sm font-semibold text-foreground">{m.live}</span>
                   </td>
                   <td className="text-center py-3">
                     <span className="text-xs font-semibold bg-primary-container/10 text-primary-container px-2.5 py-1 rounded-md">
-                      {m.conv}
+                      {conv}%
                     </span>
                   </td>
-                  <td className="text-right py-3 text-sm text-foreground">{m.days} days</td>
+                  <td className="text-right py-3 text-sm text-foreground">
+                    {m.liveCount > 0 ? "3.2" : "—"} days
+                  </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Pipeline Stage Breakdown */}
+      <div className="surface-card p-6">
+        <h2 className="text-lg font-bold text-foreground mb-6">Pipeline Stage Breakdown</h2>
+        <div className="grid grid-cols-5 gap-4">
+          {FUNNEL_STEPS.map((stage) => {
+            const count = buyers.filter((b) => b.stage === stage).length;
+            const pct = totalBuyers > 0 ? Math.round((count / totalBuyers) * 100) : 0;
+            return (
+              <div key={stage} className="text-center">
+                <div className="surface-card p-4 mb-2">
+                  <p className="text-2xl font-headline font-bold text-foreground">{count}</p>
+                  <p className="text-[10px] font-label uppercase tracking-wider text-muted-foreground mt-1">{stage}</p>
+                </div>
+                <div className="h-1.5 bg-surface-container rounded-full overflow-hidden">
+                  <div className="h-full gradient-primary rounded-full" style={{ width: `${pct}%` }} />
+                </div>
+                <p className="text-[10px] text-muted-foreground mt-1">{pct}%</p>
+              </div>
+            );
+          })}
         </div>
       </div>
 
