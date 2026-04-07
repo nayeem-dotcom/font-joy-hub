@@ -58,7 +58,7 @@ export default function AddNewBuyer() {
             <p className="text-sm text-muted-foreground mb-6">Define the core identity of the company and industry segment.</p>
             <div className="mb-5">
               <label className="text-sm font-semibold text-foreground mb-1.5 block">Company Name</label>
-              <input type="text" placeholder="e.g. Carfax Logistics" className="w-full bg-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20" />
+              <input type="text" value={formData.company} onChange={(e) => setFormData(p => ({...p, company: e.target.value}))} placeholder="e.g. Carfax Logistics" className="w-full bg-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20" />
             </div>
             <div className="grid grid-cols-2 gap-5">
               <div>
