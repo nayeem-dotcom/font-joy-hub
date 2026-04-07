@@ -40,9 +40,24 @@ export default function AllBuyers() {
     setSelectedBuyer(updated);
   };
 
+  const parseDate = (dateStr: string) => {
+    const d = new Date(dateStr);
+    return isNaN(d.getTime()) ? null : d;
+  };
+
   const filteredBuyers = buyers.filter((b) => {
     if (filterVertical !== "All" && b.vertical !== filterVertical) return false;
     if (filterStage !== "All" && b.stage !== filterStage) return false;
+    if (dateFrom || dateTo) {
+      const bDate = parseDate(b.inDate);
+      if (!bDate) return false;
+      if (dateFrom && bDate < dateFrom) return false;
+      if (dateTo) {
+        const end = new Date(dateTo);
+        end.setHours(23, 59, 59, 999);
+        if (bDate > end) return false;
+      }
+    }
     return true;
   });
 
