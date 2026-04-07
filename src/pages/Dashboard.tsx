@@ -163,12 +163,25 @@ export default function Dashboard() {
 
         <div className="surface-card p-6">
           <h2 className="text-lg font-bold text-foreground mb-6">12-Month Volume</h2>
-          <div className="flex items-end gap-2 h-40">
-            {[35, 42, 55, 48, 60, 72, 65, 80, 75, 88, 70, 92].map((h, i) => (
-              <div key={i} className="flex-1 flex flex-col items-center gap-1">
+          <div className="flex items-end gap-2" style={{ height: "160px" }}>
+            {[
+              { label: "Jan", value: 35 },
+              { label: "Feb", value: 42 },
+              { label: "Mar", value: 55 },
+              { label: "Apr", value: 48 },
+              { label: "May", value: 60 },
+              { label: "Jun", value: 72 },
+              { label: "Jul", value: 65 },
+              { label: "Aug", value: 80 },
+              { label: "Sep", value: 75 },
+              { label: "Oct", value: 88 },
+              { label: "Nov", value: 70 },
+              { label: "Dec", value: 92 },
+            ].map((bar, i) => (
+              <div key={i} className="flex-1 flex flex-col items-center justify-end h-full">
                 <div
                   className={`w-full rounded-md transition-all duration-500 ${i % 2 === 0 ? "gradient-primary" : "bg-primary-container/30"}`}
-                  style={{ height: `${h}%` }}
+                  style={{ height: `${bar.value}%` }}
                 />
               </div>
             ))}
