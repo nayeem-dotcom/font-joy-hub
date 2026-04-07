@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Eye, EyeOff, Rocket } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
+import buyerlyLogo from "@/assets/buyerly-logo.png";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -14,17 +15,14 @@ export default function Login() {
           <div className="absolute inset-0 bg-gradient-to-br from-[hsl(213,63%,11%)] via-[hsl(213,33%,20%)] to-[hsl(156,100%,21%,0.3)]" />
           <div className="relative z-10">
             <div className="flex items-center gap-3 mb-20">
-              <div className="w-10 h-10 rounded-xl bg-primary-container flex items-center justify-center">
-                <Rocket className="w-5 h-5 text-primary-container-foreground" />
-              </div>
-              <span className="text-xl font-headline font-bold">Ray Funnel</span>
+              <img src={buyerlyLogo} alt="Buyerly" className="h-10 w-auto brightness-0 invert" />
             </div>
             <h2 className="text-4xl font-headline font-bold leading-tight mb-6">
               Master your{" "}
               <span className="text-primary-container">growth engine</span> with precision.
             </h2>
             <p className="text-inverse-on-surface/70 text-base leading-relaxed">
-              Join over 2,500+ high-growth teams using Ray Funnel to track, analyze, and optimize every stage of their buyer journey.
+              Join over 2,500+ high-growth teams using Buyerly to track, analyze, and optimize every stage of their buyer journey.
             </p>
           </div>
           <div className="relative z-10 glass-panel rounded-xl p-4 flex items-center gap-3">
@@ -100,7 +98,7 @@ export default function Login() {
             to="/dashboard"
             className="w-full gradient-primary text-primary-foreground rounded-xl py-3.5 text-sm font-semibold hover:opacity-90 transition-opacity text-center block"
           >
-            {isSignUp ? "Create Account" : "Sign in to Ray Funnel"}
+            {isSignUp ? "Create Account" : "Sign in to Buyerly"}
           </Link>
 
           <p className="text-sm text-center text-muted-foreground mt-6">

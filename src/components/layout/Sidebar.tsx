@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Filter,
@@ -18,20 +18,20 @@ const navItems = [
   { icon: Users, label: "All Buyers", path: "/buyers" },
   { icon: BarChart3, label: "Team Performance", path: "/team" },
   { icon: Scale, label: "Legal & Compliance", path: "/legal" },
-  
   { icon: Settings, label: "Settings", path: "/settings" },
 ];
 
 export default function Sidebar() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   return (
     <aside className="fixed left-0 top-0 h-full z-40 w-64 bg-surface-container-low font-headline font-semibold tracking-tight flex flex-col">
       <div className="flex flex-col h-full p-6">
         {/* Logo */}
-        <div className="flex items-center justify-start mb-10">
-          <img src={buyerlyLogo} alt="Buyerly" className="h-12 w-auto" />
-        </div>
+        <Link to="/dashboard" className="flex items-center justify-start mb-10">
+          <img src={buyerlyLogo} alt="Buyerly" className="h-14 w-auto" />
+        </Link>
 
         {/* Nav */}
         <nav className="flex-1 space-y-1">
@@ -69,7 +69,10 @@ export default function Sidebar() {
             <HelpCircle className="w-5 h-5" />
             Help Center
           </button>
-          <button className="flex items-center gap-3 px-4 py-2.5 text-sm text-muted-foreground hover:text-foreground w-full rounded-lg transition-colors">
+          <button
+            onClick={() => navigate("/login")}
+            className="flex items-center gap-3 px-4 py-2.5 text-sm text-muted-foreground hover:text-destructive w-full rounded-lg transition-colors"
+          >
             <LogOut className="w-5 h-5" />
             Log Out
           </button>
