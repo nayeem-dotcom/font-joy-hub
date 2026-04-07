@@ -4,14 +4,13 @@ import {
   Filter,
   Users,
   BarChart3,
-  
   Settings,
   HelpCircle,
   LogOut,
   Plus,
-  Rocket,
   Scale,
 } from "lucide-react";
+import buyerlyLogo from "@/assets/buyerly-logo.png";
 
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/dashboard" },
