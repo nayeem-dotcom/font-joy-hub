@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Download, Plus, ChevronRight, ChevronLeft, ChevronsLeft, ChevronsRight, Filter, User, ChevronDown, Calendar as CalendarIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import BuyerDetailPanel from "@/components/BuyerDetailPanel";
-import { useBuyers, VERTICALS, FUNNEL_STEPS, TEAM_MEMBERS, type BuyerData } from "@/contexts/BuyerContext";
+import { useBuyers, VERTICALS, ALL_STAGES, TEAM_MEMBERS, type BuyerData } from "@/contexts/BuyerContext";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
@@ -133,7 +133,7 @@ export default function AllBuyers() {
             {showStageDD && (
               <div className="absolute top-full left-0 mt-1 bg-card border border-outline-variant/20 rounded-xl shadow-lg z-20 overflow-hidden min-w-[180px]">
                 <button onClick={() => { setFilterStage("All"); setShowStageDD(false); }} className={`w-full text-left px-4 py-2.5 text-xs font-semibold hover:bg-accent transition-colors ${filterStage === "All" ? "bg-accent" : ""}`}>All Stages</button>
-                {FUNNEL_STEPS.map((s) => (
+                {ALL_STAGES.map((s) => (
                   <button key={s} onClick={() => { setFilterStage(s); setShowStageDD(false); }} className={`w-full text-left px-4 py-2.5 text-xs font-semibold hover:bg-accent transition-colors ${filterStage === s ? "bg-accent" : ""}`}>{s}</button>
                 ))}
               </div>

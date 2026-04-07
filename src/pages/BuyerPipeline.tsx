@@ -1,7 +1,7 @@
 import { useState, DragEvent } from "react";
 import { Plus, User, GripVertical, ExternalLink, ChevronDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useBuyers, FUNNEL_STEPS, COLUMN_STAGE_MAP, STAGE_COLUMN_MAP, VERTICALS, TEAM_MEMBERS, type BuyerData } from "@/contexts/BuyerContext";
+import { useBuyers, FUNNEL_STEPS, COLUMN_STAGE_MAP, STAGE_COLUMN_MAP, VERTICALS, TEAM_MEMBERS, ALL_STAGES, type BuyerData } from "@/contexts/BuyerContext";
 import BuyerDetailPanel from "@/components/BuyerDetailPanel";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
@@ -20,6 +20,7 @@ const pipelineColumns: Column[] = [
   { id: "creative", title: "CREATIVE SUBMISSION", dotColor: "" },
   { id: "technical", title: "TECHNICAL SETUP", dotColor: "" },
   { id: "live", title: "LIVE", dotColor: "bg-primary-container" },
+  { id: "voided_stuck", title: "VOIDED / STUCK", dotColor: "bg-destructive" },
 ];
 
 export default function BuyerPipeline() {
