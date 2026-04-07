@@ -21,7 +21,8 @@ import {
   FileCode,
   ClipboardList,
 } from "lucide-react";
-import type { BuyerData } from "@/pages/AllBuyers";
+import type { BuyerData } from "@/contexts/BuyerContext";
+import { FUNNEL_STEPS } from "@/contexts/BuyerContext";
 
 interface BuyerDetailPanelProps {
   buyer: BuyerData;
@@ -31,21 +32,12 @@ interface BuyerDetailPanelProps {
 
 const tabs = ["Overview", "Contact", "Business Info", "Timeline", "Documents", "Notes", "Campaign Details"];
 
-const funnelSteps = ["Our Created", "Paperwork", "Creative Submission", "Technical Setup", "Live"];
+const funnelSteps = FUNNEL_STEPS;
 
 const getFunnelProgress = (stage: string) => {
-  const stageMap: Record<string, number> = {
-    "Our Created": 0,
-    "Paperwork": 1,
-    "Creative Submission": 2,
-    "Technical Setup": 3,
-    "Live": 4,
-    "Onboarding": 1,
-    "Review": 2,
-    "Paused": 1,
-  };
-  const idx = stageMap[stage] ?? 1;
-  return { currentStep: idx, percent: Math.round(((idx + 1) / funnelSteps.length) * 100) };
+  const idx = funnelSteps.indexOf(stage as any);
+  const step = idx >= 0 ? idx : 0;
+  return { currentStep: step, percent: Math.round(((step + 1) / funnelSteps.length) * 100) };
 };
 
 const timelineEvents = [
