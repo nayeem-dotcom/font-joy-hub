@@ -48,10 +48,7 @@ const roles = [
 const settingsTabs = [
   { icon: Users, label: "User Access" },
   { icon: Shield, label: "Security" },
-  { icon: Bell, label: "Notifications" },
-  { icon: Palette, label: "Appearance" },
   { icon: Database, label: "Data & Export" },
-  { icon: Mail, label: "Integrations" },
 ];
 
 const statusConfig: Record<string, { bg: string; text: string; icon: typeof Check }> = {
