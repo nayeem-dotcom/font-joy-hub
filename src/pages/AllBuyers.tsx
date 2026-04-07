@@ -1,33 +1,50 @@
 import { useState } from "react";
-import { Download, Plus, ChevronRight, ChevronLeft, ChevronsLeft, ChevronsRight, Filter, User } from "lucide-react";
+import { Download, Plus, ChevronRight, ChevronLeft, ChevronsLeft, ChevronsRight, Filter, User, ChevronDown, Calendar as CalendarIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import BuyerDetailPanel from "@/components/BuyerDetailPanel";
-import { useBuyers, type BuyerData } from "@/contexts/BuyerContext";
+import { useBuyers, VERTICALS, FUNNEL_STEPS, TEAM_MEMBERS, type BuyerData } from "@/contexts/BuyerContext";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
 
 export type { BuyerData } from "@/contexts/BuyerContext";
 
 const verticalColors: Record<string, string> = {
-  FINTECH: "bg-primary/10 text-primary",
-  SAAS: "bg-tertiary/10 text-tertiary",
-  "ECO-TECH": "bg-primary-container/10 text-primary-container-foreground",
-  "E-COMMERCE": "bg-inverse-surface/10 text-foreground",
-  AUTOMOTIVE: "bg-primary/10 text-primary",
-  "AI/ML": "bg-tertiary/10 text-tertiary",
-  "REAL ESTATE": "bg-primary-container/10 text-primary-container-foreground",
-  MEDICAL: "bg-tertiary/10 text-tertiary",
-  CREATIVE: "bg-primary/10 text-primary",
-  RETAIL: "bg-primary-container/10 text-primary-container-foreground",
-  ADTECH: "bg-tertiary/10 text-tertiary",
+  "Insurance": "bg-primary/10 text-primary",
+  "Home Improvement": "bg-tertiary/10 text-tertiary",
+  "Financial Services": "bg-primary-container/10 text-primary-container",
+  "Credit Score": "bg-inverse-surface/10 text-foreground",
+  "Nutra": "bg-primary/10 text-primary",
+  "Sweepstakes": "bg-tertiary/10 text-tertiary",
+  "Legal": "bg-primary-container/10 text-primary-container",
+  "Firearms & Safety": "bg-tertiary/10 text-tertiary",
+  "Rewards": "bg-primary/10 text-primary",
+  "Travel": "bg-primary-container/10 text-primary-container",
+  "Education": "bg-tertiary/10 text-tertiary",
+  "Ecommerce": "bg-primary/10 text-primary",
+  "Other": "bg-surface-container text-muted-foreground",
 };
 
 export default function AllBuyers() {
   const { buyers, updateBuyer } = useBuyers();
   const [selectedBuyer, setSelectedBuyer] = useState<BuyerData | null>(null);
+  const [filterVertical, setFilterVertical] = useState<string>("All");
+  const [filterStage, setFilterStage] = useState<string>("All");
+  const [showVerticalDD, setShowVerticalDD] = useState(false);
+  const [showStageDD, setShowStageDD] = useState(false);
+  const [dateFrom, setDateFrom] = useState<Date | undefined>(undefined);
+  const [dateTo, setDateTo] = useState<Date | undefined>(undefined);
 
   const handleUpdateBuyer = (updated: BuyerData) => {
     updateBuyer(updated);
     setSelectedBuyer(updated);
   };
+
+  const filteredBuyers = buyers.filter((b) => {
+    if (filterVertical !== "All" && b.vertical !== filterVertical) return false;
+    if (filterStage !== "All" && b.stage !== filterStage) return false;
+    return true;
+  });
 
   return (
     <div className="animate-fade-in">
@@ -52,9 +69,9 @@ export default function AllBuyers() {
       {/* KPI Row */}
       <div className="grid grid-cols-4 gap-6 mb-8">
         {[
-          { label: "NEW THIS MONTH", value: "+42" },
+          { label: "NEW THIS MONTH", value: `+${filteredBuyers.length}` },
           { label: "AVG. ONBOARDING", value: "4.2 Days" },
-          { label: "TOTAL BUYERS", value: String(buyers.length) },
+          { label: "TOTAL BUYERS", value: String(filteredBuyers.length) },
           { label: "RETENTION RATE", value: "98.4%", highlight: true },
         ].map((kpi) => (
           <div key={kpi.label} className="surface-card p-6">
@@ -71,18 +88,70 @@ export default function AllBuyers() {
             <Filter className="w-4 h-4" />
             Filter by:
           </div>
-          {["All Verticals", "All Stages"].map((f) => (
-            <button key={f} className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-card text-sm text-foreground hover:bg-accent transition-colors">
-              {f}
-              <ChevronRight className="w-3 h-3 rotate-90" />
+          {/* Vertical filter */}
+          <div className="relative">
+            <button
+              onClick={() => { setShowVerticalDD(!showVerticalDD); setShowStageDD(false); }}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-card text-sm text-foreground hover:bg-accent transition-colors"
+            >
+              {filterVertical === "All" ? "All Verticals" : filterVertical}
+              <ChevronDown className="w-3 h-3" />
             </button>
-          ))}
-          <button className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-card text-sm text-foreground hover:bg-accent transition-colors">
-            📅 Date Range
-            <ChevronRight className="w-3 h-3 rotate-90" />
-          </button>
+            {showVerticalDD && (
+              <div className="absolute top-full left-0 mt-1 bg-card border border-outline-variant/20 rounded-xl shadow-lg z-20 overflow-hidden min-w-[180px] max-h-72 overflow-y-auto">
+                <button onClick={() => { setFilterVertical("All"); setShowVerticalDD(false); }} className={`w-full text-left px-4 py-2.5 text-xs font-semibold hover:bg-accent transition-colors ${filterVertical === "All" ? "bg-accent" : ""}`}>All Verticals</button>
+                {VERTICALS.map((v) => (
+                  <button key={v} onClick={() => { setFilterVertical(v); setShowVerticalDD(false); }} className={`w-full text-left px-4 py-2.5 text-xs font-semibold hover:bg-accent transition-colors ${filterVertical === v ? "bg-accent" : ""}`}>{v}</button>
+                ))}
+              </div>
+            )}
+          </div>
+          {/* Stage filter */}
+          <div className="relative">
+            <button
+              onClick={() => { setShowStageDD(!showStageDD); setShowVerticalDD(false); }}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-card text-sm text-foreground hover:bg-accent transition-colors"
+            >
+              {filterStage === "All" ? "All Stages" : filterStage}
+              <ChevronDown className="w-3 h-3" />
+            </button>
+            {showStageDD && (
+              <div className="absolute top-full left-0 mt-1 bg-card border border-outline-variant/20 rounded-xl shadow-lg z-20 overflow-hidden min-w-[180px]">
+                <button onClick={() => { setFilterStage("All"); setShowStageDD(false); }} className={`w-full text-left px-4 py-2.5 text-xs font-semibold hover:bg-accent transition-colors ${filterStage === "All" ? "bg-accent" : ""}`}>All Stages</button>
+                {FUNNEL_STEPS.map((s) => (
+                  <button key={s} onClick={() => { setFilterStage(s); setShowStageDD(false); }} className={`w-full text-left px-4 py-2.5 text-xs font-semibold hover:bg-accent transition-colors ${filterStage === s ? "bg-accent" : ""}`}>{s}</button>
+                ))}
+              </div>
+            )}
+          </div>
+          {/* Date range */}
+          <div className="flex items-center gap-2">
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-card text-sm text-foreground hover:bg-accent transition-colors">
+                  <CalendarIcon className="w-3.5 h-3.5" />
+                  {dateFrom ? format(dateFrom, "MMM dd") : "From"}
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar mode="single" selected={dateFrom} onSelect={setDateFrom} className="p-3 pointer-events-auto" />
+              </PopoverContent>
+            </Popover>
+            <span className="text-muted-foreground text-xs">—</span>
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-card text-sm text-foreground hover:bg-accent transition-colors">
+                  <CalendarIcon className="w-3.5 h-3.5" />
+                  {dateTo ? format(dateTo, "MMM dd") : "To"}
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar mode="single" selected={dateTo} onSelect={setDateTo} className="p-3 pointer-events-auto" />
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
-        <span className="text-sm text-muted-foreground">Showing 1-{buyers.length} of {buyers.length}</span>
+        <span className="text-sm text-muted-foreground">Showing 1-{filteredBuyers.length} of {filteredBuyers.length}</span>
       </div>
 
       {/* Table */}
@@ -101,7 +170,7 @@ export default function AllBuyers() {
             </tr>
           </thead>
           <tbody>
-            {buyers.map((b) => (
+            {filteredBuyers.map((b) => (
               <tr
                 key={b.id}
                 className="group hover:bg-accent/50 transition-colors cursor-pointer"

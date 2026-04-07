@@ -1,8 +1,12 @@
 import { useState, DragEvent } from "react";
-import { Plus, User, GripVertical, ExternalLink } from "lucide-react";
+import { Plus, User, GripVertical, ExternalLink, ChevronDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useBuyers, FUNNEL_STEPS, COLUMN_STAGE_MAP, STAGE_COLUMN_MAP, type BuyerData } from "@/contexts/BuyerContext";
+import { useBuyers, FUNNEL_STEPS, COLUMN_STAGE_MAP, STAGE_COLUMN_MAP, VERTICALS, TEAM_MEMBERS, type BuyerData } from "@/contexts/BuyerContext";
 import BuyerDetailPanel from "@/components/BuyerDetailPanel";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
+import { Calendar as CalendarIcon } from "lucide-react";
 
 interface Column {
   id: string;
@@ -24,10 +28,22 @@ export default function BuyerPipeline() {
   const [draggedBuyer, setDraggedBuyer] = useState<{ buyer: BuyerData; fromColumnId: string } | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
   const [selectedBuyer, setSelectedBuyer] = useState<BuyerData | null>(null);
+  const [filterMember, setFilterMember] = useState("All");
+  const [filterVertical, setFilterVertical] = useState("All");
+  const [showMemberDD, setShowMemberDD] = useState(false);
+  const [showVerticalDD, setShowVerticalDD] = useState(false);
+  const [dateFrom, setDateFrom] = useState<Date | undefined>(undefined);
+  const [dateTo, setDateTo] = useState<Date | undefined>(undefined);
+
+  const filteredBuyers = buyers.filter((b) => {
+    if (filterMember !== "All" && b.owner !== filterMember) return false;
+    if (filterVertical !== "All" && b.vertical !== filterVertical) return false;
+    return true;
+  });
 
   const getBuyersForColumn = (columnId: string) => {
     const stage = COLUMN_STAGE_MAP[columnId];
-    return buyers.filter((b) => b.stage === stage);
+    return filteredBuyers.filter((b) => b.stage === stage);
   };
 
   const getFunnelProgress = (stage: string) => {
@@ -93,21 +109,73 @@ export default function BuyerPipeline() {
           <p className="text-muted-foreground mt-1">Drag and drop buyers between stages. Click a card to open the buyer profile.</p>
         </div>
         <div className="flex items-center gap-4">
-          {[
-            { label: "TEAM MEMBER", value: "All Members" },
-            { label: "VERTICAL", value: "All Verticals" },
-            { label: "DATE RANGE", value: "Last 30 Days" },
-          ].map((f) => (
-            <div key={f.label}>
-              <p className="text-[10px] font-label uppercase tracking-wider text-muted-foreground mb-1">{f.label}</p>
-              <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-card text-sm text-foreground shadow-ambient">
-                {f.value}
-                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
+          {/* Team Member filter */}
+          <div className="relative">
+            <p className="text-[10px] font-label uppercase tracking-wider text-muted-foreground mb-1">TEAM MEMBER</p>
+            <button
+              onClick={() => { setShowMemberDD(!showMemberDD); setShowVerticalDD(false); }}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-card text-sm text-foreground shadow-ambient"
+            >
+              {filterMember === "All" ? "All Members" : filterMember}
+              <ChevronDown className="w-3 h-3" />
+            </button>
+            {showMemberDD && (
+              <div className="absolute top-full left-0 mt-1 bg-card border border-outline-variant/20 rounded-xl shadow-lg z-20 overflow-hidden min-w-[200px] max-h-64 overflow-y-auto">
+                <button onClick={() => { setFilterMember("All"); setShowMemberDD(false); }} className={`w-full text-left px-4 py-2.5 text-xs font-semibold hover:bg-accent transition-colors ${filterMember === "All" ? "bg-accent" : ""}`}>All Members</button>
+                {TEAM_MEMBERS.map((m) => (
+                  <button key={m} onClick={() => { setFilterMember(m); setShowMemberDD(false); }} className={`w-full text-left px-4 py-2.5 text-xs font-semibold hover:bg-accent transition-colors ${filterMember === m ? "bg-accent" : ""}`}>{m}</button>
+                ))}
+              </div>
+            )}
+          </div>
+          {/* Vertical filter */}
+          <div className="relative">
+            <p className="text-[10px] font-label uppercase tracking-wider text-muted-foreground mb-1">VERTICAL</p>
+            <button
+              onClick={() => { setShowVerticalDD(!showVerticalDD); setShowMemberDD(false); }}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-card text-sm text-foreground shadow-ambient"
+            >
+              {filterVertical === "All" ? "All Verticals" : filterVertical}
+              <ChevronDown className="w-3 h-3" />
+            </button>
+            {showVerticalDD && (
+              <div className="absolute top-full left-0 mt-1 bg-card border border-outline-variant/20 rounded-xl shadow-lg z-20 overflow-hidden min-w-[200px] max-h-64 overflow-y-auto">
+                <button onClick={() => { setFilterVertical("All"); setShowVerticalDD(false); }} className={`w-full text-left px-4 py-2.5 text-xs font-semibold hover:bg-accent transition-colors ${filterVertical === "All" ? "bg-accent" : ""}`}>All Verticals</button>
+                {VERTICALS.map((v) => (
+                  <button key={v} onClick={() => { setFilterVertical(v); setShowVerticalDD(false); }} className={`w-full text-left px-4 py-2.5 text-xs font-semibold hover:bg-accent transition-colors ${filterVertical === v ? "bg-accent" : ""}`}>{v}</button>
+                ))}
+              </div>
+            )}
+          </div>
+          {/* Date Range */}
+          <div>
+            <p className="text-[10px] font-label uppercase tracking-wider text-muted-foreground mb-1">DATE RANGE</p>
+            <div className="flex items-center gap-1">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-card text-sm text-foreground shadow-ambient">
+                    <CalendarIcon className="w-3.5 h-3.5" />
+                    {dateFrom ? format(dateFrom, "MMM dd") : "From"}
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar mode="single" selected={dateFrom} onSelect={setDateFrom} className="p-3 pointer-events-auto" />
+                </PopoverContent>
+              </Popover>
+              <span className="text-muted-foreground text-xs">—</span>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-card text-sm text-foreground shadow-ambient">
+                    <CalendarIcon className="w-3.5 h-3.5" />
+                    {dateTo ? format(dateTo, "MMM dd") : "To"}
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar mode="single" selected={dateTo} onSelect={setDateTo} className="p-3 pointer-events-auto" />
+                </PopoverContent>
+              </Popover>
             </div>
-          ))}
+          </div>
         </div>
       </div>
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   FileText,
   TrendingUp,
@@ -14,8 +14,9 @@ import {
   User,
   CheckCircle2,
   AlertTriangle,
+  Paperclip,
 } from "lucide-react";
-import { useBuyers } from "@/contexts/BuyerContext";
+import { useBuyers, VERTICALS, TEAM_MEMBERS } from "@/contexts/BuyerContext";
 
 type DocStatus = "Needs Audit" | "In Progress" | "Approved";
 
@@ -37,7 +38,7 @@ interface ChatMessage {
   role: "owner" | "compliance";
   time: string;
   content: string;
-  attachment?: { name: string };
+  attachment?: { name: string; size: string };
 }
 
 const statusColors: Record<DocStatus, string> = {
@@ -51,7 +52,6 @@ const statusOptions: DocStatus[] = ["Needs Audit", "In Progress", "Approved"];
 export default function LegalPaperwork() {
   const { buyers } = useBuyers();
 
-  // Build docs from buyers in Paperwork stage or with paperwork docs
   const buyersWithPaperwork = buyers.filter(
     (b) => b.stage === "Paperwork" || b.stage === "Creative Submission" || b.stage === "Technical Setup" || b.stage === "Live"
   );
@@ -87,6 +87,12 @@ export default function LegalPaperwork() {
   const [messages, setMessages] = useState<Record<string, ChatMessage[]>>({});
   const [newMessage, setNewMessage] = useState("");
   const [showStatusDropdown, setShowStatusDropdown] = useState<string | null>(null);
+  const [filterStatus, setFilterStatus] = useState<DocStatus | "All">("All");
+  const [filterOwner, setFilterOwner] = useState<string>("All");
+  const [showFilterStatus, setShowFilterStatus] = useState(false);
+  const [showFilterOwner, setShowFilterOwner] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const chatFileRef = useRef<HTMLInputElement>(null);
 
   const getMessages = (docId: string): ChatMessage[] => {
     return messages[docId] || [
@@ -115,31 +121,57 @@ export default function LegalPaperwork() {
     setNewMessage("");
   };
 
+  const handleChatFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !selectedDoc) return;
+    const docId = selectedDoc.id;
+    const existing = getMessages(docId);
+    const newMsg: ChatMessage = {
+      id: Date.now().toString(),
+      sender: "You",
+      role: "compliance",
+      time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      content: `Uploaded a document`,
+      attachment: { name: file.name, size: `${(file.size / 1024).toFixed(0)} KB` },
+    };
+    setMessages((prev) => ({ ...prev, [docId]: [...existing, newMsg] }));
+    e.target.value = "";
+  };
+
   const handleStatusChange = (docId: string, newStatus: DocStatus) => {
     setDocs((prev) => prev.map((d) => (d.id === docId ? { ...d, status: newStatus } : d)));
     setShowStatusDropdown(null);
   };
 
-  const handleUploadDoc = () => {
+  const handleUploadDoc = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
     const newDoc: LegalDoc = {
       id: `upload-${Date.now()}`,
-      name: `New_Document_${Date.now().toString().slice(-4)}.pdf`,
+      name: file.name,
       buyerCompany: "Manual Upload",
       buyerOwner: "You",
       uploadedBy: "You",
       uploadDate: new Date().toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "numeric" }),
       status: "Needs Audit",
       type: "Legal",
-      size: "0 KB",
+      size: `${(file.size / 1024).toFixed(0)} KB`,
     };
     setDocs((prev) => [newDoc, ...prev]);
+    e.target.value = "";
   };
+
+  const filteredDocs = docs.filter((d) => {
+    if (filterStatus !== "All" && d.status !== filterStatus) return false;
+    if (filterOwner !== "All" && d.buyerOwner !== filterOwner) return false;
+    return true;
+  });
 
   const needsAuditCount = docs.filter((d) => d.status === "Needs Audit").length;
   const inProgressCount = docs.filter((d) => d.status === "In Progress").length;
   const approvedCount = docs.filter((d) => d.status === "Approved").length;
 
-  // Document board view (when a doc is selected)
+  // Document board view
   if (selectedDoc) {
     const docMessages = getMessages(selectedDoc.id);
     return (
@@ -160,7 +192,6 @@ export default function LegalPaperwork() {
               </p>
             </div>
             <div className="flex items-center gap-3">
-              {/* Status changer */}
               <div className="relative">
                 <button
                   onClick={() => setShowStatusDropdown(showStatusDropdown === selectedDoc.id ? null : selectedDoc.id)}
@@ -287,8 +318,11 @@ export default function LegalPaperwork() {
                         msg.role === "compliance" ? "bg-primary-foreground/10" : "bg-card"
                       }`}>
                         <FileText className="w-4 h-4" />
-                        <span className="text-xs font-medium flex-1">{msg.attachment.name}</span>
-                        <Download className="w-3.5 h-3.5 cursor-pointer hover:opacity-70" />
+                        <div className="flex-1 min-w-0">
+                          <span className="text-xs font-medium block truncate">{msg.attachment.name}</span>
+                          {msg.attachment.size && <span className="text-[10px] opacity-70">{msg.attachment.size}</span>}
+                        </div>
+                        <Download className="w-3.5 h-3.5 cursor-pointer hover:opacity-70 shrink-0" />
                       </div>
                     )}
                   </div>
@@ -297,7 +331,15 @@ export default function LegalPaperwork() {
             </div>
 
             <div className="p-4 border-t border-outline-variant/10">
+              <input type="file" ref={chatFileRef} onChange={handleChatFileUpload} className="hidden" />
               <div className="flex items-center gap-2">
+                <button
+                  onClick={() => chatFileRef.current?.click()}
+                  className="w-10 h-10 rounded-xl bg-surface-container hover:bg-accent flex items-center justify-center transition-colors shrink-0"
+                  title="Attach document"
+                >
+                  <Paperclip className="w-4 h-4 text-muted-foreground" />
+                </button>
                 <input
                   type="text"
                   value={newMessage}
@@ -334,13 +376,16 @@ export default function LegalPaperwork() {
             </span>
           </div>
         </div>
-        <button
-          onClick={handleUploadDoc}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl gradient-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity"
-        >
-          <Upload className="w-4 h-4" />
-          Upload Document
-        </button>
+        <div>
+          <input type="file" ref={fileInputRef} onChange={handleUploadDoc} className="hidden" />
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl gradient-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity"
+          >
+            <Upload className="w-4 h-4" />
+            Upload Document
+          </button>
+        </div>
       </div>
 
       <div className="px-8">
@@ -372,6 +417,47 @@ export default function LegalPaperwork() {
           </div>
         </div>
 
+        {/* Filters */}
+        <div className="flex items-center gap-4 mb-6">
+          <p className="text-[10px] font-label uppercase tracking-widest text-muted-foreground">Filters:</p>
+          {/* Status filter */}
+          <div className="relative">
+            <button
+              onClick={() => { setShowFilterStatus(!showFilterStatus); setShowFilterOwner(false); }}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-card text-sm text-foreground hover:bg-accent transition-colors"
+            >
+              Status: {filterStatus}
+              <ChevronDown className="w-3 h-3" />
+            </button>
+            {showFilterStatus && (
+              <div className="absolute top-full left-0 mt-1 bg-card border border-outline-variant/20 rounded-xl shadow-lg z-10 overflow-hidden min-w-[160px]">
+                <button onClick={() => { setFilterStatus("All"); setShowFilterStatus(false); }} className={`w-full text-left px-4 py-2.5 text-xs font-semibold hover:bg-accent transition-colors ${filterStatus === "All" ? "bg-accent" : ""}`}>All</button>
+                {statusOptions.map((s) => (
+                  <button key={s} onClick={() => { setFilterStatus(s); setShowFilterStatus(false); }} className={`w-full text-left px-4 py-2.5 text-xs font-semibold hover:bg-accent transition-colors ${filterStatus === s ? "bg-accent" : ""}`}>{s}</button>
+                ))}
+              </div>
+            )}
+          </div>
+          {/* Owner filter */}
+          <div className="relative">
+            <button
+              onClick={() => { setShowFilterOwner(!showFilterOwner); setShowFilterStatus(false); }}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-card text-sm text-foreground hover:bg-accent transition-colors"
+            >
+              Owner: {filterOwner}
+              <ChevronDown className="w-3 h-3" />
+            </button>
+            {showFilterOwner && (
+              <div className="absolute top-full left-0 mt-1 bg-card border border-outline-variant/20 rounded-xl shadow-lg z-10 overflow-hidden min-w-[180px] max-h-64 overflow-y-auto">
+                <button onClick={() => { setFilterOwner("All"); setShowFilterOwner(false); }} className={`w-full text-left px-4 py-2.5 text-xs font-semibold hover:bg-accent transition-colors ${filterOwner === "All" ? "bg-accent" : ""}`}>All</button>
+                {TEAM_MEMBERS.map((m) => (
+                  <button key={m} onClick={() => { setFilterOwner(m); setShowFilterOwner(false); }} className={`w-full text-left px-4 py-2.5 text-xs font-semibold hover:bg-accent transition-colors ${filterOwner === m ? "bg-accent" : ""}`}>{m}</button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
         {/* Document Queue */}
         <div className="mb-6">
           <p className="text-[10px] font-label uppercase tracking-widest text-muted-foreground mb-1">Queue</p>
@@ -379,7 +465,7 @@ export default function LegalPaperwork() {
         </div>
 
         <div className="space-y-4">
-          {docs.map((doc) => (
+          {filteredDocs.map((doc) => (
             <div
               key={doc.id}
               onClick={() => setSelectedDoc(doc)}
@@ -407,7 +493,6 @@ export default function LegalPaperwork() {
                     <p className="text-xs text-muted-foreground">Buyer: {doc.buyerCompany} • Owner: {doc.buyerOwner}</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    {/* Inline status changer */}
                     <div className="relative">
                       <button
                         onClick={(e) => {
@@ -450,6 +535,11 @@ export default function LegalPaperwork() {
               </div>
             </div>
           ))}
+          {filteredDocs.length === 0 && (
+            <div className="surface-card p-8 text-center">
+              <p className="text-sm text-muted-foreground">No documents match the current filters.</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
