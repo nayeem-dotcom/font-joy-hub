@@ -1,78 +1,43 @@
 import { useState, DragEvent } from "react";
-import { Plus, User, GripVertical } from "lucide-react";
-
-interface Card {
-  id: string;
-  name: string;
-  vertical: string;
-  days: number;
-  progress: number;
-  owner: string;
-}
+import { Plus, User, GripVertical, ExternalLink } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useBuyers, FUNNEL_STEPS, COLUMN_STAGE_MAP, STAGE_COLUMN_MAP, type BuyerData } from "@/contexts/BuyerContext";
+import BuyerDetailPanel from "@/components/BuyerDetailPanel";
 
 interface Column {
   id: string;
   title: string;
   dotColor: string;
-  cards: Card[];
 }
 
-const initialColumns: Column[] = [
-  {
-    id: "meeting_closed",
-    title: "MEETING CLOSED",
-    dotColor: "bg-tertiary",
-    cards: [
-      { id: "c1", name: "Lumina Flow", vertical: "Fintech", days: 4, progress: 15, owner: "Nayeem A." },
-      { id: "c2", name: "Vortex Digital", vertical: "Creative", days: 2, progress: 8, owner: "Daniela N." },
-      { id: "c3", name: "Apex Solutions", vertical: "SaaS", days: 7, progress: 22, owner: "Mariela P." },
-    ],
-  },
-  {
-    id: "paperwork",
-    title: "PAPERWORK STATUS",
-    dotColor: "bg-primary-container",
-    cards: [
-      { id: "c4", name: "Helix Logistics", vertical: "Retail", days: 11, progress: 32, owner: "Nayeem A." },
-      { id: "c5", name: "Quantum Media", vertical: "AdTech", days: 5, progress: 28, owner: "Daniela N." },
-    ],
-  },
-  {
-    id: "creative",
-    title: "CREATIVE SUBMISSION",
-    dotColor: "",
-    cards: [
-      { id: "c6", name: "Nova Brands", vertical: "E-commerce", days: 6, progress: 48, owner: "Mariela P." },
-    ],
-  },
-  {
-    id: "technical",
-    title: "TECHNICAL SETUP",
-    dotColor: "",
-    cards: [
-      { id: "c7", name: "Skyline Tech", vertical: "AI/ML", days: 3, progress: 60, owner: "Nayeem A." },
-    ],
-  },
-  {
-    id: "live",
-    title: "LIVE",
-    dotColor: "bg-primary-container",
-    cards: [
-      { id: "c8", name: "BlueWave Corp", vertical: "Fintech", days: 0, progress: 100, owner: "Daniela N." },
-      { id: "c9", name: "GreenLeaf Inc", vertical: "Eco-Tech", days: 0, progress: 100, owner: "Mariela P." },
-    ],
-  },
+const pipelineColumns: Column[] = [
+  { id: "buyer_created", title: "BUYER CREATED", dotColor: "bg-tertiary" },
+  { id: "paperwork", title: "PAPERWORK", dotColor: "bg-primary-container" },
+  { id: "creative", title: "CREATIVE SUBMISSION", dotColor: "" },
+  { id: "technical", title: "TECHNICAL SETUP", dotColor: "" },
+  { id: "live", title: "LIVE", dotColor: "bg-primary-container" },
 ];
 
 export default function BuyerPipeline() {
-  const [columns, setColumns] = useState<Column[]>(initialColumns);
-  const [draggedCard, setDraggedCard] = useState<{ card: Card; fromColumnId: string } | null>(null);
+  const { buyers, updateBuyerStage, updateBuyer } = useBuyers();
+  const navigate = useNavigate();
+  const [draggedBuyer, setDraggedBuyer] = useState<{ buyer: BuyerData; fromColumnId: string } | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
+  const [selectedBuyer, setSelectedBuyer] = useState<BuyerData | null>(null);
 
-  const handleDragStart = (e: DragEvent, card: Card, columnId: string) => {
-    setDraggedCard({ card, fromColumnId: columnId });
+  const getBuyersForColumn = (columnId: string) => {
+    const stage = COLUMN_STAGE_MAP[columnId];
+    return buyers.filter((b) => b.stage === stage);
+  };
+
+  const getFunnelProgress = (stage: string) => {
+    const idx = FUNNEL_STEPS.indexOf(stage as any);
+    return idx >= 0 ? Math.round(((idx + 1) / FUNNEL_STEPS.length) * 100) : 20;
+  };
+
+  const handleDragStart = (e: DragEvent, buyer: BuyerData, columnId: string) => {
+    setDraggedBuyer({ buyer, fromColumnId: columnId });
     e.dataTransfer.effectAllowed = "move";
-    // Make the drag image slightly transparent
     if (e.currentTarget instanceof HTMLElement) {
       e.currentTarget.style.opacity = "0.5";
     }
@@ -82,7 +47,7 @@ export default function BuyerPipeline() {
     if (e.currentTarget instanceof HTMLElement) {
       e.currentTarget.style.opacity = "1";
     }
-    setDraggedCard(null);
+    setDraggedBuyer(null);
     setDragOverColumn(null);
   };
 
@@ -100,24 +65,23 @@ export default function BuyerPipeline() {
     e.preventDefault();
     setDragOverColumn(null);
 
-    if (!draggedCard || draggedCard.fromColumnId === toColumnId) {
-      setDraggedCard(null);
+    if (!draggedBuyer || draggedBuyer.fromColumnId === toColumnId) {
+      setDraggedBuyer(null);
       return;
     }
 
-    setColumns((prev) => {
-      return prev.map((col) => {
-        if (col.id === draggedCard.fromColumnId) {
-          return { ...col, cards: col.cards.filter((c) => c.id !== draggedCard.card.id) };
-        }
-        if (col.id === toColumnId) {
-          return { ...col, cards: [...col.cards, { ...draggedCard.card, days: 0 }] };
-        }
-        return col;
-      });
-    });
+    const newStage = COLUMN_STAGE_MAP[toColumnId];
+    updateBuyerStage(draggedBuyer.buyer.id, newStage);
+    setDraggedBuyer(null);
+  };
 
-    setDraggedCard(null);
+  const handleCardClick = (buyer: BuyerData) => {
+    setSelectedBuyer(buyer);
+  };
+
+  const handleUpdateBuyer = (updated: BuyerData) => {
+    updateBuyer(updated);
+    setSelectedBuyer(updated);
   };
 
   return (
@@ -126,7 +90,7 @@ export default function BuyerPipeline() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Buyer Pipeline</h1>
-          <p className="text-muted-foreground mt-1">Drag and drop leads between stages to update their status.</p>
+          <p className="text-muted-foreground mt-1">Drag and drop buyers between stages. Click a card to open the buyer profile.</p>
         </div>
         <div className="flex items-center gap-4">
           {[
@@ -149,88 +113,115 @@ export default function BuyerPipeline() {
 
       {/* Kanban */}
       <div className="flex gap-5 overflow-x-auto pb-4">
-        {columns.map((col) => (
-          <div
-            key={col.id}
-            className={`min-w-[280px] flex-1 rounded-2xl p-3 transition-colors duration-200 ${
-              dragOverColumn === col.id
-                ? "bg-primary/5 ring-2 ring-primary/20"
-                : "bg-transparent"
-            }`}
-            onDragOver={(e) => handleDragOver(e, col.id)}
-            onDragLeave={handleDragLeave}
-            onDrop={(e) => handleDrop(e, col.id)}
-          >
-            {/* Column header */}
-            <div className="flex items-center justify-between mb-4 px-1">
-              <div className="flex items-center gap-2">
-                {col.dotColor && <span className={`w-2 h-2 rounded-full ${col.dotColor}`} />}
-                <span className="text-xs font-label uppercase tracking-wider text-muted-foreground font-medium">
-                  {col.title}
+        {pipelineColumns.map((col) => {
+          const columnBuyers = getBuyersForColumn(col.id);
+          return (
+            <div
+              key={col.id}
+              className={`min-w-[280px] flex-1 rounded-2xl p-3 transition-colors duration-200 ${
+                dragOverColumn === col.id
+                  ? "bg-primary/5 ring-2 ring-primary/20"
+                  : "bg-transparent"
+              }`}
+              onDragOver={(e) => handleDragOver(e, col.id)}
+              onDragLeave={handleDragLeave}
+              onDrop={(e) => handleDrop(e, col.id)}
+            >
+              {/* Column header */}
+              <div className="flex items-center justify-between mb-4 px-1">
+                <div className="flex items-center gap-2">
+                  {col.dotColor && <span className={`w-2 h-2 rounded-full ${col.dotColor}`} />}
+                  <span className="text-xs font-label uppercase tracking-wider text-muted-foreground font-medium">
+                    {col.title}
+                  </span>
+                </div>
+                <span className="text-xs font-semibold bg-surface-container-high text-foreground w-6 h-6 rounded-full flex items-center justify-center">
+                  {columnBuyers.length}
                 </span>
               </div>
-              <span className="text-xs font-semibold bg-surface-container-high text-foreground w-6 h-6 rounded-full flex items-center justify-center">
-                {col.cards.length}
-              </span>
-            </div>
 
-            {/* Cards */}
-            <div className="space-y-3 min-h-[120px]">
-              {col.cards.map((card) => (
-                <div
-                  key={card.id}
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, card, col.id)}
-                  onDragEnd={handleDragEnd}
-                  className="surface-card p-5 cursor-grab active:cursor-grabbing hover:shadow-lg transition-all border-l-[3px] border-primary-container/30 group select-none"
-                >
-                  <div className="flex items-start justify-between mb-3">
-                    <h3 className="text-sm font-bold text-foreground">{card.name}</h3>
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-[10px] font-medium uppercase tracking-wider bg-surface-container-high text-muted-foreground px-2 py-0.5 rounded-md">
-                        {card.vertical}
+              {/* Cards */}
+              <div className="space-y-3 min-h-[120px]">
+                {columnBuyers.map((buyer) => (
+                  <div
+                    key={buyer.id}
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, buyer, col.id)}
+                    onDragEnd={handleDragEnd}
+                    onClick={() => handleCardClick(buyer)}
+                    className="surface-card p-5 cursor-grab active:cursor-grabbing hover:shadow-lg transition-all border-l-[3px] border-primary-container/30 group select-none"
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <h3 className="text-sm font-bold text-foreground">{buyer.company}</h3>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-[10px] font-medium uppercase tracking-wider bg-surface-container-high text-muted-foreground px-2 py-0.5 rounded-md">
+                          {buyer.vertical}
+                        </span>
+                        <GripVertical className="w-4 h-4 text-muted-foreground/40 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-6 h-6 rounded-full bg-surface-container-high flex items-center justify-center">
+                        <User className="w-3 h-3 text-muted-foreground" />
+                      </div>
+                      <span className="text-xs text-muted-foreground">
+                        {buyer.owner} • {buyer.daysInStage} days in stage
                       </span>
-                      <GripVertical className="w-4 h-4 text-muted-foreground/40 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
+                    <div>
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-xs font-semibold text-foreground">Funnel Progress</span>
+                        <span className="text-xs font-bold text-foreground">{getFunnelProgress(buyer.stage)}%</span>
+                      </div>
+                      <div className="h-1.5 bg-surface-container rounded-full overflow-hidden">
+                        <div
+                          className="h-full gradient-primary rounded-full transition-all duration-700"
+                          style={{ width: `${getFunnelProgress(buyer.stage)}%` }}
+                        />
+                      </div>
+                    </div>
+                    {col.id === "paperwork" && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate("/legal");
+                        }}
+                        className="flex items-center gap-1.5 mt-3 text-[10px] font-semibold text-primary hover:underline"
+                      >
+                        <ExternalLink className="w-3 h-3" />
+                        View in Legal & Compliance
+                      </button>
+                    )}
                   </div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-6 h-6 rounded-full bg-surface-container-high flex items-center justify-center">
-                      <User className="w-3 h-3 text-muted-foreground" />
-                    </div>
-                    <span className="text-xs text-muted-foreground">
-                      {card.owner} • {card.days} days in stage
-                    </span>
-                  </div>
-                  <div>
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs font-semibold text-foreground">Onboarding Progress</span>
-                      <span className="text-xs font-bold text-foreground">{card.progress}%</span>
-                    </div>
-                    <div className="h-1.5 bg-surface-container rounded-full overflow-hidden">
-                      <div
-                        className="h-full gradient-primary rounded-full transition-all duration-700"
-                        style={{ width: `${card.progress}%` }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              ))}
+                ))}
 
-              {/* Empty state / drop zone indicator */}
-              {col.cards.length === 0 && (
-                <div className="border-2 border-dashed border-outline-variant/20 rounded-xl p-6 flex items-center justify-center">
-                  <p className="text-xs text-muted-foreground">Drop leads here</p>
-                </div>
-              )}
+                {columnBuyers.length === 0 && (
+                  <div className="border-2 border-dashed border-outline-variant/20 rounded-xl p-6 flex items-center justify-center">
+                    <p className="text-xs text-muted-foreground">Drop buyers here</p>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* FAB */}
-      <button className="fixed bottom-8 right-8 w-14 h-14 rounded-full gradient-primary text-primary-foreground shadow-lg flex items-center justify-center hover:opacity-90 transition-opacity">
+      <button
+        onClick={() => navigate("/buyers/new")}
+        className="fixed bottom-8 right-8 w-14 h-14 rounded-full gradient-primary text-primary-foreground shadow-lg flex items-center justify-center hover:opacity-90 transition-opacity"
+      >
         <Plus className="w-6 h-6" />
       </button>
+
+      {/* Buyer Detail Panel */}
+      {selectedBuyer && (
+        <BuyerDetailPanel
+          buyer={selectedBuyer}
+          onClose={() => setSelectedBuyer(null)}
+          onUpdate={handleUpdateBuyer}
+        />
+      )}
     </div>
   );
 }

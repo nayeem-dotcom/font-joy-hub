@@ -2,30 +2,9 @@ import { useState } from "react";
 import { Download, Plus, ChevronRight, ChevronLeft, ChevronsLeft, ChevronsRight, Filter, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import BuyerDetailPanel from "@/components/BuyerDetailPanel";
+import { useBuyers, type BuyerData } from "@/contexts/BuyerContext";
 
-export interface BuyerData {
-  name: string;
-  company: string;
-  owner: string;
-  vertical: string;
-  tier: string;
-  stage: string;
-  stageColor: string;
-  active: boolean;
-  inDate: string;
-  liveDate: string;
-}
-
-const initialBuyers: BuyerData[] = [
-  { name: "Alexander Wright", company: "Stellar Dynamics Inc.", owner: "Nayeem A.", vertical: "FINTECH", tier: "Direct Buyer", stage: "Live", stageColor: "bg-primary-container", active: true, inDate: "Oct 12, 2023", liveDate: "Oct 15, 2023" },
-  { name: "Elena Rodriguez", company: "Vortex Systems", owner: "Daniela N.", vertical: "SAAS", tier: "Network", stage: "Onboarding", stageColor: "bg-primary-container", active: true, inDate: "Nov 01, 2023", liveDate: "Pending..." },
-  { name: "Marcus Chen", company: "GreenLeaf Logistics", owner: "Mariela P.", vertical: "ECO-TECH", tier: "Broker", stage: "Paused", stageColor: "bg-destructive", active: false, inDate: "Sept 15, 2023", liveDate: "Oct 01, 2023" },
-  { name: "Sophia Miller", company: "Miller-Direct Marketing", owner: "Nayeem A.", vertical: "E-COMMERCE", tier: "Aggregator", stage: "Live", stageColor: "bg-primary-container", active: true, inDate: "Nov 05, 2023", liveDate: "Nov 10, 2023" },
-  { name: "Jameson Ford", company: "AutoLink International", owner: "Daniela N.", vertical: "AUTOMOTIVE", tier: "Agency", stage: "Review", stageColor: "bg-primary-container", active: true, inDate: "Oct 30, 2023", liveDate: "Reviewing..." },
-  { name: "Lila Thorne", company: "Bloom AI", owner: "Nayeem A.", vertical: "AI/ML", tier: "Direct Buyer", stage: "Live", stageColor: "bg-primary-container", active: true, inDate: "Oct 05, 2023", liveDate: "Oct 08, 2023" },
-  { name: "Robert King", company: "RealEstate Hub", owner: "Mariela P.", vertical: "REAL ESTATE", tier: "Network", stage: "Technical Setup", stageColor: "bg-primary-container", active: true, inDate: "Nov 12, 2023", liveDate: "ETA: Nov 18" },
-  { name: "Catherine Wu", company: "Pacific Bio", owner: "Nayeem A.", vertical: "MEDICAL", tier: "Agency", stage: "Live", stageColor: "bg-primary-container", active: true, inDate: "Oct 20, 2023", liveDate: "Oct 25, 2023" },
-];
+export type { BuyerData } from "@/contexts/BuyerContext";
 
 const verticalColors: Record<string, string> = {
   FINTECH: "bg-primary/10 text-primary",
@@ -36,16 +15,17 @@ const verticalColors: Record<string, string> = {
   "AI/ML": "bg-tertiary/10 text-tertiary",
   "REAL ESTATE": "bg-primary-container/10 text-primary-container-foreground",
   MEDICAL: "bg-tertiary/10 text-tertiary",
+  CREATIVE: "bg-primary/10 text-primary",
+  RETAIL: "bg-primary-container/10 text-primary-container-foreground",
+  ADTECH: "bg-tertiary/10 text-tertiary",
 };
 
 export default function AllBuyers() {
-  const [buyers, setBuyers] = useState<BuyerData[]>(initialBuyers);
+  const { buyers, updateBuyer } = useBuyers();
   const [selectedBuyer, setSelectedBuyer] = useState<BuyerData | null>(null);
 
   const handleUpdateBuyer = (updated: BuyerData) => {
-    setBuyers((prev) =>
-      prev.map((b) => (b.name === updated.name && b.company === updated.company ? updated : b))
-    );
+    updateBuyer(updated);
     setSelectedBuyer(updated);
   };
 
@@ -55,7 +35,7 @@ export default function AllBuyers() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl font-bold text-foreground">All Buyers</h1>
-          <p className="text-muted-foreground mt-1">Managing 1,248 active buyers across 14 verticals.</p>
+          <p className="text-muted-foreground mt-1">Managing {buyers.filter(b => b.active).length} active buyers across {new Set(buyers.map(b => b.vertical)).size} verticals.</p>
         </div>
         <div className="flex items-center gap-3">
           <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-outline-variant/20 text-sm font-medium text-foreground hover:bg-accent transition-colors">
@@ -74,7 +54,7 @@ export default function AllBuyers() {
         {[
           { label: "NEW THIS MONTH", value: "+42" },
           { label: "AVG. ONBOARDING", value: "4.2 Days" },
-          { label: "TOTAL DEALS", value: "1,248" },
+          { label: "TOTAL BUYERS", value: String(buyers.length) },
           { label: "RETENTION RATE", value: "98.4%", highlight: true },
         ].map((kpi) => (
           <div key={kpi.label} className="surface-card p-6">
@@ -102,7 +82,7 @@ export default function AllBuyers() {
             <ChevronRight className="w-3 h-3 rotate-90" />
           </button>
         </div>
-        <span className="text-sm text-muted-foreground">Showing 1-8 of 1,248</span>
+        <span className="text-sm text-muted-foreground">Showing 1-{buyers.length} of {buyers.length}</span>
       </div>
 
       {/* Table */}
@@ -121,9 +101,9 @@ export default function AllBuyers() {
             </tr>
           </thead>
           <tbody>
-            {buyers.map((b, i) => (
+            {buyers.map((b) => (
               <tr
-                key={i}
+                key={b.id}
                 className="group hover:bg-accent/50 transition-colors cursor-pointer"
                 onClick={() => setSelectedBuyer(b)}
               >
@@ -147,7 +127,7 @@ export default function AllBuyers() {
                 <td className="py-4 px-4 text-sm text-foreground">{b.tier}</td>
                 <td className="py-4 px-4">
                   <div className="flex items-center gap-1.5">
-                    <span className={`w-2 h-2 rounded-full ${b.stageColor}`} />
+                    <span className={`w-2 h-2 rounded-full ${b.stage === "Live" ? "bg-primary-container" : b.stage === "Buyer Created" ? "bg-tertiary" : "bg-primary-container"}`} />
                     <span className="text-sm text-foreground">{b.stage}</span>
                   </div>
                 </td>
@@ -170,17 +150,11 @@ export default function AllBuyers() {
 
         {/* Pagination */}
         <div className="flex items-center justify-between px-6 py-4">
-          <span className="text-sm text-muted-foreground">Page 1 of 156</span>
+          <span className="text-sm text-muted-foreground">Page 1 of 1</span>
           <div className="flex items-center gap-1">
             <button className="p-2 rounded-lg hover:bg-accent text-muted-foreground"><ChevronsLeft className="w-4 h-4" /></button>
             <button className="p-2 rounded-lg hover:bg-accent text-muted-foreground"><ChevronLeft className="w-4 h-4" /></button>
-            {[1, 2, 3].map((n) => (
-              <button key={n} className={`w-8 h-8 rounded-lg text-sm font-medium ${n === 1 ? "gradient-primary text-primary-foreground" : "text-muted-foreground hover:bg-accent"}`}>
-                {n}
-              </button>
-            ))}
-            <span className="text-muted-foreground px-1">...</span>
-            <button className="w-8 h-8 rounded-lg text-sm text-muted-foreground hover:bg-accent">156</button>
+            <button className="w-8 h-8 rounded-lg text-sm font-medium gradient-primary text-primary-foreground">1</button>
             <button className="p-2 rounded-lg hover:bg-accent text-muted-foreground"><ChevronRight className="w-4 h-4" /></button>
             <button className="p-2 rounded-lg hover:bg-accent text-muted-foreground"><ChevronsRight className="w-4 h-4" /></button>
           </div>
