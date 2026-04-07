@@ -15,10 +15,7 @@ export default function Login() {
           <div className="absolute inset-0 bg-gradient-to-br from-[hsl(213,63%,11%)] via-[hsl(213,33%,20%)] to-[hsl(156,100%,21%,0.3)]" />
           <div className="relative z-10">
             <div className="flex items-center gap-3 mb-20">
-              <div className="w-10 h-10 rounded-xl bg-primary-container flex items-center justify-center">
-                <Rocket className="w-5 h-5 text-primary-container-foreground" />
-              </div>
-              <span className="text-xl font-headline font-bold">Ray Funnel</span>
+              <img src={buyerlyLogo} alt="Buyerly" className="h-10 w-auto brightness-0 invert" />
             </div>
             <h2 className="text-4xl font-headline font-bold leading-tight mb-6">
               Master your{" "}
