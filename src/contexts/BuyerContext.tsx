@@ -17,12 +17,15 @@ export interface BuyerData {
 
 export const FUNNEL_STEPS = ["Buyer Created", "Paperwork", "Creative Submission", "Technical Setup", "Live"] as const;
 
+export const ALL_STAGES = [...FUNNEL_STEPS, "Voided/Stuck"] as const;
+
 export const STAGE_COLUMN_MAP: Record<string, string> = {
   "Buyer Created": "buyer_created",
   "Paperwork": "paperwork",
   "Creative Submission": "creative",
   "Technical Setup": "technical",
   "Live": "live",
+  "Voided/Stuck": "voided_stuck",
 };
 
 export const COLUMN_STAGE_MAP: Record<string, string> = {
@@ -31,6 +34,7 @@ export const COLUMN_STAGE_MAP: Record<string, string> = {
   creative: "Creative Submission",
   technical: "Technical Setup",
   live: "Live",
+  voided_stuck: "Voided/Stuck",
 };
 
 export const VERTICALS = [
