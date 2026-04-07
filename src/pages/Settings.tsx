@@ -19,23 +19,30 @@ interface TeamMember {
   id: string;
   name: string;
   email: string;
-  role: "Admin" | "Manager" | "Onboarder" | "Viewer";
+  role: "Admin" | "Affiliate Manager" | "Advertiser Account Manager" | "Compliance Manager" | "Devops Manager" | "Affiliate Coordinator" | "Business Development Manager" | "Sales Executive" | "Project Manager";
   status: "Active" | "Pending" | "Inactive";
   lastActive: string;
 }
 
 const initialMembers: TeamMember[] = [
   { id: "1", name: "Nayeem Ahmad", email: "nayeem@rayfunnel.io", role: "Admin", status: "Active", lastActive: "Just now" },
-  { id: "2", name: "Daniela Navarrete", email: "daniela@rayfunnel.io", role: "Manager", status: "Active", lastActive: "2 hours ago" },
-  { id: "3", name: "Mariela Perez", email: "mariela@rayfunnel.io", role: "Onboarder", status: "Active", lastActive: "1 day ago" },
-  { id: "4", name: "Elena Rodriguez", email: "elena@rayfunnel.io", role: "Onboarder", status: "Pending", lastActive: "Invited" },
+  { id: "2", name: "Daniela Navarrete", email: "daniela@rayfunnel.io", role: "Affiliate Manager", status: "Active", lastActive: "2 hours ago" },
+  { id: "3", name: "Mariela Perez", email: "mariela@rayfunnel.io", role: "Advertiser Account Manager", status: "Active", lastActive: "1 day ago" },
+  { id: "4", name: "Joe Austin", email: "joe@rayfunnel.io", role: "Compliance Manager", status: "Active", lastActive: "3 hours ago" },
+  { id: "5", name: "Ripon Kumar", email: "ripon@rayfunnel.io", role: "Devops Manager", status: "Active", lastActive: "5 hours ago" },
+  { id: "6", name: "Dan Davies", email: "dan@rayfunnel.io", role: "Business Development Manager", status: "Active", lastActive: "1 day ago" },
 ];
 
 const roles = [
   { value: "Admin", desc: "Full access to all features, settings, and user management" },
-  { value: "Manager", desc: "Can manage buyers, pipeline, and view team performance" },
-  { value: "Onboarder", desc: "Can onboard new buyers and manage assigned accounts" },
-  { value: "Viewer", desc: "Read-only access to dashboard and reports" },
+  { value: "Affiliate Manager", desc: "Manages affiliate relationships and performance" },
+  { value: "Advertiser Account Manager", desc: "Manages advertiser accounts and campaigns" },
+  { value: "Compliance Manager", desc: "Oversees legal compliance and document audits" },
+  { value: "Devops Manager", desc: "Manages technical infrastructure and deployments" },
+  { value: "Affiliate Coordinator", desc: "Coordinates affiliate onboarding and support" },
+  { value: "Business Development Manager", desc: "Drives new business opportunities and partnerships" },
+  { value: "Sales Executive", desc: "Handles sales outreach and deal closing" },
+  { value: "Project Manager", desc: "Manages project timelines and team coordination" },
 ];
 
 const settingsTabs = [
@@ -58,7 +65,7 @@ export default function Settings() {
   const [members, setMembers] = useState<TeamMember[]>(initialMembers);
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [inviteEmail, setInviteEmail] = useState("");
-  const [inviteRole, setInviteRole] = useState<TeamMember["role"]>("Onboarder");
+  const [inviteRole, setInviteRole] = useState<TeamMember["role"]>("Affiliate Coordinator");
   const [editingRole, setEditingRole] = useState<string | null>(null);
 
   const handleInvite = () => {
