@@ -11,7 +11,6 @@ export default function TopNav() {
   const [showProfile, setShowProfile] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
-  const profileRef = useRef<HTMLDivElement>(null);
 
   // Close dropdowns on outside click
   useEffect(() => {
@@ -98,7 +97,7 @@ export default function TopNav() {
         {/* Profile */}
         <div className="relative" ref={profileRef}>
           <button
-            onClick={() => { setShowProfile(!showProfile); setShowNotifications(false); }}
+            onClick={() => setShowProfile(!showProfile)}
             className="w-9 h-9 rounded-full gradient-primary flex items-center justify-center cursor-pointer"
           >
             <User className="w-4 h-4 text-primary-foreground" />
