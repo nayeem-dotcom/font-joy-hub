@@ -30,7 +30,7 @@ export default function Sidebar() {
       <div className="flex flex-col h-full p-6">
         {/* Logo */}
         <Link to="/dashboard" className="flex items-center justify-start mb-10">
-          <img src={buyerlyLogo} alt="Buyerly" className="h-14 w-auto" />
+          <img src={buyerlyLogo} alt="Buyerly" className="h-20 w-auto" />
         </Link>
 
         {/* Nav */}
@@ -65,10 +65,6 @@ export default function Sidebar() {
 
         {/* Bottom */}
         <div className="space-y-1">
-          <button className="flex items-center gap-3 px-4 py-2.5 text-sm text-muted-foreground hover:text-foreground w-full rounded-lg transition-colors">
-            <HelpCircle className="w-5 h-5" />
-            Help Center
-          </button>
           <button
             onClick={() => navigate("/login")}
             className="flex items-center gap-3 px-4 py-2.5 text-sm text-muted-foreground hover:text-destructive w-full rounded-lg transition-colors"

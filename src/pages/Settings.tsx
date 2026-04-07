@@ -2,17 +2,19 @@ import { useState } from "react";
 import {
   Users,
   Shield,
-  Bell,
-  Palette,
   Database,
-  Mail,
   Plus,
-  MoreHorizontal,
   Check,
   Clock,
   X,
   Send,
   ChevronRight,
+  Lock,
+  Key,
+  Eye,
+  Download,
+  FileText,
+  Trash2,
 } from "lucide-react";
 
 interface TeamMember {
@@ -48,10 +50,7 @@ const roles = [
 const settingsTabs = [
   { icon: Users, label: "User Access" },
   { icon: Shield, label: "Security" },
-  { icon: Bell, label: "Notifications" },
-  { icon: Palette, label: "Appearance" },
   { icon: Database, label: "Data & Export" },
-  { icon: Mail, label: "Integrations" },
 ];
 
 const statusConfig: Record<string, { bg: string; text: string; icon: typeof Check }> = {
@@ -249,16 +248,136 @@ export default function Settings() {
             </div>
           )}
 
-          {activeTab !== 0 && (() => {
-            const TabIcon = settingsTabs[activeTab].icon;
-            return (
-              <div className="surface-card p-12 text-center">
-                <TabIcon className="w-12 h-12 text-muted-foreground/30 mx-auto mb-4" />
-                <h2 className="text-xl font-bold text-foreground mb-2">{settingsTabs[activeTab].label}</h2>
-                <p className="text-sm text-muted-foreground">This section is coming soon.</p>
+          {/* Security Tab */}
+          {activeTab === 1 && (
+            <div>
+              <div className="mb-6">
+                <h2 className="text-xl font-bold text-foreground">Security</h2>
+                <p className="text-sm text-muted-foreground mt-1">Manage authentication and access controls.</p>
               </div>
-            );
-          })()}
+
+              <div className="space-y-4">
+                <div className="surface-card p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <Lock className="w-5 h-5 text-primary" />
+                    <h3 className="text-base font-bold text-foreground">Password Policy</h3>
+                  </div>
+                  <div className="space-y-3">
+                    {[
+                      { label: "Minimum 8 characters", enabled: true },
+                      { label: "Require uppercase & lowercase", enabled: true },
+                      { label: "Require numbers", enabled: true },
+                      { label: "Require special characters", enabled: false },
+                    ].map((rule) => (
+                      <label key={rule.label} className="flex items-center justify-between py-2">
+                        <span className="text-sm text-foreground">{rule.label}</span>
+                        <div className={`w-10 h-5 rounded-full relative cursor-pointer transition-colors ${rule.enabled ? "bg-primary" : "bg-surface-container-high"}`}>
+                          <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-primary-foreground shadow transition-transform ${rule.enabled ? "right-0.5" : "left-0.5"}`} />
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="surface-card p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <Key className="w-5 h-5 text-primary" />
+                    <h3 className="text-base font-bold text-foreground">Two-Factor Authentication</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-4">Add an extra layer of security to team accounts.</p>
+                  <div className="flex items-center justify-between py-2">
+                    <span className="text-sm text-foreground">Enforce 2FA for all team members</span>
+                    <div className="w-10 h-5 rounded-full relative cursor-pointer bg-surface-container-high">
+                      <div className="absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-primary-foreground shadow" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="surface-card p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <Eye className="w-5 h-5 text-primary" />
+                    <h3 className="text-base font-bold text-foreground">Session Management</h3>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between py-2">
+                      <span className="text-sm text-foreground">Auto-logout after inactivity</span>
+                      <select className="bg-input rounded-lg px-3 py-1.5 text-sm text-foreground outline-none">
+                        <option>30 minutes</option>
+                        <option>1 hour</option>
+                        <option>4 hours</option>
+                        <option>Never</option>
+                      </select>
+                    </div>
+                    <div className="flex items-center justify-between py-2">
+                      <span className="text-sm text-foreground">Maximum concurrent sessions</span>
+                      <select className="bg-input rounded-lg px-3 py-1.5 text-sm text-foreground outline-none">
+                        <option>1</option>
+                        <option>3</option>
+                        <option>5</option>
+                        <option>Unlimited</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Data & Export Tab */}
+          {activeTab === 2 && (
+            <div>
+              <div className="mb-6">
+                <h2 className="text-xl font-bold text-foreground">Data & Export</h2>
+                <p className="text-sm text-muted-foreground mt-1">Export your data and manage storage.</p>
+              </div>
+
+              <div className="space-y-4">
+                <div className="surface-card p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <Download className="w-5 h-5 text-primary" />
+                    <h3 className="text-base font-bold text-foreground">Export Data</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-4">Download your workspace data in common formats.</p>
+                  <div className="grid grid-cols-2 gap-3">
+                    {[
+                      { label: "All Buyers", desc: "Export full buyer list with details" },
+                      { label: "Pipeline Data", desc: "Funnel stages and progression" },
+                      { label: "Team Performance", desc: "Metrics and conversion data" },
+                      { label: "Compliance Logs", desc: "Audit trail and document history" },
+                    ].map((item) => (
+                      <button key={item.label} className="text-left p-4 rounded-xl bg-input hover:bg-accent transition-colors">
+                        <div className="flex items-center gap-2 mb-1">
+                          <FileText className="w-4 h-4 text-primary" />
+                          <span className="text-sm font-semibold text-foreground">{item.label}</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground">{item.desc}</p>
+                      </button>
+                    ))}
+                  </div>
+                  <div className="flex gap-3 mt-4">
+                    <button className="px-5 py-2.5 rounded-xl gradient-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity flex items-center gap-2">
+                      <Download className="w-4 h-4" />
+                      Export as CSV
+                    </button>
+                    <button className="px-5 py-2.5 rounded-xl border border-outline-variant/20 text-sm font-semibold text-foreground hover:bg-accent transition-colors">
+                      Export as PDF
+                    </button>
+                  </div>
+                </div>
+
+                <div className="surface-card p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <Trash2 className="w-5 h-5 text-destructive" />
+                    <h3 className="text-base font-bold text-foreground">Danger Zone</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-4">Permanently delete workspace data. This action cannot be undone.</p>
+                  <button className="px-5 py-2.5 rounded-xl bg-destructive/10 text-destructive text-sm font-semibold hover:bg-destructive/20 transition-colors">
+                    Delete All Data
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
