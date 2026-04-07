@@ -33,19 +33,44 @@ export const COLUMN_STAGE_MAP: Record<string, string> = {
   live: "Live",
 };
 
+export const VERTICALS = [
+  "Insurance",
+  "Home Improvement",
+  "Financial Services",
+  "Credit Score",
+  "Nutra",
+  "Sweepstakes",
+  "Legal",
+  "Firearms & Safety",
+  "Rewards",
+  "Travel",
+  "Education",
+  "Ecommerce",
+  "Other",
+] as const;
+
+export const TEAM_MEMBERS = [
+  "Nayeem Ahmad",
+  "Daniela Navarrete",
+  "Mariela Perez",
+  "Joe Austin",
+  "Ripon Kumar",
+  "Dan Davies",
+] as const;
+
 const initialBuyers: BuyerData[] = [
-  { id: "b1", name: "Alexander Wright", company: "Stellar Dynamics Inc.", owner: "Nayeem A.", vertical: "FINTECH", tier: "Direct Buyer", stage: "Live", stageColor: "bg-primary-container", active: true, inDate: "Oct 12, 2023", liveDate: "Oct 15, 2023", daysInStage: 0 },
-  { id: "b2", name: "Elena Rodriguez", company: "Vortex Systems", owner: "Daniela N.", vertical: "SAAS", tier: "Network", stage: "Paperwork", stageColor: "bg-primary-container", active: true, inDate: "Nov 01, 2023", liveDate: "Pending...", daysInStage: 5 },
-  { id: "b3", name: "Marcus Chen", company: "GreenLeaf Logistics", owner: "Mariela P.", vertical: "ECO-TECH", tier: "Broker", stage: "Buyer Created", stageColor: "bg-tertiary", active: false, inDate: "Sept 15, 2023", liveDate: "Oct 01, 2023", daysInStage: 7 },
-  { id: "b4", name: "Sophia Miller", company: "Miller-Direct Marketing", owner: "Nayeem A.", vertical: "E-COMMERCE", tier: "Aggregator", stage: "Live", stageColor: "bg-primary-container", active: true, inDate: "Nov 05, 2023", liveDate: "Nov 10, 2023", daysInStage: 0 },
-  { id: "b5", name: "Jameson Ford", company: "AutoLink International", owner: "Daniela N.", vertical: "AUTOMOTIVE", tier: "Agency", stage: "Creative Submission", stageColor: "bg-primary-container", active: true, inDate: "Oct 30, 2023", liveDate: "Reviewing...", daysInStage: 6 },
-  { id: "b6", name: "Lila Thorne", company: "Bloom AI", owner: "Nayeem A.", vertical: "AI/ML", tier: "Direct Buyer", stage: "Technical Setup", stageColor: "bg-primary-container", active: true, inDate: "Oct 05, 2023", liveDate: "Oct 08, 2023", daysInStage: 3 },
-  { id: "b7", name: "Robert King", company: "RealEstate Hub", owner: "Mariela P.", vertical: "REAL ESTATE", tier: "Network", stage: "Technical Setup", stageColor: "bg-primary-container", active: true, inDate: "Nov 12, 2023", liveDate: "ETA: Nov 18", daysInStage: 4 },
-  { id: "b8", name: "Catherine Wu", company: "Pacific Bio", owner: "Nayeem A.", vertical: "MEDICAL", tier: "Agency", stage: "Live", stageColor: "bg-primary-container", active: true, inDate: "Oct 20, 2023", liveDate: "Oct 25, 2023", daysInStage: 0 },
-  { id: "b9", name: "Lumina Flow", company: "Lumina Flow", owner: "Nayeem A.", vertical: "FINTECH", tier: "Direct Buyer", stage: "Buyer Created", stageColor: "bg-tertiary", active: true, inDate: "Nov 15, 2023", liveDate: "Pending...", daysInStage: 4 },
-  { id: "b10", name: "Vortex Digital", company: "Vortex Digital", owner: "Daniela N.", vertical: "CREATIVE", tier: "Agency", stage: "Buyer Created", stageColor: "bg-tertiary", active: true, inDate: "Nov 17, 2023", liveDate: "Pending...", daysInStage: 2 },
-  { id: "b11", name: "Helix Logistics", company: "Helix Logistics", owner: "Nayeem A.", vertical: "RETAIL", tier: "Network", stage: "Paperwork", stageColor: "bg-primary-container", active: true, inDate: "Nov 08, 2023", liveDate: "Pending...", daysInStage: 11 },
-  { id: "b12", name: "Quantum Media", company: "Quantum Media", owner: "Daniela N.", vertical: "ADTECH", tier: "Direct Buyer", stage: "Paperwork", stageColor: "bg-primary-container", active: true, inDate: "Nov 14, 2023", liveDate: "Pending...", daysInStage: 5 },
+  { id: "b1", name: "Alexander Wright", company: "Stellar Dynamics Inc.", owner: "Nayeem Ahmad", vertical: "Insurance", tier: "Direct Buyer", stage: "Live", stageColor: "bg-primary-container", active: true, inDate: "Oct 12, 2023", liveDate: "Oct 15, 2023", daysInStage: 0 },
+  { id: "b2", name: "Elena Rodriguez", company: "Vortex Systems", owner: "Daniela Navarrete", vertical: "Financial Services", tier: "Network", stage: "Paperwork", stageColor: "bg-primary-container", active: true, inDate: "Nov 01, 2023", liveDate: "Pending...", daysInStage: 5 },
+  { id: "b3", name: "Marcus Chen", company: "GreenLeaf Logistics", owner: "Mariela Perez", vertical: "Home Improvement", tier: "Broker", stage: "Buyer Created", stageColor: "bg-tertiary", active: false, inDate: "Sept 15, 2023", liveDate: "Oct 01, 2023", daysInStage: 7 },
+  { id: "b4", name: "Sophia Miller", company: "Miller-Direct Marketing", owner: "Nayeem Ahmad", vertical: "Ecommerce", tier: "Aggregator", stage: "Live", stageColor: "bg-primary-container", active: true, inDate: "Nov 05, 2023", liveDate: "Nov 10, 2023", daysInStage: 0 },
+  { id: "b5", name: "Jameson Ford", company: "AutoLink International", owner: "Daniela Navarrete", vertical: "Credit Score", tier: "Agency", stage: "Creative Submission", stageColor: "bg-primary-container", active: true, inDate: "Oct 30, 2023", liveDate: "Reviewing...", daysInStage: 6 },
+  { id: "b6", name: "Lila Thorne", company: "Bloom AI", owner: "Joe Austin", vertical: "Education", tier: "Direct Buyer", stage: "Technical Setup", stageColor: "bg-primary-container", active: true, inDate: "Oct 05, 2023", liveDate: "Oct 08, 2023", daysInStage: 3 },
+  { id: "b7", name: "Robert King", company: "RealEstate Hub", owner: "Ripon Kumar", vertical: "Insurance", tier: "Network", stage: "Technical Setup", stageColor: "bg-primary-container", active: true, inDate: "Nov 12, 2023", liveDate: "ETA: Nov 18", daysInStage: 4 },
+  { id: "b8", name: "Catherine Wu", company: "Pacific Bio", owner: "Dan Davies", vertical: "Nutra", tier: "Agency", stage: "Live", stageColor: "bg-primary-container", active: true, inDate: "Oct 20, 2023", liveDate: "Oct 25, 2023", daysInStage: 0 },
+  { id: "b9", name: "Lumina Flow", company: "Lumina Flow", owner: "Nayeem Ahmad", vertical: "Financial Services", tier: "Direct Buyer", stage: "Buyer Created", stageColor: "bg-tertiary", active: true, inDate: "Nov 15, 2023", liveDate: "Pending...", daysInStage: 4 },
+  { id: "b10", name: "Vortex Digital", company: "Vortex Digital", owner: "Daniela Navarrete", vertical: "Sweepstakes", tier: "Agency", stage: "Buyer Created", stageColor: "bg-tertiary", active: true, inDate: "Nov 17, 2023", liveDate: "Pending...", daysInStage: 2 },
+  { id: "b11", name: "Helix Logistics", company: "Helix Logistics", owner: "Joe Austin", vertical: "Travel", tier: "Network", stage: "Paperwork", stageColor: "bg-primary-container", active: true, inDate: "Nov 08, 2023", liveDate: "Pending...", daysInStage: 11 },
+  { id: "b12", name: "Quantum Media", company: "Quantum Media", owner: "Ripon Kumar", vertical: "Legal", tier: "Direct Buyer", stage: "Paperwork", stageColor: "bg-primary-container", active: true, inDate: "Nov 14, 2023", liveDate: "Pending...", daysInStage: 5 },
 ];
 
 interface BuyerContextType {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Shield, Sparkles, Headphones } from "lucide-react";
-import { useBuyers } from "@/contexts/BuyerContext";
+import { useBuyers, VERTICALS, TEAM_MEMBERS } from "@/contexts/BuyerContext";
 
 const steps = ["Business Info", "Contact Details", "Verticals & Tier", "Special Notes"];
 
@@ -12,7 +12,7 @@ export default function AddNewBuyer() {
   const [formData, setFormData] = useState({
     company: "", website: "", industry: "",
     firstName: "", lastName: "", email: "", phone: "",
-    vertical: "", tier: "", notes: "",
+    vertical: "", tier: "", owner: TEAM_MEMBERS[0] as string, notes: "",
   });
 
   return (
@@ -63,17 +63,11 @@ export default function AddNewBuyer() {
             <div className="grid grid-cols-2 gap-5">
               <div>
                 <label className="text-sm font-semibold text-foreground mb-1.5 block">Website</label>
-                <input type="url" placeholder="https://example.com" className="w-full bg-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20" />
+                <input type="url" value={formData.website} onChange={(e) => setFormData(p => ({...p, website: e.target.value}))} placeholder="https://example.com" className="w-full bg-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20" />
               </div>
               <div>
                 <label className="text-sm font-semibold text-foreground mb-1.5 block">Industry</label>
-                <select className="w-full bg-input rounded-xl px-4 py-3 text-sm text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20 appearance-none">
-                  <option>Select industry...</option>
-                  <option>Fintech</option>
-                  <option>SaaS</option>
-                  <option>E-commerce</option>
-                  <option>Healthcare</option>
-                </select>
+                <input type="text" value={formData.industry} onChange={(e) => setFormData(p => ({...p, industry: e.target.value}))} placeholder="Enter industry..." className="w-full bg-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20" />
               </div>
             </div>
           </div>
@@ -94,11 +88,11 @@ export default function AddNewBuyer() {
             </div>
             <div className="mb-5">
               <label className="text-sm font-semibold text-foreground mb-1.5 block">Email</label>
-              <input type="email" placeholder="john@company.com" className="w-full bg-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20" />
+              <input type="email" value={formData.email} onChange={(e) => setFormData(p => ({...p, email: e.target.value}))} placeholder="john@company.com" className="w-full bg-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20" />
             </div>
             <div>
               <label className="text-sm font-semibold text-foreground mb-1.5 block">Phone</label>
-              <input type="tel" placeholder="+1 (555) 000-0000" className="w-full bg-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20" />
+              <input type="tel" value={formData.phone} onChange={(e) => setFormData(p => ({...p, phone: e.target.value}))} placeholder="+1 (555) 000-0000" className="w-full bg-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20" />
             </div>
           </div>
         )}
@@ -109,23 +103,44 @@ export default function AddNewBuyer() {
             <div className="grid grid-cols-2 gap-5 mb-5">
               <div>
                 <label className="text-sm font-semibold text-foreground mb-1.5 block">Vertical</label>
-                <select className="w-full bg-input rounded-xl px-4 py-3 text-sm text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20 appearance-none">
-                  <option>Select vertical...</option>
-                  <option>Fintech</option>
-                  <option>SaaS</option>
-                  <option>E-commerce</option>
+                <select
+                  value={formData.vertical}
+                  onChange={(e) => setFormData(p => ({...p, vertical: e.target.value}))}
+                  className="w-full bg-input rounded-xl px-4 py-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/20 appearance-none"
+                >
+                  <option value="">Select vertical...</option>
+                  {VERTICALS.map((v) => (
+                    <option key={v} value={v}>{v}</option>
+                  ))}
                 </select>
               </div>
               <div>
                 <label className="text-sm font-semibold text-foreground mb-1.5 block">Buyer Tier</label>
-                <select className="w-full bg-input rounded-xl px-4 py-3 text-sm text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20 appearance-none">
-                  <option>Select tier...</option>
+                <select
+                  value={formData.tier}
+                  onChange={(e) => setFormData(p => ({...p, tier: e.target.value}))}
+                  className="w-full bg-input rounded-xl px-4 py-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/20 appearance-none"
+                >
+                  <option value="">Select tier...</option>
                   <option>Direct Buyer</option>
                   <option>Agency</option>
                   <option>Network</option>
                   <option>Broker</option>
+                  <option>Aggregator</option>
                 </select>
               </div>
+            </div>
+            <div>
+              <label className="text-sm font-semibold text-foreground mb-1.5 block">Assign Owner</label>
+              <select
+                value={formData.owner}
+                onChange={(e) => setFormData(p => ({...p, owner: e.target.value}))}
+                className="w-full bg-input rounded-xl px-4 py-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/20 appearance-none"
+              >
+                {TEAM_MEMBERS.map((m) => (
+                  <option key={m} value={m}>{m}</option>
+                ))}
+              </select>
             </div>
           </div>
         )}
@@ -134,6 +149,8 @@ export default function AddNewBuyer() {
             <h2 className="text-xl font-bold text-foreground mb-1">Special Notes</h2>
             <p className="text-sm text-muted-foreground mb-6">Add any additional context for the onboarding team.</p>
             <textarea
+              value={formData.notes}
+              onChange={(e) => setFormData(p => ({...p, notes: e.target.value}))}
               placeholder="Enter any special instructions, requirements, or notes..."
               className="w-full bg-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20 resize-none h-32"
             />
@@ -157,8 +174,8 @@ export default function AddNewBuyer() {
                 addBuyer({
                   name: `${formData.firstName} ${formData.lastName}`.trim() || formData.company,
                   company: formData.company || "New Company",
-                  owner: "Nayeem A.",
-                  vertical: (formData.vertical || "FINTECH").toUpperCase(),
+                  owner: formData.owner,
+                  vertical: formData.vertical || "Other",
                   tier: formData.tier || "Direct Buyer",
                   stage: "Buyer Created",
                   stageColor: "bg-tertiary",

@@ -22,7 +22,7 @@ import {
   ClipboardList,
 } from "lucide-react";
 import type { BuyerData } from "@/contexts/BuyerContext";
-import { FUNNEL_STEPS } from "@/contexts/BuyerContext";
+import { FUNNEL_STEPS, VERTICALS, TEAM_MEMBERS } from "@/contexts/BuyerContext";
 
 interface BuyerDetailPanelProps {
   buyer: BuyerData;
@@ -172,7 +172,7 @@ export default function BuyerDetailPanel({ buyer, onClose, onUpdate }: BuyerDeta
             </button>
           </div>
 
-          {/* Funnel Progress - New 5-step */}
+          {/* Funnel Progress */}
           <div className="mb-8">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-label uppercase tracking-wider text-primary">Funnel Completion</span>
@@ -254,7 +254,7 @@ export default function BuyerDetailPanel({ buyer, onClose, onUpdate }: BuyerDeta
                   className="w-full bg-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none resize-none h-20 focus:ring-2 focus:ring-primary/20"
                 />
                 <div className="flex justify-end mt-2">
-                  <button className="text-sm text-primary font-semibold hover:underline">Update</button>
+                  <button onClick={handleSave} className="text-sm text-primary font-semibold hover:underline">Update</button>
                 </div>
               </div>
 
@@ -411,18 +411,22 @@ export default function BuyerDetailPanel({ buyer, onClose, onUpdate }: BuyerDeta
                       onChange={(e) => updateField("vertical", e.target.value)}
                       className="w-full bg-transparent text-sm font-semibold text-foreground outline-none cursor-pointer"
                     >
-                      {["FINTECH", "SAAS", "ECO-TECH", "E-COMMERCE", "AUTOMOTIVE", "AI/ML", "REAL ESTATE", "MEDICAL"].map((v) => (
+                      {VERTICALS.map((v) => (
                         <option key={v} value={v}>{v}</option>
                       ))}
                     </select>
                   </div>
                   <div className="p-3 bg-input rounded-xl">
                     <p className="text-[10px] font-label uppercase tracking-wider text-muted-foreground mb-1">Owner</p>
-                    <input
+                    <select
                       value={editData.owner}
                       onChange={(e) => updateField("owner", e.target.value)}
-                      className="w-full bg-transparent text-sm font-semibold text-foreground outline-none"
-                    />
+                      className="w-full bg-transparent text-sm font-semibold text-foreground outline-none cursor-pointer"
+                    >
+                      {TEAM_MEMBERS.map((m) => (
+                        <option key={m} value={m}>{m}</option>
+                      ))}
+                    </select>
                   </div>
                 </div>
               </div>
@@ -465,7 +469,6 @@ export default function BuyerDetailPanel({ buyer, onClose, onUpdate }: BuyerDeta
                   Upload Document
                 </button>
               </div>
-              {/* Section Tabs */}
               <div className="flex gap-2 mb-5">
                 <button
                   onClick={() => setDocSection("paperwork")}
@@ -559,7 +562,7 @@ export default function BuyerDetailPanel({ buyer, onClose, onUpdate }: BuyerDeta
             </div>
           )}
 
-          {/* Bottom Actions - only Save Changes when needed */}
+          {/* Bottom Actions */}
           {hasChanges && (
             <div className="flex gap-3 mt-8 pt-6 border-t border-outline-variant/15">
               <button

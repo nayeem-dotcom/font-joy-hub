@@ -1,12 +1,20 @@
-import { TrendingUp, User, UserPlus, CheckCircle2, Clock, ArrowUpRight } from "lucide-react";
-import { useBuyers, FUNNEL_STEPS } from "@/contexts/BuyerContext";
+import { useState } from "react";
+import { TrendingUp, User, CheckCircle2, Clock } from "lucide-react";
+import { useBuyers, FUNNEL_STEPS, TEAM_MEMBERS } from "@/contexts/BuyerContext";
+
+type Period = "Weekly" | "Monthly" | "Yearly";
 
 export default function TeamPerformance() {
   const { buyers } = useBuyers();
+  const [period, setPeriod] = useState<Period>("Monthly");
 
   // Compute real metrics per owner
   const ownerStats = (() => {
     const map: Record<string, { name: string; created: number; live: number; totalDays: number; liveCount: number }> = {};
+    // Initialize all team members
+    TEAM_MEMBERS.forEach((m) => {
+      map[m] = { name: m, created: 0, live: 0, totalDays: 0, liveCount: 0 };
+    });
     buyers.forEach((b) => {
       const key = b.owner;
       if (!map[key]) map[key] = { name: key, created: 0, live: 0, totalDays: 0, liveCount: 0 };
@@ -20,9 +28,12 @@ export default function TeamPerformance() {
   })();
 
   const roleMap: Record<string, string> = {
-    "Nayeem A.": "Senior Lead",
-    "Daniela N.": "Success Manager",
-    "Mariela P.": "Operations Analyst",
+    "Nayeem Ahmad": "Senior Lead",
+    "Daniela Navarrete": "Success Manager",
+    "Mariela Perez": "Operations Analyst",
+    "Joe Austin": "Account Executive",
+    "Ripon Kumar": "Account Executive",
+    "Dan Davies": "Account Executive",
   };
 
   const totalBuyers = buyers.length;
@@ -30,11 +41,11 @@ export default function TeamPerformance() {
   const avgDays = (buyers.reduce((sum, b) => sum + b.daysInStage, 0) / (totalBuyers || 1)).toFixed(1);
   const conversionRate = totalBuyers > 0 ? ((liveBuyers / totalBuyers) * 100).toFixed(1) : "0";
 
-  // Velocity data - buyers onboarded per member
+  // Velocity data
   const velocityData = ownerStats.map((o) => ({
     name: o.name,
     buyers: o.created,
-    max: Math.max(...ownerStats.map((x) => x.created)),
+    max: Math.max(...ownerStats.map((x) => x.created), 1),
   }));
 
   return (
@@ -46,11 +57,12 @@ export default function TeamPerformance() {
           <h1 className="text-3xl font-bold text-foreground">Team Efficiency Pulse</h1>
         </div>
         <div className="flex items-center bg-card rounded-xl p-1">
-          {["Weekly", "Monthly", "Yearly", "Custom"].map((p, i) => (
+          {(["Weekly", "Monthly", "Yearly"] as Period[]).map((p) => (
             <button
               key={p}
+              onClick={() => setPeriod(p)}
               className={`px-5 py-2 rounded-lg text-sm font-medium transition-colors ${
-                i === 1 ? "bg-primary-container text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+                period === p ? "bg-primary-container text-primary-foreground" : "text-muted-foreground hover:text-foreground"
               }`}
             >
               {p}
@@ -172,7 +184,7 @@ export default function TeamPerformance() {
         </div>
       </div>
 
-      {/* Team Leaderboard - Full width */}
+      {/* Team Leaderboard */}
       <div className="surface-card p-6 mb-8">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-bold text-foreground">Team Leaderboard</h2>
@@ -247,12 +259,6 @@ export default function TeamPerformance() {
           })}
         </div>
       </div>
-
-      {/* Invite CTA */}
-      <button className="fixed bottom-8 left-72 gradient-primary text-primary-foreground rounded-xl px-5 py-3 flex items-center gap-2 font-semibold text-sm shadow-lg hover:opacity-90 transition-opacity">
-        <UserPlus className="w-4 h-4" />
-        Invite Member
-      </button>
     </div>
   );
 }
