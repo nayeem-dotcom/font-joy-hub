@@ -19,7 +19,7 @@ interface TeamMember {
   id: string;
   name: string;
   email: string;
-  role: "Admin" | "Manager" | "Onboarder" | "Viewer";
+  role: "Admin" | "Affiliate Manager" | "Advertiser Account Manager" | "Compliance Manager" | "Devops Manager" | "Affiliate Coordinator" | "Business Development Manager" | "Sales Executive" | "Project Manager";
   status: "Active" | "Pending" | "Inactive";
   lastActive: string;
 }
