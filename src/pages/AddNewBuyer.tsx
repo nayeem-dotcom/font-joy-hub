@@ -85,11 +85,11 @@ export default function AddNewBuyer() {
             <div className="grid grid-cols-2 gap-5 mb-5">
               <div>
                 <label className="text-sm font-semibold text-foreground mb-1.5 block">First Name</label>
-                <input type="text" placeholder="John" className="w-full bg-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20" />
+                <input type="text" value={formData.firstName} onChange={(e) => setFormData(p => ({...p, firstName: e.target.value}))} placeholder="John" className="w-full bg-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20" />
               </div>
               <div>
                 <label className="text-sm font-semibold text-foreground mb-1.5 block">Last Name</label>
-                <input type="text" placeholder="Doe" className="w-full bg-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20" />
+                <input type="text" value={formData.lastName} onChange={(e) => setFormData(p => ({...p, lastName: e.target.value}))} placeholder="Doe" className="w-full bg-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20" />
               </div>
             </div>
             <div className="mb-5">
