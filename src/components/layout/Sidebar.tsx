@@ -4,14 +4,13 @@ import {
   Filter,
   Users,
   BarChart3,
-  
   Settings,
   HelpCircle,
   LogOut,
   Plus,
-  Rocket,
   Scale,
 } from "lucide-react";
+import buyerlyLogo from "@/assets/buyerly-logo.png";
 
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/dashboard" },
@@ -30,14 +29,8 @@ export default function Sidebar() {
     <aside className="fixed left-0 top-0 h-full z-40 w-64 bg-surface-container-low font-headline font-semibold tracking-tight flex flex-col">
       <div className="flex flex-col h-full p-6">
         {/* Logo */}
-        <div className="flex items-center gap-3 mb-10">
-          <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center">
-            <Rocket className="w-5 h-5 text-primary-foreground" />
-          </div>
-          <div>
-            <h1 className="text-xl font-bold text-foreground leading-tight">Ray Funnel</h1>
-            <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Growth Engine</p>
-          </div>
+        <div className="flex items-center justify-start mb-10">
+          <img src={buyerlyLogo} alt="Buyerly" className="h-8 w-auto" />
         </div>
 
         {/* Nav */}
