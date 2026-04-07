@@ -1,12 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Shield, Sparkles, Headphones } from "lucide-react";
+import { useBuyers } from "@/contexts/BuyerContext";
 
 const steps = ["Business Info", "Contact Details", "Verticals & Tier", "Special Notes"];
 
 export default function AddNewBuyer() {
   const [currentStep, setCurrentStep] = useState(0);
   const navigate = useNavigate();
+  const { addBuyer } = useBuyers();
+  const [formData, setFormData] = useState({
+    company: "", website: "", industry: "",
+    firstName: "", lastName: "", email: "", phone: "",
+    vertical: "", tier: "", notes: "",
+  });
 
   return (
     <div className="animate-fade-in max-w-4xl mx-auto">
@@ -51,7 +58,7 @@ export default function AddNewBuyer() {
             <p className="text-sm text-muted-foreground mb-6">Define the core identity of the company and industry segment.</p>
             <div className="mb-5">
               <label className="text-sm font-semibold text-foreground mb-1.5 block">Company Name</label>
-              <input type="text" placeholder="e.g. Carfax Logistics" className="w-full bg-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20" />
+              <input type="text" value={formData.company} onChange={(e) => setFormData(p => ({...p, company: e.target.value}))} placeholder="e.g. Carfax Logistics" className="w-full bg-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20" />
             </div>
             <div className="grid grid-cols-2 gap-5">
               <div>
@@ -78,11 +85,11 @@ export default function AddNewBuyer() {
             <div className="grid grid-cols-2 gap-5 mb-5">
               <div>
                 <label className="text-sm font-semibold text-foreground mb-1.5 block">First Name</label>
-                <input type="text" placeholder="John" className="w-full bg-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20" />
+                <input type="text" value={formData.firstName} onChange={(e) => setFormData(p => ({...p, firstName: e.target.value}))} placeholder="John" className="w-full bg-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20" />
               </div>
               <div>
                 <label className="text-sm font-semibold text-foreground mb-1.5 block">Last Name</label>
-                <input type="text" placeholder="Doe" className="w-full bg-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20" />
+                <input type="text" value={formData.lastName} onChange={(e) => setFormData(p => ({...p, lastName: e.target.value}))} placeholder="Doe" className="w-full bg-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/20" />
               </div>
             </div>
             <div className="mb-5">
@@ -143,7 +150,26 @@ export default function AddNewBuyer() {
             {currentStep === 0 ? "Cancel" : "Back"}
           </button>
           <button
-            onClick={() => currentStep < steps.length - 1 ? setCurrentStep(currentStep + 1) : navigate("/buyers")}
+            onClick={() => {
+              if (currentStep < steps.length - 1) {
+                setCurrentStep(currentStep + 1);
+              } else {
+                addBuyer({
+                  name: `${formData.firstName} ${formData.lastName}`.trim() || formData.company,
+                  company: formData.company || "New Company",
+                  owner: "Nayeem A.",
+                  vertical: (formData.vertical || "FINTECH").toUpperCase(),
+                  tier: formData.tier || "Direct Buyer",
+                  stage: "Buyer Created",
+                  stageColor: "bg-tertiary",
+                  active: true,
+                  inDate: new Date().toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "numeric" }),
+                  liveDate: "Pending...",
+                  daysInStage: 0,
+                });
+                navigate("/pipeline");
+              }
+            }}
             className="flex items-center gap-2 px-6 py-3 rounded-xl gradient-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity"
           >
             {currentStep < steps.length - 1 ? "Next Step" : "Create Buyer"}
