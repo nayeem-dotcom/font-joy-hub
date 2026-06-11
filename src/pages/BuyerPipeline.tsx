@@ -16,11 +16,11 @@ import { toast } from "@/hooks/use-toast";
 
 // Lane theming per stage
 const LANES = [
-  { stage: "Buyer Created",       accent: "from-emerald-500/70 to-teal-600/70",        chip: "bg-foreground/[0.06] text-foreground/80 ring-foreground/10",        dot: "bg-foreground/40" },
-  { stage: "Paperwork",           accent: "from-emerald-500/80 to-teal-600/80",   chip: "bg-foreground/[0.08] text-foreground/85 ring-foreground/10",dot: "bg-foreground/50" },
-  { stage: "Creative Submission", accent: "from-emerald-500/90 to-teal-600/90",    chip: "bg-emerald-500/10 text-emerald-600/90 ring-emerald-500/20", dot: "bg-emerald-300/70" },
+  { stage: "Buyer Created",       accent: "from-blue-700/70 to-blue-800/70",        chip: "bg-foreground/[0.06] text-foreground/80 ring-foreground/10",        dot: "bg-foreground/40" },
+  { stage: "Paperwork",           accent: "from-blue-700/80 to-blue-800/80",   chip: "bg-foreground/[0.08] text-foreground/85 ring-foreground/10",dot: "bg-foreground/50" },
+  { stage: "Creative Submission", accent: "from-blue-700/90 to-blue-800/90",    chip: "bg-blue-700/10 text-blue-700/90 ring-emerald-500/20", dot: "bg-blue-500/70" },
   { stage: "Technical Setup",     accent: "from-amber-500 to-orange-600",    chip: "bg-amber-600/15 text-amber-600 ring-amber-500/30",   dot: "bg-amber-400" },
-  { stage: "Live",                accent: "from-emerald-500 to-teal-600",    chip: "bg-emerald-500/15 text-emerald-600 ring-emerald-400/30", dot: "bg-emerald-400" },
+  { stage: "Live",                accent: "from-blue-700 to-blue-800",    chip: "bg-blue-700/15 text-blue-700 ring-emerald-400/30", dot: "bg-blue-600" },
   { stage: "Voided/Stuck",        accent: "from-rose-500 to-red-600",        chip: "bg-rose-500/15 text-rose-600 ring-rose-500/30",      dot: "bg-rose-400" },
 ] as const;
 
@@ -104,16 +104,16 @@ export default function BuyerPipeline() {
     <div className="animate-fade-in space-y-5">
       {/* ===== HERO HEADER ===== */}
       <div className="relative overflow-hidden rounded-3xl border border-border/50 bg-gradient-to-br from-card via-card to-surface-container-high p-6">
-        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-gradient-to-br from-emerald-500/20 via-teal-500/10 to-transparent blur-3xl" />
+        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-gradient-to-br from-blue-700/20 via-blue-700/10 to-transparent blur-3xl" />
         <div className="absolute -bottom-32 left-1/3 w-96 h-96 rounded-full bg-gradient-to-br from-violet-500/15 via-fuchsia-500/10 to-transparent blur-3xl" />
         <div className="relative flex items-end justify-between gap-4 flex-wrap">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-400/20 text-emerald-600 text-xs font-medium mb-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-700/10 border border-blue-600/20 text-blue-700 text-xs font-medium mb-3">
               <Layers className="w-3 h-3" /> Swimlane funnel
             </div>
             <h1 className="text-3xl font-headline font-bold tracking-tight text-foreground">Buyer Funnel</h1>
             <p className="text-muted-foreground mt-1 text-sm">
-              Click <ArrowRight className="inline w-3.5 h-3.5 text-emerald-600" /> to advance a buyer to the next lane. {totalVisible} buyers visible.
+              Click <ArrowRight className="inline w-3.5 h-3.5 text-blue-700" /> to advance a buyer to the next lane. {totalVisible} buyers visible.
             </p>
           </div>
         </div>
@@ -216,7 +216,7 @@ export default function BuyerPipeline() {
       {/* Empty state */}
       {totalVisible === 0 && (
         <div className="rounded-2xl border border-border/50 bg-card p-16 text-center">
-          <Sparkles className="w-12 h-12 text-emerald-600 mx-auto mb-4" />
+          <Sparkles className="w-12 h-12 text-blue-700 mx-auto mb-4" />
           <h2 className="text-xl font-headline font-bold text-foreground">Nothing matches</h2>
           <p className="text-muted-foreground mt-2">Try clearing filters or adjusting your search.</p>
         </div>
@@ -306,7 +306,7 @@ function MiniCard({
           ) : (
             <button onClick={(e) => { e.stopPropagation(); onRestore(); }}
                     title="Restore"
-                    className="p-1.5 rounded hover:bg-emerald-500/10 text-muted-foreground hover:text-emerald-600 transition-colors text-[10px] font-semibold px-2">
+                    className="p-1.5 rounded hover:bg-blue-700/10 text-muted-foreground hover:text-blue-700 transition-colors text-[10px] font-semibold px-2">
               Restore
             </button>
           )}
@@ -319,7 +319,7 @@ function MiniCard({
           </button>
         )}
         {!canAdvance && !isVoid && (
-          <span className="inline-flex items-center gap-1 text-[10px] text-emerald-600">
+          <span className="inline-flex items-center gap-1 text-[10px] text-blue-700">
             <Zap className="w-3 h-3" /> Live
           </span>
         )}
