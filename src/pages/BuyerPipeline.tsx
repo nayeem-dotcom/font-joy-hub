@@ -16,15 +16,6 @@ import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { toast } from "@/hooks/use-toast";
 
-const stageDot: Record<string, string> = {
-  "Buyer Created": "bg-tertiary",
-  "Paperwork": "bg-amber-500",
-  "Creative Submission": "bg-purple-500",
-  "Technical Setup": "bg-sky-500",
-  "Live": "bg-primary",
-  "Voided/Stuck": "bg-destructive",
-};
-
 type QueueFilter = "needs_action" | "stuck" | "all";
 
 const stageDot: Record<string, string> = {
@@ -569,47 +560,6 @@ function FilterDropdown({ label, value, options, onChange }: { label: string; va
             {options.map((o) => (
               <button key={o} onClick={() => { onChange(o); setOpen(false); }} className={`w-full text-left px-4 py-2 text-xs font-semibold hover:bg-accent transition ${value === o ? "text-primary" : "text-foreground"}`}>
                 {value === o && <Check className="w-3 h-3 inline mr-1.5" />}{o}
-              </button>
-            ))}
-          </div>
-        </>
-      )}
-    </div>
-  );
-}
-
-function Kbd({ children }: { children: React.ReactNode }) {
-  return (
-    <kbd className="inline-flex items-center px-1.5 py-0.5 rounded border border-border/50 bg-card text-[10px] font-semibold text-muted-foreground">
-      {children}
-    </kbd>
-  );
-}
-
-function FilterDropdown({ label, value, options, onChange }: { label: string; value: string; options: readonly string[] | string[]; onChange: (v: string) => void }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="relative">
-      <button
-        onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 px-3 py-2 rounded-lg bg-card border border-border/40 text-sm text-foreground"
-      >
-        <span className="text-muted-foreground text-xs">{label}:</span>
-        {value === "All" ? `All ${label}s` : value}
-        <ChevronDown className="w-3 h-3" />
-      </button>
-      {open && (
-        <>
-          <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-          <div className="absolute top-full right-0 mt-1 bg-card border border-border/40 rounded-xl shadow-lg z-20 overflow-hidden min-w-[200px] max-h-64 overflow-y-auto">
-            {options.map((o) => (
-              <button
-                key={o}
-                onClick={() => { onChange(o); setOpen(false); }}
-                className={`w-full text-left px-4 py-2 text-xs font-semibold hover:bg-accent transition ${value === o ? "text-primary" : "text-foreground"}`}
-              >
-                {value === o && <Check className="w-3 h-3 inline mr-1.5" />}
-                {o}
               </button>
             ))}
           </div>
