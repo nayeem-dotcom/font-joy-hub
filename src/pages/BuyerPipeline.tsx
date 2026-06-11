@@ -16,12 +16,12 @@ import { toast } from "@/hooks/use-toast";
 
 // Lane theming per stage
 const LANES = [
-  { stage: "Buyer Created",       accent: "from-emerald-400/70 to-teal-500/70",        chip: "bg-foreground/[0.06] text-foreground/80 ring-foreground/10",        dot: "bg-foreground/40" },
-  { stage: "Paperwork",           accent: "from-emerald-400/80 to-teal-500/80",   chip: "bg-foreground/[0.08] text-foreground/85 ring-foreground/10",dot: "bg-foreground/50" },
-  { stage: "Creative Submission", accent: "from-emerald-400/90 to-teal-500/90",    chip: "bg-emerald-400/10 text-emerald-300/90 ring-emerald-400/20", dot: "bg-emerald-300/70" },
-  { stage: "Technical Setup",     accent: "from-amber-400 to-orange-500",    chip: "bg-amber-400/15 text-amber-300 ring-amber-400/30",   dot: "bg-amber-400" },
-  { stage: "Live",                accent: "from-emerald-400 to-teal-500",    chip: "bg-emerald-400/15 text-emerald-300 ring-emerald-400/30", dot: "bg-emerald-400" },
-  { stage: "Voided/Stuck",        accent: "from-rose-400 to-red-500",        chip: "bg-rose-400/15 text-rose-300 ring-rose-400/30",      dot: "bg-rose-400" },
+  { stage: "Buyer Created",       accent: "from-emerald-500/70 to-teal-600/70",        chip: "bg-foreground/[0.06] text-foreground/80 ring-foreground/10",        dot: "bg-foreground/40" },
+  { stage: "Paperwork",           accent: "from-emerald-500/80 to-teal-600/80",   chip: "bg-foreground/[0.08] text-foreground/85 ring-foreground/10",dot: "bg-foreground/50" },
+  { stage: "Creative Submission", accent: "from-emerald-500/90 to-teal-600/90",    chip: "bg-emerald-500/10 text-emerald-600/90 ring-emerald-500/20", dot: "bg-emerald-300/70" },
+  { stage: "Technical Setup",     accent: "from-amber-500 to-orange-600",    chip: "bg-amber-600/15 text-amber-600 ring-amber-500/30",   dot: "bg-amber-400" },
+  { stage: "Live",                accent: "from-emerald-500 to-teal-600",    chip: "bg-emerald-500/15 text-emerald-600 ring-emerald-400/30", dot: "bg-emerald-400" },
+  { stage: "Voided/Stuck",        accent: "from-rose-500 to-red-600",        chip: "bg-rose-500/15 text-rose-600 ring-rose-500/30",      dot: "bg-rose-400" },
 ] as const;
 
 export default function BuyerPipeline() {
@@ -103,24 +103,24 @@ export default function BuyerPipeline() {
   return (
     <div className="animate-fade-in space-y-5">
       {/* ===== HERO HEADER ===== */}
-      <div className="relative overflow-hidden rounded-3xl border border-border/40 bg-gradient-to-br from-card via-card to-surface-container-high p-6">
+      <div className="relative overflow-hidden rounded-3xl border border-border/50 bg-gradient-to-br from-card via-card to-surface-container-high p-6">
         <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-gradient-to-br from-emerald-500/20 via-teal-500/10 to-transparent blur-3xl" />
         <div className="absolute -bottom-32 left-1/3 w-96 h-96 rounded-full bg-gradient-to-br from-violet-500/15 via-fuchsia-500/10 to-transparent blur-3xl" />
         <div className="relative flex items-end justify-between gap-4 flex-wrap">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-400/10 border border-emerald-400/20 text-emerald-300 text-xs font-medium mb-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-400/20 text-emerald-600 text-xs font-medium mb-3">
               <Layers className="w-3 h-3" /> Swimlane funnel
             </div>
             <h1 className="text-3xl font-headline font-bold tracking-tight text-foreground">Buyer Funnel</h1>
             <p className="text-muted-foreground mt-1 text-sm">
-              Click <ArrowRight className="inline w-3.5 h-3.5 text-emerald-300" /> to advance a buyer to the next lane. {totalVisible} buyers visible.
+              Click <ArrowRight className="inline w-3.5 h-3.5 text-emerald-600" /> to advance a buyer to the next lane. {totalVisible} buyers visible.
             </p>
           </div>
         </div>
       </div>
 
       {/* ===== FILTERS BAR ===== */}
-      <div className="relative overflow-hidden rounded-2xl border border-border/40 bg-card p-3 flex items-center gap-2 flex-wrap">
+      <div className="relative overflow-hidden rounded-2xl border border-border/50 bg-card p-3 flex items-center gap-2 flex-wrap">
         <div className="flex items-center gap-2 bg-input/60 rounded-lg px-3 py-2 flex-1 min-w-[240px]">
           <Search className="w-4 h-4 text-muted-foreground" />
           <input value={search} onChange={(e) => setSearch(e.target.value)}
@@ -132,7 +132,7 @@ export default function BuyerPipeline() {
         <FilterDropdown label="Vertical" value={filterVertical} options={["All", ...VERTICALS]} onChange={setFilterVertical} />
         <Popover>
           <PopoverTrigger asChild>
-            <button className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-foreground/5 hover:bg-foreground/10 border border-border/40 text-sm text-foreground">
+            <button className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-foreground/5 hover:bg-foreground/10 border border-border/50 text-sm text-foreground">
               <CalendarIcon className="w-3.5 h-3.5" /> {dateFrom ? format(dateFrom, "MMM dd") : "From"}
             </button>
           </PopoverTrigger>
@@ -143,7 +143,7 @@ export default function BuyerPipeline() {
         <span className="text-muted-foreground text-xs">—</span>
         <Popover>
           <PopoverTrigger asChild>
-            <button className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-foreground/5 hover:bg-foreground/10 border border-border/40 text-sm text-foreground">
+            <button className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-foreground/5 hover:bg-foreground/10 border border-border/50 text-sm text-foreground">
               <CalendarIcon className="w-3.5 h-3.5" /> {dateTo ? format(dateTo, "MMM dd") : "To"}
             </button>
           </PopoverTrigger>
@@ -160,7 +160,7 @@ export default function BuyerPipeline() {
           const isLive = lane.stage === "Live";
           const isVoid = lane.stage === "Voided/Stuck";
           return (
-            <div key={lane.stage} className="relative overflow-hidden rounded-2xl border border-border/40 bg-card group/lane">
+            <div key={lane.stage} className="relative overflow-hidden rounded-2xl border border-border/50 bg-card group/lane">
               {/* Left accent bar */}
               <div className={`absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b ${lane.accent}`} />
 
@@ -215,8 +215,8 @@ export default function BuyerPipeline() {
 
       {/* Empty state */}
       {totalVisible === 0 && (
-        <div className="rounded-2xl border border-border/40 bg-card p-16 text-center">
-          <Sparkles className="w-12 h-12 text-emerald-300 mx-auto mb-4" />
+        <div className="rounded-2xl border border-border/50 bg-card p-16 text-center">
+          <Sparkles className="w-12 h-12 text-emerald-600 mx-auto mb-4" />
           <h2 className="text-xl font-headline font-bold text-foreground">Nothing matches</h2>
           <p className="text-muted-foreground mt-2">Try clearing filters or adjusting your search.</p>
         </div>
@@ -255,7 +255,7 @@ function MiniCard({
 
   return (
     <div
-      className={`group relative w-[280px] shrink-0 rounded-xl border border-border/50 bg-surface-container/60 hover:bg-surface-container hover:border-border/80 transition-all overflow-hidden ${
+      className={`group relative w-[280px] shrink-0 rounded-xl border border-border/50 bg-muted/60 hover:bg-muted hover:border-border/80 transition-all overflow-hidden ${
         moving ? "translate-x-8 opacity-0" : "translate-x-0 opacity-100"
       }`}
       style={{ transitionDuration: "280ms" }}
@@ -273,7 +273,7 @@ function MiniCard({
             <p className="text-[11px] text-muted-foreground truncate mt-0.5">{buyer.name}</p>
           </div>
           {stuck && !isVoid && (
-            <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-amber-300 bg-amber-400/10 px-1.5 py-0.5 rounded">
+            <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-amber-600 bg-amber-400/10 px-1.5 py-0.5 rounded">
               <AlertTriangle className="w-2.5 h-2.5" />{buyer.daysInStage}d
             </span>
           )}
@@ -288,7 +288,7 @@ function MiniCard({
       </button>
 
       {/* Action rail */}
-      <div className="flex items-center justify-between border-t border-border/40 bg-foreground/[0.02] px-2 py-1.5">
+      <div className="flex items-center justify-between border-t border-border/50 bg-foreground/[0.02] px-2 py-1.5">
         <div className="flex items-center gap-1">
           {canBack && (
             <button onClick={(e) => { e.stopPropagation(); onBack(); }}
@@ -300,13 +300,13 @@ function MiniCard({
           {!isVoid ? (
             <button onClick={(e) => { e.stopPropagation(); onVoid(); }}
                     title="Mark stuck"
-                    className="p-1.5 rounded hover:bg-rose-400/10 text-muted-foreground hover:text-rose-300 transition-colors">
+                    className="p-1.5 rounded hover:bg-rose-400/10 text-muted-foreground hover:text-rose-600 transition-colors">
               <X className="w-3.5 h-3.5" />
             </button>
           ) : (
             <button onClick={(e) => { e.stopPropagation(); onRestore(); }}
                     title="Restore"
-                    className="p-1.5 rounded hover:bg-emerald-400/10 text-muted-foreground hover:text-emerald-300 transition-colors text-[10px] font-semibold px-2">
+                    className="p-1.5 rounded hover:bg-emerald-500/10 text-muted-foreground hover:text-emerald-600 transition-colors text-[10px] font-semibold px-2">
               Restore
             </button>
           )}
@@ -319,7 +319,7 @@ function MiniCard({
           </button>
         )}
         {!canAdvance && !isVoid && (
-          <span className="inline-flex items-center gap-1 text-[10px] text-emerald-300">
+          <span className="inline-flex items-center gap-1 text-[10px] text-emerald-600">
             <Zap className="w-3 h-3" /> Live
           </span>
         )}
@@ -335,7 +335,7 @@ function FilterDropdown({ label, value, options, onChange }: {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <button className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-foreground/5 hover:bg-foreground/10 border border-border/40 text-sm text-foreground">
+        <button className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-foreground/5 hover:bg-foreground/10 border border-border/50 text-sm text-foreground">
           <Filter className="w-3.5 h-3.5 text-muted-foreground" />
           <span className="text-muted-foreground">{label}:</span>
           <span className="font-medium">{value}</span>
