@@ -9,6 +9,9 @@ import {
   LogOut,
   Plus,
   Scale,
+  DollarSign,
+  Database,
+  Palette,
 } from "lucide-react";
 import buyerlyLogo from "@/assets/buyerly-logo.png";
 
@@ -18,6 +21,9 @@ const navItems = [
   { icon: Users, label: "All Buyers", path: "/buyers" },
   { icon: BarChart3, label: "Team Performance", path: "/team" },
   { icon: Scale, label: "Legal & Compliance", path: "/legal" },
+  { icon: DollarSign, label: "Pricing List", path: "/pricing" },
+  { icon: Database, label: "Buyer Data Bucket", path: "/data-bucket" },
+  { icon: Palette, label: "Creative Hub", path: "/creative-hub" },
   { icon: Settings, label: "Settings", path: "/settings" },
 ];
 
