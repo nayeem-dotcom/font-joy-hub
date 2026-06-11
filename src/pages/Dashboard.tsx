@@ -8,8 +8,10 @@ import {
   AlertTriangle,
   UserPlus,
   CheckCircle2,
+  Layers,
+  TrendingUp,
 } from "lucide-react";
-import { useBuyers, TEAM_MEMBERS } from "@/contexts/BuyerContext";
+import { useBuyers, TEAM_MEMBERS, VERTICALS } from "@/contexts/BuyerContext";
 
 type Period = "Week" | "Month" | "Year";
 
@@ -43,6 +45,24 @@ export default function Dashboard() {
     buyers.forEach((b) => { map[b.owner] = (map[b.owner] || 0) + 1; });
     const max = Math.max(...Object.values(map), 1);
     return Object.entries(map).map(([name, value]) => ({ name, value, max })).sort((a, b) => b.value - a.value);
+  })();
+
+  // Team details with live + active counts
+  const teamDetails = TEAM_MEMBERS.map((name) => {
+    const owned = buyers.filter((b) => b.owner === name);
+    const live = owned.filter((b) => b.stage === "Live").length;
+    const active = owned.filter((b) => b.active).length;
+    return { name, total: owned.length, live, active, conv: owned.length ? Math.round((live / owned.length) * 100) : 0 };
+  }).sort((a, b) => b.total - a.total);
+
+  // Category (vertical) breakdown
+  const categoryData = (() => {
+    const map: Record<string, number> = {};
+    VERTICALS.forEach((v) => { map[v] = 0; });
+    buyers.forEach((b) => { map[b.vertical] = (map[b.vertical] || 0) + 1; });
+    const entries = Object.entries(map).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]);
+    const max = Math.max(...entries.map(([, v]) => v), 1);
+    return entries.map(([name, value]) => ({ name, value, pct: Math.round((value / max) * 100) }));
   })();
 
   return (
@@ -188,6 +208,66 @@ export default function Dashboard() {
           </div>
           <div className="flex justify-between mt-2 text-xs text-muted-foreground">
             <span>Jan</span><span>Jun</span><span>Dec</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Category breakdown + Team details */}
+      <div className="grid grid-cols-2 gap-6 mb-8">
+        <div className="surface-card p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-2">
+              <Layers className="w-5 h-5 text-primary" />
+              <h2 className="text-lg font-bold text-foreground">Buyer Data by Category</h2>
+            </div>
+            <span className="text-xs text-muted-foreground">{categoryData.length} verticals</span>
+          </div>
+          <div className="space-y-3 max-h-[340px] overflow-auto pr-2">
+            {categoryData.map((c) => (
+              <div key={c.name}>
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-sm text-foreground">{c.name}</span>
+                  <span className="text-sm font-semibold text-foreground">{c.value}</span>
+                </div>
+                <div className="h-2 bg-surface-container rounded-full overflow-hidden">
+                  <div className="h-full gradient-primary rounded-full transition-all duration-700" style={{ width: `${c.pct}%` }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="surface-card p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-2">
+              <TrendingUp className="w-5 h-5 text-primary" />
+              <h2 className="text-lg font-bold text-foreground">Team Details</h2>
+            </div>
+            <a href="/team" className="text-xs text-primary font-semibold hover:underline">Full breakdown →</a>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-xs uppercase tracking-wider text-muted-foreground">
+                  <th className="text-left py-2 font-semibold">Member</th>
+                  <th className="text-right py-2 font-semibold">Total</th>
+                  <th className="text-right py-2 font-semibold">Active</th>
+                  <th className="text-right py-2 font-semibold">Live</th>
+                  <th className="text-right py-2 font-semibold">Conv.</th>
+                </tr>
+              </thead>
+              <tbody>
+                {teamDetails.map((m) => (
+                  <tr key={m.name} className="border-t border-border/30">
+                    <td className="py-2.5 text-foreground font-medium">{m.name}</td>
+                    <td className="py-2.5 text-right text-foreground">{m.total}</td>
+                    <td className="py-2.5 text-right text-primary-container">{m.active}</td>
+                    <td className="py-2.5 text-right text-primary">{m.live}</td>
+                    <td className="py-2.5 text-right font-semibold text-foreground">{m.conv}%</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
