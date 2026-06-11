@@ -36,7 +36,7 @@ export default function TopNav() {
 
 
   return (
-    <header className="h-16 flex items-center justify-between px-8">
+    <header className="h-16 flex items-center justify-between px-8 border-b border-border/40 backdrop-blur-md sticky top-0 z-30 bg-background/70">
       {/* Search */}
       <div className="relative w-96">
         <div className="flex items-center gap-2 bg-input rounded-xl px-4 py-2.5">
