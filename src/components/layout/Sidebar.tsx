@@ -30,7 +30,7 @@ export default function Sidebar() {
       <div className="flex flex-col h-full p-6">
         {/* Logo */}
         <Link to="/dashboard" className="flex items-center justify-start mb-10">
-          <img src={buyerlyLogo} alt="Buyerly" className="h-20 w-auto" />
+          <img src={buyerlyLogo} alt="Buyerly" className="h-20 w-auto brightness-0 invert" />
         </Link>
 
         {/* Nav */}
