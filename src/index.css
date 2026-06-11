@@ -6,7 +6,84 @@
 
 @layer base {
   :root {
-    /* Deep onyx base with emerald brand accents */
+    --background: 210 40% 98%;
+    --foreground: 215 25% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 12%;
+
+    --primary: 160 67% 40%;
+    --primary-foreground: 0 0% 100%;
+
+    --primary-container: 158 75% 92%;
+    --primary-container-foreground: 158 100% 18%;
+
+    --secondary: 210 20% 94%;
+    --secondary-foreground: 215 25% 12%;
+
+    --secondary-container: 210 20% 94%;
+    --secondary-container-foreground: 215 20% 35%;
+
+    --muted: 210 20% 94%;
+    --muted-foreground: 215 16% 45%;
+
+    --accent: 210 20% 94%;
+    --accent-foreground: 215 25% 12%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --error-container: 0 80% 96%;
+    --error-container-foreground: 0 70% 35%;
+
+    --tertiary: 199 89% 45%;
+    --tertiary-container: 199 80% 92%;
+    --tertiary-foreground: 215 25% 12%;
+
+    --border: 220 13% 90%;
+    --input: 220 13% 88%;
+    --ring: 160 67% 40%;
+
+    --radius: 0.875rem;
+
+    --surface: 210 40% 98%;
+    --surface-container: 0 0% 100%;
+    --surface-container-low: 210 40% 98%;
+    --surface-container-high: 210 20% 96%;
+    --surface-container-highest: 220 13% 94%;
+    --surface-dim: 210 20% 94%;
+    --surface-bright: 0 0% 100%;
+    --surface-variant: 210 20% 94%;
+
+    --on-surface: 215 25% 12%;
+    --on-surface-variant: 215 16% 45%;
+
+    --outline: 220 13% 80%;
+    --outline-variant: 220 13% 92%;
+
+    --inverse-surface: 215 25% 12%;
+    --inverse-on-surface: 210 40% 98%;
+    --inverse-primary: 160 67% 40%;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 215 25% 12%;
+    --sidebar-primary: 160 67% 40%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 20% 96%;
+    --sidebar-accent-foreground: 215 25% 12%;
+    --sidebar-border: 220 13% 90%;
+    --sidebar-ring: 160 67% 40%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(160 67% 40%), hsl(165 80% 45%));
+    --gradient-surface: radial-gradient(1200px 600px at 0% 0%, hsl(160 67% 40% / 0.06), transparent 60%), radial-gradient(900px 500px at 100% 0%, hsl(199 89% 45% / 0.05), transparent 60%);
+    --shadow-elegant: 0 20px 60px -20px hsl(160 67% 40% / 0.18);
+    --shadow-ambient: 0 10px 40px -10px hsl(215 25% 12% / 0.08);
+  }
+
+  .dark {
     --background: 222 39% 6%;
     --foreground: 210 30% 96%;
 
@@ -25,9 +102,6 @@
     --secondary: 216 19% 18%;
     --secondary-foreground: 210 30% 96%;
 
-    --secondary-container: 216 22% 16%;
-    --secondary-container-foreground: 210 20% 80%;
-
     --muted: 220 18% 14%;
     --muted-foreground: 215 16% 62%;
 
@@ -37,34 +111,11 @@
     --destructive: 0 72% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --error-container: 0 60% 18%;
-    --error-container-foreground: 0 90% 88%;
-
-    --tertiary: 199 89% 58%;
-    --tertiary-container: 199 80% 26%;
-    --tertiary-foreground: 0 0% 100%;
-
     --border: 220 18% 16%;
     --input: 220 22% 12%;
     --ring: 158 84% 42%;
 
-    --radius: 0.875rem;
-
     --surface: 222 39% 6%;
-    --surface-container: 222 32% 9%;
-    --surface-container-low: 222 36% 7%;
-    --surface-container-high: 222 28% 12%;
-    --surface-container-highest: 222 24% 15%;
-    --surface-dim: 222 39% 5%;
-    --surface-bright: 222 28% 12%;
-    --surface-variant: 220 22% 14%;
-
-    --on-surface: 210 30% 96%;
-    --on-surface-variant: 215 16% 72%;
-
-    --outline: 215 14% 35%;
-    --outline-variant: 220 18% 20%;
-
     --inverse-surface: 210 30% 96%;
     --inverse-on-surface: 222 39% 6%;
     --inverse-primary: 158 84% 42%;
@@ -77,64 +128,12 @@
     --sidebar-accent-foreground: 210 30% 96%;
     --sidebar-border: 220 18% 14%;
     --sidebar-ring: 158 84% 42%;
-
-    --gradient-primary: linear-gradient(135deg, hsl(158 84% 42%), hsl(165 90% 50%));
-    --gradient-surface: radial-gradient(1200px 600px at 0% 0%, hsl(158 84% 42% / 0.08), transparent 60%), radial-gradient(900px 500px at 100% 0%, hsl(199 89% 58% / 0.06), transparent 60%);
-    --shadow-elegant: 0 20px 60px -20px hsl(158 84% 42% / 0.25);
-    --shadow-ambient: 0 10px 40px -10px hsl(0 0% 0% / 0.5);
-  }
-
-  .dark {
-    --background: 213 33% 13%;
-    --foreground: 224 100% 95%;
-
-    --card: 213 33% 16%;
-    --card-foreground: 224 100% 95%;
-
-    --popover: 213 33% 16%;
-    --popover-foreground: 224 100% 95%;
-
-    --primary: 160 67% 59%;
-    --primary-foreground: 213 63% 11%;
-
-    --primary-container: 160 82% 52%;
-    --primary-container-foreground: 157 100% 13%;
-
-    --secondary: 216 32% 18%;
-    --secondary-foreground: 224 100% 95%;
-
-    --muted: 216 32% 18%;
-    --muted-foreground: 215 20% 65%;
-
-    --accent: 216 32% 18%;
-    --accent-foreground: 224 100% 95%;
-
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 224 100% 95%;
-
-    --border: 216 32% 18%;
-    --input: 216 32% 18%;
-    --ring: 213 27% 84%;
-
-    --surface: 213 33% 13%;
-    --inverse-surface: 213 33% 20%;
-    --inverse-on-surface: 224 100% 95%;
-    --inverse-primary: 160 67% 59%;
-
-    --sidebar-background: 240 6% 10%;
-    --sidebar-foreground: 240 5% 96%;
-    --sidebar-primary: 224 76% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 4% 16%;
-    --sidebar-accent-foreground: 240 5% 96%;
-    --sidebar-border: 240 4% 16%;
-    --sidebar-ring: 217 91% 60%;
   }
 }
 
 @layer base {
   * {
-    @apply border-border/15;
+    @apply border-border/40;
   }
 
   body {
@@ -150,10 +149,10 @@
 
 @layer components {
   .glass-panel {
-    background: hsl(222 32% 12% / 0.6);
+    background: hsl(0 0% 100% / 0.7);
     backdrop-filter: blur(16px) saturate(140%);
     -webkit-backdrop-filter: blur(16px) saturate(140%);
-    border: 1px solid hsl(0 0% 100% / 0.06);
+    border: 1px solid hsl(215 25% 12% / 0.06);
   }
 
   .gradient-primary {
