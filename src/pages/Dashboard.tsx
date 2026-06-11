@@ -457,23 +457,54 @@ function Glow({ className }: { className: string }) {
 }
 
 function KpiTile({
-  className = "", tint, icon: Icon, label, value, change,
-}: { className?: string; tint: "neutral"|"amber"|"emerald"; icon: any; label: string; value: string; change: string }) {
+  className = "", tint, icon: Icon, label, value, change, spark,
+}: { className?: string; tint: "neutral"|"amber"|"emerald"; icon: any; label: string; value: string; change: string; spark?: number[] }) {
   const map = {
-    neutral: { chip: "bg-foreground/[0.06] text-foreground/80 ring-foreground/10", badge: "bg-foreground/[0.06] text-foreground/70" },
-    amber:   { chip: "bg-amber-400/15 text-amber-300 ring-amber-400/30",           badge: "bg-amber-400/10 text-amber-300" },
-    emerald: { chip: "bg-emerald-400/15 text-emerald-300 ring-emerald-400/30",     badge: "bg-emerald-400/10 text-emerald-300" },
+    neutral: { chip: "bg-foreground/[0.06] text-foreground/80 ring-foreground/10", badge: "bg-foreground/[0.06] text-foreground/70", stroke: "rgb(148 163 184)", fill: "rgb(148 163 184 / 0.18)" },
+    amber:   { chip: "bg-amber-400/15 text-amber-300 ring-amber-400/30",           badge: "bg-amber-400/10 text-amber-300",          stroke: "#fbbf24", fill: "rgba(251,191,36,0.2)" },
+    emerald: { chip: "bg-emerald-400/15 text-emerald-300 ring-emerald-400/30",     badge: "bg-emerald-400/10 text-emerald-300",      stroke: "#34d399", fill: "rgba(52,211,153,0.2)" },
   }[tint];
+  const path = spark && spark.length > 1 ? (() => {
+    const w = 100, h = 28;
+    const max = Math.max(...spark), min = Math.min(...spark);
+    const range = max - min || 1;
+    const step = w / (spark.length - 1);
+    const pts = spark.map((v, i) => `${i * step},${h - ((v - min) / range) * h}`);
+    return { line: `M${pts.join(" L")}`, area: `M0,${h} L${pts.join(" L")} L${w},${h} Z` };
+  })() : null;
   return (
     <BentoCard className={className}>
       <div className="flex items-start justify-between mb-2">
         <div className={`w-9 h-9 rounded-lg ${map.chip} ring-1 flex items-center justify-center`}>
           <Icon className="w-4 h-4" />
         </div>
-        <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${map.badge} tabular-nums`}>{change}</span>
+        <span className={`inline-flex items-center gap-0.5 text-[10px] font-semibold px-1.5 py-0.5 rounded ${map.badge} tabular-nums`}>
+          {change.startsWith("-") ? <ArrowDownRight className="w-2.5 h-2.5" /> : <ArrowUpRight className="w-2.5 h-2.5" />}
+          {change}
+        </span>
       </div>
       <p className="text-2xl font-headline font-bold text-foreground tabular-nums">{value}</p>
-      <p className="text-[11px] text-muted-foreground uppercase tracking-wider mt-0.5">{label}</p>
+      <div className="flex items-end justify-between mt-0.5 gap-2">
+        <p className="text-[11px] text-muted-foreground uppercase tracking-wider">{label}</p>
+        {path && (
+          <svg viewBox="0 0 100 28" preserveAspectRatio="none" className="w-16 h-6 shrink-0 overflow-visible">
+            <path d={path.area} fill={map.fill} />
+            <path d={path.line} fill="none" stroke={map.stroke} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        )}
+      </div>
     </BentoCard>
+  );
+}
+
+function PulseStat({ label, value, delta, positive }: { label: string; value: string; delta: string; positive?: boolean }) {
+  return (
+    <div className="min-w-[88px]">
+      <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-1.5">{label}</p>
+      <div className="flex items-baseline gap-1.5">
+        <span className="text-xl font-headline font-bold text-foreground tabular-nums leading-none">{value}</span>
+        <span className={`text-[10px] font-semibold tabular-nums ${positive ? "text-emerald-300" : "text-rose-300"}`}>{delta}</span>
+      </div>
+    </div>
   );
 }
