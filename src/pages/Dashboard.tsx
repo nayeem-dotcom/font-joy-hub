@@ -310,44 +310,76 @@ export default function Dashboard() {
           </div>
         </BentoCard>
 
-        {/* ===== FUNNEL STAGES — wide ===== */}
+        {/* ===== FUNNEL CONVERSION — wide ===== */}
         <BentoCard className="col-span-12 md:col-span-8 row-span-3">
           <div className="flex items-start justify-between mb-5">
             <div>
               <h2 className="text-base font-headline font-bold text-foreground flex items-center gap-2">
-                <Activity className="w-4 h-4 text-blue-700" /> Funnel Stages
+                <Activity className="w-4 h-4 text-blue-700" /> Conversion Funnel
               </h2>
-              <p className="text-xs text-muted-foreground mt-0.5">Where buyers sit right now</p>
+              <p className="text-xs text-muted-foreground mt-0.5">Stage-to-stage drop-off across {totalBuyers} buyers</p>
             </div>
             <a href="/pipeline" className="text-xs font-semibold text-blue-700 hover:text-blue-800 inline-flex items-center gap-1">
               Open funnel <ArrowUpRight className="w-3 h-3" />
             </a>
           </div>
-          <div className="space-y-2.5 flex-1 flex flex-col justify-center">
-            {(() => {
-              const stages = [
-                { label: "Buyer Created",       color: "from-blue-600/40 to-blue-700/40",  chip: "bg-foreground/[0.06] text-foreground/80" },
-                { label: "Paperwork",           color: "from-blue-700/55 to-blue-800/55", chip: "bg-foreground/[0.08] text-foreground/85" },
-                { label: "Creative Submission", color: "from-blue-700/70 to-blue-800/70", chip: "bg-blue-700/10 text-blue-700/80" },
-                { label: "Technical Setup",     color: "from-blue-700/85 to-blue-800/85", chip: "bg-blue-700/15 text-blue-700" },
-                { label: "Live",                color: "from-blue-700 to-blue-800",       chip: "bg-blue-700/20 text-blue-800" },
-              ];
-              const counts = stages.map(s => buyers.filter(b => b.stage === s.label).length);
-              const max = Math.max(...counts, 1);
-              return stages.map((s, i) => (
-                <div key={s.label} className="grid grid-cols-[150px_1fr_50px] items-center gap-3 group">
-                  <span className={`text-xs px-2 py-1 rounded-md font-medium ${s.chip} w-fit`}>{s.label}</span>
-                  <div className="relative h-7 rounded-md bg-muted/60 overflow-hidden">
-                    <div className={`h-full rounded-md bg-gradient-to-r ${s.color} shadow-lg transition-all duration-700`}
-                         style={{ width: `${(counts[i] / max) * 100}%` }}>
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-white/10 rounded-md" />
+          {(() => {
+            const stages = [
+              { label: "Buyer Created" },
+              { label: "Paperwork" },
+              { label: "Creative Submission" },
+              { label: "Technical Setup" },
+              { label: "Live" },
+            ];
+            // Cumulative count: buyers at or beyond this stage
+            const order = ["Buyer Created", "Paperwork", "Creative Submission", "Technical Setup", "Live"];
+            const cum = stages.map((s) => {
+              const idx = order.indexOf(s.label);
+              return buyers.filter((b) => {
+                const bi = order.indexOf(b.stage);
+                return bi >= idx;
+              }).length;
+            });
+            const top = cum[0] || 1;
+            return (
+              <div className="flex-1 flex flex-col justify-center gap-2">
+                {stages.map((s, i) => {
+                  const pct = (cum[i] / top) * 100;
+                  const dropPct = i > 0 ? Math.max(0, Math.round(((cum[i - 1] - cum[i]) / (cum[i - 1] || 1)) * 100)) : 0;
+                  const intensity = 30 + (i * 14);
+                  return (
+                    <div key={s.label}>
+                      {i > 0 && (
+                        <div className="flex items-center gap-2 pl-[170px] mb-1">
+                          <span className="text-[10px] uppercase tracking-wider text-muted-foreground/70 font-semibold">drop-off</span>
+                          <span className={`text-[10px] font-bold tabular-nums ${dropPct > 30 ? "text-rose-600" : dropPct > 15 ? "text-amber-600" : "text-foreground/60"}`}>−{dropPct}%</span>
+                          <div className="flex-1 h-px bg-border/40" />
+                        </div>
+                      )}
+                      <div className="grid grid-cols-[160px_1fr_80px] items-center gap-3 group">
+                        <span className="text-xs font-medium text-foreground truncate">{s.label}</span>
+                        <div className="relative h-8 rounded-lg bg-muted/50 overflow-hidden ring-1 ring-border/30">
+                          <div
+                            className="h-full rounded-lg transition-all duration-700 relative flex items-center justify-end pr-2"
+                            style={{
+                              width: `${pct}%`,
+                              background: `linear-gradient(90deg, hsl(220 70% ${50 - i * 3}%) 0%, hsl(220 70% ${42 - i * 3}%) 100%)`,
+                            }}
+                          >
+                            <span className="text-[10px] font-bold text-primary-foreground/90 tabular-nums">{Math.round(pct)}%</span>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <span className="text-sm font-bold text-foreground tabular-nums">{cum[i]}</span>
+                          <span className="text-[10px] text-muted-foreground"> / {top}</span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <span className="text-sm font-bold text-foreground text-right tabular-nums">{counts[i]}</span>
-                </div>
-              ));
-            })()}
-          </div>
+                  );
+                })}
+              </div>
+            );
+          })()}
         </BentoCard>
 
         {/* ===== ACTIVITY ===== */}
