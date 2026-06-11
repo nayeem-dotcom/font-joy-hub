@@ -205,29 +205,39 @@ export default function BuyerPipeline() {
       </div>
 
       {/* ===== SWIMLANES ===== */}
-      <div className="space-y-3">
+      <div className="space-y-2.5">
         {LANES.map((lane, laneIdx) => {
           const items = byStage[lane.stage] || [];
           const isLive = lane.stage === "Live";
           const isVoid = lane.stage === "Voided/Stuck";
           return (
-            <div key={lane.stage} className="relative overflow-hidden rounded-2xl border border-border/50 bg-card group/lane">
+            <div key={lane.stage} className="relative overflow-hidden rounded-2xl border border-border/50 bg-card group/lane hover:border-border transition-colors">
               {/* Left accent bar */}
-              <div className={`absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b ${lane.accent}`} />
+              <div className={`absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b ${lane.accent}`} />
 
-              <div className="grid grid-cols-[220px_1fr] gap-3 items-center pl-4">
+              <div className="grid grid-cols-[240px_1fr] gap-3 items-stretch pl-5">
                 {/* Lane header */}
-                <div className="py-4 pr-2 border-r border-border/30">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className={`w-2 h-2 rounded-full ${lane.dot}`} />
-                    <h3 className="text-sm font-headline font-bold text-foreground">{lane.stage}</h3>
+                <div className="py-4 pr-3 border-r border-border/40 flex flex-col justify-center">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-[9px] tabular-nums font-bold text-muted-foreground/60 tracking-wider">
+                      STAGE {String(laneIdx + 1).padStart(2, "0")}
+                    </span>
+                    {/* progress dots */}
+                    <div className="flex items-center gap-1">
+                      {LANES.slice(0, -1).map((_, di) => (
+                        <span key={di} className={`w-1 h-1 rounded-full ${di <= laneIdx && !isVoid ? "bg-blue-700" : "bg-foreground/15"}`} />
+                      ))}
+                    </div>
                   </div>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-2xl font-headline font-bold text-foreground tabular-nums">{items.length}</span>
-                    <span className="text-[11px] text-muted-foreground">buyer{items.length === 1 ? "" : "s"}</span>
+                  <h3 className="text-sm font-headline font-bold text-foreground leading-tight">{lane.stage}</h3>
+                  <div className="flex items-baseline gap-2 mt-1.5">
+                    <span className="text-3xl font-headline font-bold text-foreground tabular-nums leading-none">{items.length}</span>
+                    <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">buyer{items.length === 1 ? "" : "s"}</span>
                   </div>
                   {laneIdx < FUNNEL_STEPS.length - 1 && !isVoid && (
-                    <p className="text-[10px] text-muted-foreground mt-1">→ {FUNNEL_STEPS[laneIdx + 1]}</p>
+                    <p className="text-[10px] text-muted-foreground/70 mt-2 inline-flex items-center gap-1">
+                      <ArrowRight className="w-2.5 h-2.5" /> {FUNNEL_STEPS[laneIdx + 1]}
+                    </p>
                   )}
                 </div>
 
