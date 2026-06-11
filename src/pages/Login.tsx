@@ -11,8 +11,9 @@ export default function Login() {
     <div className="min-h-screen bg-surface flex items-center justify-center p-6">
       <div className="w-full max-w-5xl flex rounded-2xl overflow-hidden shadow-ambient bg-card min-h-[600px]">
         {/* Left - Branding */}
-        <div className="w-1/2 bg-inverse-surface text-inverse-on-surface p-12 flex flex-col justify-between relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(213,63%,11%)] via-[hsl(213,33%,20%)] to-[hsl(156,100%,21%,0.3)]" />
+        <div className="w-1/2 text-foreground p-12 flex flex-col justify-between relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(222,40%,8%)] via-[hsl(222,32%,12%)] to-[hsl(158,84%,42%,0.25)]" />
+          <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-primary/20 blur-3xl" />
           <div className="relative z-10">
             <div className="flex items-center gap-3 mb-20">
               <img src={buyerlyLogo} alt="Buyerly" className="h-10 w-auto brightness-0 invert" />
@@ -21,15 +22,15 @@ export default function Login() {
               Master your{" "}
               <span className="text-primary-container">growth engine</span> with precision.
             </h2>
-            <p className="text-inverse-on-surface/70 text-base leading-relaxed">
+            <p className="text-muted-foreground text-base leading-relaxed">
               Join over 2,500+ high-growth teams using Buyerly to track, analyze, and optimize every stage of their buyer journey.
             </p>
           </div>
-          <div className="relative z-10 glass-panel rounded-xl p-4 flex items-center gap-3">
+          <div className="relative z-10 glass-panel rounded-xl p-4 flex items-center gap-3 text-foreground">
             <div className="flex -space-x-2">
-              <div className="w-8 h-8 rounded-full bg-primary-container/30 border-2 border-inverse-surface" />
-              <div className="w-8 h-8 rounded-full bg-tertiary-container/30 border-2 border-inverse-surface" />
-              <div className="w-8 h-8 rounded-full bg-surface-variant/30 border-2 border-inverse-surface" />
+              <div className="w-8 h-8 rounded-full bg-primary/40 border-2 border-card" />
+              <div className="w-8 h-8 rounded-full bg-tertiary/40 border-2 border-card" />
+              <div className="w-8 h-8 rounded-full bg-surface-variant border-2 border-card" />
             </div>
             <p className="text-sm">
               <strong>Active trackers</strong> currently monitoring 12.4M conversions.

@@ -26,11 +26,11 @@ export default function Sidebar() {
   const navigate = useNavigate();
 
   return (
-    <aside className="fixed left-0 top-0 h-full z-40 w-64 bg-surface-container-low font-headline font-semibold tracking-tight flex flex-col">
+    <aside className="fixed left-0 top-0 h-full z-40 w-64 bg-sidebar border-r border-border/40 font-headline font-semibold tracking-tight flex flex-col">
       <div className="flex flex-col h-full p-6">
         {/* Logo */}
         <Link to="/dashboard" className="flex items-center justify-start mb-10">
-          <img src={buyerlyLogo} alt="Buyerly" className="h-20 w-auto" />
+          <img src={buyerlyLogo} alt="Buyerly" className="h-20 w-auto brightness-0 invert" />
         </Link>
 
         {/* Nav */}
