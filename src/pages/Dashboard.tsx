@@ -2,7 +2,8 @@ import { useState, useMemo } from "react";
 import {
   Users, Zap, Clock, AlertTriangle, UserPlus, CheckCircle2, Layers,
   ArrowUpRight, ArrowDownRight, Sparkles, Activity, Target, Award,
-  Flame, ChevronRight, FileText, TrendingUp,
+  Flame, ChevronRight, FileText, TrendingUp, Filter, Download,
+  Pin, Search, Calendar,
 } from "lucide-react";
 import { useBuyers, TEAM_MEMBERS, VERTICALS } from "@/contexts/BuyerContext";
 
@@ -97,13 +98,18 @@ export default function Dashboard() {
         <div className="absolute -top-32 -right-20 w-[28rem] h-[28rem] rounded-full bg-gradient-to-br from-emerald-500/25 via-teal-500/10 to-transparent blur-3xl" />
         <div className="absolute -bottom-32 left-1/4 w-96 h-96 rounded-full bg-gradient-to-br from-sky-500/20 via-violet-500/10 to-transparent blur-3xl" />
         <div className="relative flex items-end justify-between gap-6 flex-wrap">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-400/10 border border-emerald-400/20 text-emerald-300 text-xs font-medium mb-3">
-              <span className="relative flex w-1.5 h-1.5">
-                <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-75" />
-                <span className="relative rounded-full bg-emerald-400 w-1.5 h-1.5" />
-              </span>
-              Live · Synced just now
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-3 flex-wrap">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-400/10 border border-emerald-400/20 text-emerald-300 text-xs font-medium">
+                <span className="relative flex w-1.5 h-1.5">
+                  <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-75" />
+                  <span className="relative rounded-full bg-emerald-400 w-1.5 h-1.5" />
+                </span>
+                Live · synced now
+              </div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-foreground/5 border border-border/40 text-xs text-muted-foreground">
+                <Calendar className="w-3 h-3" /> {new Date().toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" })}
+              </div>
             </div>
             <h1 className="text-4xl font-headline font-bold tracking-tight bg-gradient-to-br from-foreground via-foreground to-foreground/50 bg-clip-text text-transparent">
               Welcome back, Nayeem
@@ -111,6 +117,31 @@ export default function Dashboard() {
             <p className="text-muted-foreground mt-2 max-w-xl text-sm">
               <span className="text-emerald-300 font-semibold">{liveBuyers} live</span> · <span className="text-foreground font-semibold">{activeBuyers} active</span> · <span className="text-amber-300 font-semibold">{stuckBuyers} need attention</span> — your funnel today.
             </p>
+
+            {/* Weekly pulse strip */}
+            <div className="mt-6 flex items-end gap-5 flex-wrap">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-1.5">This week</p>
+                <div className="flex items-end gap-2">
+                  {[24, 32, 18, 41, 36, 52, 47].map((v, i) => {
+                    const today = i === 6;
+                    const max = 52;
+                    return (
+                      <div key={i} className="flex flex-col items-center gap-1.5">
+                        <div className="h-10 flex items-end">
+                          <div className={`w-3 rounded-sm transition-all ${today ? "bg-gradient-to-t from-emerald-500 to-teal-400 shadow shadow-emerald-500/40" : "bg-foreground/15 group-hover:bg-foreground/25"}`} style={{ height: `${(v / max) * 100}%`, minHeight: 4 }} />
+                        </div>
+                        <span className={`text-[10px] tabular-nums ${today ? "text-emerald-300 font-bold" : "text-muted-foreground/60"}`}>{["M","T","W","T","F","S","S"][i]}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              <PulseStat label="Onboarded" value="47" delta="+8" positive />
+              <PulseStat label="Conv. rate" value={`${conversion}%`} delta="+2.1pt" positive />
+              <PulseStat label="Cycle time" value={`${avgDays}d`} delta="-1.4d" positive />
+              <PulseStat label="Stuck" value={String(stuckBuyers)} delta="0" positive={stuckBuyers === 0} />
+            </div>
           </div>
           <div className="flex items-center gap-3">
             <div className="flex items-center bg-surface-container-high/80 backdrop-blur rounded-xl p-1 border border-border/40">
@@ -166,33 +197,35 @@ export default function Dashboard() {
         </BentoCard>
 
         {/* Active */}
-        <KpiTile className="col-span-6 md:col-span-3 row-span-1" tint="emerald" icon={Zap} label="Active" value={String(activeBuyers)} change="+4.2%" />
+        <KpiTile className="col-span-6 md:col-span-3 row-span-1" tint="emerald" icon={Zap} label="Active" value={String(activeBuyers)} change="+4.2%" spark={[40,38,44,42,48,46,52,55]} />
         {/* Conversion */}
-        <KpiTile className="col-span-6 md:col-span-2 row-span-1" tint="neutral" icon={Target} label="Conv." value={`${conversion}%`} change="+2.1pt" />
+        <KpiTile className="col-span-6 md:col-span-2 row-span-1" tint="neutral" icon={Target} label="Conv." value={`${conversion}%`} change="+2.1pt" spark={[12,14,13,18,22,24,28,30]} />
         {/* Avg days */}
-        <KpiTile className="col-span-6 md:col-span-2 row-span-1" tint="amber" icon={Clock} label="Avg days" value={avgDays} change="-2d" />
+        <KpiTile className="col-span-6 md:col-span-2 row-span-1" tint="amber" icon={Clock} label="Avg days" value={avgDays} change="-2d" spark={[70,65,60,58,55,52,48,42]} />
 
         {/* New buyers */}
         <BentoCard className="col-span-6 md:col-span-3 row-span-1">
-          <div className="flex items-center justify-between h-full">
-            <div>
-              <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-semibold">New today</p>
-              <p className="text-3xl font-headline font-bold text-foreground mt-1 tabular-nums">{newBuyers}</p>
+          <div className="flex items-start justify-between mb-1">
+            <div className="w-9 h-9 rounded-lg bg-foreground/[0.06] ring-1 ring-foreground/10 flex items-center justify-center">
+              <UserPlus className="w-4 h-4 text-foreground/70" />
             </div>
-            <div className="w-10 h-10 rounded-xl bg-foreground/[0.06] ring-1 ring-foreground/10 flex items-center justify-center">
-              <UserPlus className="w-5 h-5 text-foreground/70" />
-            </div>
+            <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-foreground/[0.06] text-foreground/70 tabular-nums">+{newBuyers} today</span>
           </div>
+          <p className="text-2xl font-headline font-bold text-foreground tabular-nums mt-auto">{newBuyers}</p>
+          <p className="text-[11px] text-muted-foreground uppercase tracking-wider mt-0.5">New buyers</p>
         </BentoCard>
 
         {/* Stuck */}
-        <BentoCard className="col-span-6 md:col-span-2 row-span-1 bg-gradient-to-br from-rose-500/10 via-card to-card border-rose-400/20">
-          <a href="/pipeline" className="flex items-center justify-between h-full group">
-            <div>
-              <p className="text-[10px] uppercase tracking-[0.18em] text-rose-300/80 font-semibold">Stuck</p>
-              <p className="text-3xl font-headline font-bold text-foreground mt-1 tabular-nums">{stuckBuyers}</p>
+        <BentoCard className={`col-span-6 md:col-span-2 row-span-1 ${stuckBuyers > 0 ? "bg-gradient-to-br from-rose-500/10 via-card to-card border-rose-400/20" : ""}`}>
+          <a href="/pipeline" className="flex flex-col h-full group">
+            <div className="flex items-start justify-between mb-1">
+              <div className={`w-9 h-9 rounded-lg ring-1 flex items-center justify-center ${stuckBuyers > 0 ? "bg-rose-400/15 ring-rose-400/30" : "bg-foreground/[0.06] ring-foreground/10"}`}>
+                <AlertTriangle className={`w-4 h-4 ${stuckBuyers > 0 ? "text-rose-300" : "text-foreground/70"}`} />
+              </div>
+              <ArrowUpRight className="w-3.5 h-3.5 text-muted-foreground/40 group-hover:text-foreground transition-colors" />
             </div>
-            <AlertTriangle className="w-5 h-5 text-rose-300 group-hover:scale-110 transition-transform" />
+            <p className="text-2xl font-headline font-bold text-foreground tabular-nums mt-auto">{stuckBuyers}</p>
+            <p className="text-[11px] text-muted-foreground uppercase tracking-wider mt-0.5">Stuck</p>
           </a>
         </BentoCard>
 
@@ -427,23 +460,54 @@ function Glow({ className }: { className: string }) {
 }
 
 function KpiTile({
-  className = "", tint, icon: Icon, label, value, change,
-}: { className?: string; tint: "neutral"|"amber"|"emerald"; icon: any; label: string; value: string; change: string }) {
+  className = "", tint, icon: Icon, label, value, change, spark,
+}: { className?: string; tint: "neutral"|"amber"|"emerald"; icon: any; label: string; value: string; change: string; spark?: number[] }) {
   const map = {
-    neutral: { chip: "bg-foreground/[0.06] text-foreground/80 ring-foreground/10", badge: "bg-foreground/[0.06] text-foreground/70" },
-    amber:   { chip: "bg-amber-400/15 text-amber-300 ring-amber-400/30",           badge: "bg-amber-400/10 text-amber-300" },
-    emerald: { chip: "bg-emerald-400/15 text-emerald-300 ring-emerald-400/30",     badge: "bg-emerald-400/10 text-emerald-300" },
+    neutral: { chip: "bg-foreground/[0.06] text-foreground/80 ring-foreground/10", badge: "bg-foreground/[0.06] text-foreground/70", stroke: "rgb(148 163 184)", fill: "rgb(148 163 184 / 0.18)" },
+    amber:   { chip: "bg-amber-400/15 text-amber-300 ring-amber-400/30",           badge: "bg-amber-400/10 text-amber-300",          stroke: "#fbbf24", fill: "rgba(251,191,36,0.2)" },
+    emerald: { chip: "bg-emerald-400/15 text-emerald-300 ring-emerald-400/30",     badge: "bg-emerald-400/10 text-emerald-300",      stroke: "#34d399", fill: "rgba(52,211,153,0.2)" },
   }[tint];
+  const path = spark && spark.length > 1 ? (() => {
+    const w = 100, h = 28;
+    const max = Math.max(...spark), min = Math.min(...spark);
+    const range = max - min || 1;
+    const step = w / (spark.length - 1);
+    const pts = spark.map((v, i) => `${i * step},${h - ((v - min) / range) * h}`);
+    return { line: `M${pts.join(" L")}`, area: `M0,${h} L${pts.join(" L")} L${w},${h} Z` };
+  })() : null;
   return (
     <BentoCard className={className}>
       <div className="flex items-start justify-between mb-2">
         <div className={`w-9 h-9 rounded-lg ${map.chip} ring-1 flex items-center justify-center`}>
           <Icon className="w-4 h-4" />
         </div>
-        <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${map.badge} tabular-nums`}>{change}</span>
+        <span className={`inline-flex items-center gap-0.5 text-[10px] font-semibold px-1.5 py-0.5 rounded ${map.badge} tabular-nums`}>
+          {change.startsWith("-") ? <ArrowDownRight className="w-2.5 h-2.5" /> : <ArrowUpRight className="w-2.5 h-2.5" />}
+          {change}
+        </span>
       </div>
       <p className="text-2xl font-headline font-bold text-foreground tabular-nums">{value}</p>
-      <p className="text-[11px] text-muted-foreground uppercase tracking-wider mt-0.5">{label}</p>
+      <div className="flex items-end justify-between mt-0.5 gap-2">
+        <p className="text-[11px] text-muted-foreground uppercase tracking-wider">{label}</p>
+        {path && (
+          <svg viewBox="0 0 100 28" preserveAspectRatio="none" className="w-16 h-6 shrink-0 overflow-visible">
+            <path d={path.area} fill={map.fill} />
+            <path d={path.line} fill="none" stroke={map.stroke} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        )}
+      </div>
     </BentoCard>
+  );
+}
+
+function PulseStat({ label, value, delta, positive }: { label: string; value: string; delta: string; positive?: boolean }) {
+  return (
+    <div className="min-w-[88px]">
+      <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-1.5">{label}</p>
+      <div className="flex items-baseline gap-1.5">
+        <span className="text-xl font-headline font-bold text-foreground tabular-nums leading-none">{value}</span>
+        <span className={`text-[10px] font-semibold tabular-nums ${positive ? "text-emerald-300" : "text-rose-300"}`}>{delta}</span>
+      </div>
+    </div>
   );
 }
