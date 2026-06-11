@@ -10,14 +10,14 @@ import { useBuyers, TEAM_MEMBERS, VERTICALS } from "@/contexts/BuyerContext";
 type Period = "Week" | "Month" | "Year";
 
 const activities = [
-  { icon: CheckCircle2, color: "text-emerald-300", bg: "bg-emerald-400/10", title: "SolarTech Inc. went live", sub: "Nayeem Ahmad", time: "2h" },
+  { icon: CheckCircle2, color: "text-emerald-600", bg: "bg-emerald-500/10", title: "SolarTech Inc. went live", sub: "Nayeem Ahmad", time: "2h" },
   { icon: FileText,     color: "text-foreground/70",  bg: "bg-foreground/[0.06]",     title: "Note on BlueWave Logistics", sub: "Pending final docs", time: "5h" },
-  { icon: AlertTriangle,color: "text-amber-300",   bg: "bg-amber-400/10",   title: "Drop-off: Nexus Retail", sub: "Stuck 5 days in Qualification", time: "1d" },
+  { icon: AlertTriangle,color: "text-amber-600",   bg: "bg-amber-500/10",   title: "Drop-off: Nexus Retail", sub: "Stuck 5 days in Qualification", time: "1d" },
   { icon: UserPlus,     color: "text-foreground/70",  bg: "bg-foreground/[0.06]",  title: "New buyer assigned",      sub: "Assigned to Joe Austin", time: "2d" },
 ];
 
 const VERTICAL_COLORS = [
-  "from-emerald-300 to-teal-400","from-emerald-400 to-teal-500","from-emerald-500 to-teal-600",
+  "from-emerald-300 to-teal-400","from-emerald-500 to-teal-600","from-emerald-500 to-teal-600",
   "from-teal-400 to-cyan-500","from-emerald-400/80 to-teal-500/80","from-emerald-300/70 to-teal-400/70",
   "from-emerald-500/90 to-teal-600/90","from-teal-500 to-emerald-600",
 ];
@@ -50,7 +50,7 @@ export default function Dashboard() {
     return entries.map(([name, value], i) => ({
       name, value, pct: Math.round((value / total) * 100),
       gradient: VERTICAL_COLORS[i % VERTICAL_COLORS.length],
-      color: ["#34d399","#10b981","#059669","#5eead4","#2dd4bf","#14b8a6","#047857","#6ee7b7"][i % 8],
+      color: ["#059669","#10b981","#059669","#5eead4","#2dd4bf","#14b8a6","#047857","#6ee7b7"][i % 8],
     }));
   }, [buyers]);
 
@@ -100,7 +100,7 @@ export default function Dashboard() {
         <div className="relative flex items-end justify-between gap-6 flex-wrap">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-3 flex-wrap">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-400/10 border border-emerald-400/20 text-emerald-300 text-xs font-medium">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-400/20 text-emerald-600 text-xs font-medium">
                 <span className="relative flex w-1.5 h-1.5">
                   <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-75" />
                   <span className="relative rounded-full bg-emerald-400 w-1.5 h-1.5" />
@@ -115,7 +115,7 @@ export default function Dashboard() {
               Welcome back, Nayeem
             </h1>
             <p className="text-muted-foreground mt-2 max-w-xl text-sm">
-              <span className="text-emerald-300 font-semibold">{liveBuyers} live</span> · <span className="text-foreground font-semibold">{activeBuyers} active</span> · <span className="text-amber-300 font-semibold">{stuckBuyers} need attention</span> — your funnel today.
+              <span className="text-emerald-600 font-semibold">{liveBuyers} live</span> · <span className="text-foreground font-semibold">{activeBuyers} active</span> · <span className="text-amber-600 font-semibold">{stuckBuyers} need attention</span> — your funnel today.
             </p>
 
             {/* Weekly pulse strip */}
@@ -131,7 +131,7 @@ export default function Dashboard() {
                         <div className="h-10 flex items-end">
                           <div className={`w-3 rounded-sm transition-all ${today ? "bg-gradient-to-t from-emerald-500 to-teal-400 shadow shadow-emerald-500/40" : "bg-foreground/15 group-hover:bg-foreground/25"}`} style={{ height: `${(v / max) * 100}%`, minHeight: 4 }} />
                         </div>
-                        <span className={`text-[10px] tabular-nums ${today ? "text-emerald-300 font-bold" : "text-muted-foreground/60"}`}>{["M","T","W","T","F","S","S"][i]}</span>
+                        <span className={`text-[10px] tabular-nums ${today ? "text-emerald-600 font-bold" : "text-muted-foreground/60"}`}>{["M","T","W","T","F","S","S"][i]}</span>
                       </div>
                     );
                   })}
@@ -144,7 +144,7 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex items-center bg-surface-container-high/80 backdrop-blur rounded-xl p-1 border border-border/40">
+            <div className="flex items-center bg-muted-high/80 backdrop-blur rounded-xl p-1 border border-border/40">
               {(["Week","Month","Year"] as Period[]).map((p) => (
                 <button key={p} onClick={() => setPeriod(p)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
@@ -155,7 +155,7 @@ export default function Dashboard() {
               ))}
             </div>
             <button className="px-4 py-2.5 rounded-xl bg-foreground/5 hover:bg-foreground/10 border border-border/40 text-sm font-medium text-foreground inline-flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-emerald-300" /> Insights
+              <Sparkles className="w-4 h-4 text-emerald-600" /> Insights
             </button>
           </div>
         </div>
@@ -167,10 +167,10 @@ export default function Dashboard() {
         <BentoCard className="col-span-12 md:col-span-5 row-span-2 group bg-gradient-to-br from-emerald-500/10 via-card to-card border-emerald-400/20">
           <Glow className="from-emerald-500/30" />
           <div className="flex items-start justify-between mb-4">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-400/15 ring-1 ring-emerald-400/30 flex items-center justify-center">
-              <Users className="w-6 h-6 text-emerald-300" />
+            <div className="w-12 h-12 rounded-2xl bg-emerald-500/15 ring-1 ring-emerald-500/30 flex items-center justify-center">
+              <Users className="w-6 h-6 text-emerald-600" />
             </div>
-            <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-md bg-emerald-400/10 text-emerald-300">
+            <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-md bg-emerald-500/10 text-emerald-600">
               <ArrowUpRight className="w-3 h-3" /> +12.5%
             </span>
           </div>
@@ -184,12 +184,12 @@ export default function Dashboard() {
                 return (<>
                   <defs>
                     <linearGradient id="ga" x1="0" x2="0" y1="0" y2="1">
-                      <stop offset="0%" stopColor="#34d399" stopOpacity="0.4" />
-                      <stop offset="100%" stopColor="#34d399" stopOpacity="0" />
+                      <stop offset="0%" stopColor="#059669" stopOpacity="0.4" />
+                      <stop offset="100%" stopColor="#059669" stopOpacity="0" />
                     </linearGradient>
                   </defs>
                   <path d={p.area} fill="url(#ga)" />
-                  <path d={p.line} fill="none" stroke="#34d399" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d={p.line} fill="none" stroke="#059669" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </>);
               })()}
             </svg>
@@ -219,8 +219,8 @@ export default function Dashboard() {
         <BentoCard className={`col-span-6 md:col-span-2 row-span-1 ${stuckBuyers > 0 ? "bg-gradient-to-br from-rose-500/10 via-card to-card border-rose-400/20" : ""}`}>
           <a href="/pipeline" className="flex flex-col h-full group">
             <div className="flex items-start justify-between mb-1">
-              <div className={`w-9 h-9 rounded-lg ring-1 flex items-center justify-center ${stuckBuyers > 0 ? "bg-rose-400/15 ring-rose-400/30" : "bg-foreground/[0.06] ring-foreground/10"}`}>
-                <AlertTriangle className={`w-4 h-4 ${stuckBuyers > 0 ? "text-rose-300" : "text-foreground/70"}`} />
+              <div className={`w-9 h-9 rounded-lg ring-1 flex items-center justify-center ${stuckBuyers > 0 ? "bg-rose-500/15 ring-rose-500/30" : "bg-foreground/[0.06] ring-foreground/10"}`}>
+                <AlertTriangle className={`w-4 h-4 ${stuckBuyers > 0 ? "text-rose-600" : "text-foreground/70"}`} />
               </div>
               <ArrowUpRight className="w-3.5 h-3.5 text-muted-foreground/40 group-hover:text-foreground transition-colors" />
             </div>
@@ -234,7 +234,7 @@ export default function Dashboard() {
           <div className="flex items-start justify-between mb-4">
             <div>
               <h2 className="text-base font-headline font-bold text-foreground flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-emerald-300" /> Volume Trend
+                <TrendingUp className="w-4 h-4 text-emerald-600" /> Volume Trend
               </h2>
               <p className="text-xs text-muted-foreground mt-0.5">Buyers onboarded per month · last 12 months</p>
             </div>
@@ -247,8 +247,8 @@ export default function Dashboard() {
             <svg viewBox="0 0 600 200" preserveAspectRatio="none" className="w-full h-full overflow-visible">
               <defs>
                 <linearGradient id="areaG" x1="0" x2="0" y1="0" y2="1">
-                  <stop offset="0%" stopColor="#34d399" stopOpacity="0.4" />
-                  <stop offset="100%" stopColor="#34d399" stopOpacity="0" />
+                  <stop offset="0%" stopColor="#059669" stopOpacity="0.4" />
+                  <stop offset="100%" stopColor="#059669" stopOpacity="0" />
                 </linearGradient>
               </defs>
               {/* Grid lines */}
@@ -256,10 +256,10 @@ export default function Dashboard() {
                 <line key={i} x1="0" x2="600" y1={i*60} y2={i*60} stroke="hsl(var(--border))" strokeOpacity="0.3" strokeDasharray="3,4" />
               ))}
               <path d={chart.area} fill="url(#areaG)" transform="translate(0, 10)" />
-              <path d={chart.line} fill="none" stroke="#34d399" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" transform="translate(0, 10)" />
+              <path d={chart.line} fill="none" stroke="#059669" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" transform="translate(0, 10)" />
               {chart.points.map((pt, i) => {
                 const [x, y] = pt.split(",").map(Number);
-                return <circle key={i} cx={x} cy={y + 10} r="3.5" fill="hsl(var(--background))" stroke="#34d399" strokeWidth="2" />;
+                return <circle key={i} cx={x} cy={y + 10} r="3.5" fill="hsl(var(--background))" stroke="#059669" strokeWidth="2" />;
               })}
             </svg>
           </div>
@@ -273,7 +273,7 @@ export default function Dashboard() {
           <div className="flex items-start justify-between mb-2">
             <div>
               <h2 className="text-base font-headline font-bold text-foreground flex items-center gap-2">
-                <Layers className="w-4 h-4 text-emerald-300" /> By Category
+                <Layers className="w-4 h-4 text-emerald-600" /> By Category
               </h2>
               <p className="text-xs text-muted-foreground mt-0.5">Top verticals</p>
             </div>
@@ -313,29 +313,29 @@ export default function Dashboard() {
           <div className="flex items-start justify-between mb-5">
             <div>
               <h2 className="text-base font-headline font-bold text-foreground flex items-center gap-2">
-                <Activity className="w-4 h-4 text-emerald-300" /> Funnel Stages
+                <Activity className="w-4 h-4 text-emerald-600" /> Funnel Stages
               </h2>
               <p className="text-xs text-muted-foreground mt-0.5">Where buyers sit right now</p>
             </div>
-            <a href="/pipeline" className="text-xs font-semibold text-emerald-300 hover:text-emerald-200 inline-flex items-center gap-1">
+            <a href="/pipeline" className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 inline-flex items-center gap-1">
               Open funnel <ArrowUpRight className="w-3 h-3" />
             </a>
           </div>
           <div className="space-y-2.5 flex-1 flex flex-col justify-center">
             {(() => {
               const stages = [
-                { label: "Buyer Created",       color: "from-emerald-300/40 to-teal-400/40",  chip: "bg-foreground/[0.06] text-foreground/80" },
-                { label: "Paperwork",           color: "from-emerald-400/55 to-teal-500/55", chip: "bg-foreground/[0.08] text-foreground/85" },
-                { label: "Creative Submission", color: "from-emerald-400/70 to-teal-500/70", chip: "bg-emerald-400/10 text-emerald-300/80" },
-                { label: "Technical Setup",     color: "from-emerald-400/85 to-teal-500/85", chip: "bg-emerald-400/15 text-emerald-300" },
-                { label: "Live",                color: "from-emerald-400 to-teal-500",       chip: "bg-emerald-400/20 text-emerald-200" },
+                { label: "Buyer Created",       color: "from-emerald-400/40 to-teal-500/40",  chip: "bg-foreground/[0.06] text-foreground/80" },
+                { label: "Paperwork",           color: "from-emerald-500/55 to-teal-600/55", chip: "bg-foreground/[0.08] text-foreground/85" },
+                { label: "Creative Submission", color: "from-emerald-500/70 to-teal-600/70", chip: "bg-emerald-500/10 text-emerald-600/80" },
+                { label: "Technical Setup",     color: "from-emerald-500/85 to-teal-600/85", chip: "bg-emerald-500/15 text-emerald-600" },
+                { label: "Live",                color: "from-emerald-500 to-teal-600",       chip: "bg-emerald-500/20 text-emerald-700" },
               ];
               const counts = stages.map(s => buyers.filter(b => b.stage === s.label).length);
               const max = Math.max(...counts, 1);
               return stages.map((s, i) => (
                 <div key={s.label} className="grid grid-cols-[150px_1fr_50px] items-center gap-3 group">
                   <span className={`text-xs px-2 py-1 rounded-md font-medium ${s.chip} w-fit`}>{s.label}</span>
-                  <div className="relative h-7 rounded-md bg-surface-container/50 overflow-hidden">
+                  <div className="relative h-7 rounded-md bg-muted/60 overflow-hidden">
                     <div className={`h-full rounded-md bg-gradient-to-r ${s.color} shadow-lg transition-all duration-700`}
                          style={{ width: `${(counts[i] / max) * 100}%` }}>
                       <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-white/10 rounded-md" />
@@ -352,7 +352,7 @@ export default function Dashboard() {
         <BentoCard className="col-span-12 md:col-span-4 row-span-3">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-base font-headline font-bold text-foreground flex items-center gap-2">
-              <Activity className="w-4 h-4 text-emerald-300" /> Activity
+              <Activity className="w-4 h-4 text-emerald-600" /> Activity
             </h2>
             <span className="text-[11px] text-muted-foreground">Today</span>
           </div>
@@ -377,11 +377,11 @@ export default function Dashboard() {
           <div className="flex items-center justify-between mb-4">
             <div>
               <h2 className="text-base font-headline font-bold text-foreground flex items-center gap-2">
-                <Award className="w-4 h-4 text-amber-300" /> Team Performance
+                <Award className="w-4 h-4 text-amber-600" /> Team Performance
               </h2>
               <p className="text-xs text-muted-foreground mt-0.5">Ownership and conversion velocity</p>
             </div>
-            <a href="/team" className="text-xs font-semibold text-emerald-300 hover:text-emerald-200 inline-flex items-center gap-1">
+            <a href="/team" className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 inline-flex items-center gap-1">
               Full breakdown <ArrowUpRight className="w-3 h-3" />
             </a>
           </div>
@@ -390,7 +390,7 @@ export default function Dashboard() {
               const initials = m.name.split(" ").map(n => n[0]).slice(0,2).join("");
               const maxTotal = Math.max(...teamDetails.map(t => t.total), 1);
               const pct = (m.total / maxTotal) * 100;
-              const medal = i === 0 ? "from-amber-400 to-orange-500" : i === 1 ? "from-slate-300 to-slate-500" : i === 2 ? "from-orange-400 to-amber-700" : "from-emerald-500 to-teal-600";
+              const medal = i === 0 ? "from-amber-500 to-orange-600" : i === 1 ? "from-slate-400 to-slate-600" : i === 2 ? "from-orange-500 to-amber-700" : "from-emerald-500 to-teal-600";
               return (
                 <div key={m.name} className="grid grid-cols-[auto_1fr_auto] items-center gap-3 p-2 rounded-lg hover:bg-foreground/[0.03] transition-colors">
                   <div className="flex items-center gap-2.5 min-w-0">
@@ -403,12 +403,12 @@ export default function Dashboard() {
                       <p className="text-[10px] text-muted-foreground">{m.live} live · {m.active} active</p>
                     </div>
                   </div>
-                  <div className="relative h-1.5 rounded-full bg-surface-container overflow-hidden">
-                    <div className="absolute inset-y-0 left-0 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full transition-all duration-700" style={{ width: `${pct}%` }} />
+                  <div className="relative h-1.5 rounded-full bg-muted overflow-hidden">
+                    <div className="absolute inset-y-0 left-0 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full transition-all duration-700" style={{ width: `${pct}%` }} />
                   </div>
                   <div className="flex items-center gap-2 text-right">
                     <span className="text-sm font-bold text-foreground tabular-nums w-6">{m.total}</span>
-                    <span className={`px-1.5 py-0.5 rounded text-[10px] font-semibold tabular-nums ${m.conv >= 50 ? "bg-emerald-400/10 text-emerald-300" : m.conv >= 25 ? "bg-amber-400/10 text-amber-300" : "bg-rose-400/10 text-rose-300"}`}>
+                    <span className={`px-1.5 py-0.5 rounded text-[10px] font-semibold tabular-nums ${m.conv >= 50 ? "bg-emerald-500/10 text-emerald-600" : m.conv >= 25 ? "bg-amber-500/10 text-amber-600" : "bg-rose-500/10 text-rose-600"}`}>
                       {m.conv}%
                     </span>
                   </div>
@@ -422,7 +422,7 @@ export default function Dashboard() {
         <BentoCard className="col-span-12 md:col-span-5 row-span-3">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-base font-headline font-bold text-foreground flex items-center gap-2">
-              <Flame className="w-4 h-4 text-amber-300" /> All Verticals
+              <Flame className="w-4 h-4 text-amber-600" /> All Verticals
             </h2>
             <span className="text-[11px] text-muted-foreground">{categoryData.length} active</span>
           </div>
@@ -433,7 +433,7 @@ export default function Dashboard() {
                   <span className="text-xs text-foreground truncate">{c.name}</span>
                   <span className="text-xs font-semibold text-foreground tabular-nums">{c.value} <span className="text-muted-foreground">· {c.pct}%</span></span>
                 </div>
-                <div className="h-1.5 bg-surface-container rounded-full overflow-hidden">
+                <div className="h-1.5 bg-muted rounded-full overflow-hidden">
                   <div className={`h-full bg-gradient-to-r ${c.gradient} rounded-full transition-all duration-700`} style={{ width: `${Math.max(c.pct, 4)}%` }} />
                 </div>
               </div>
@@ -464,8 +464,8 @@ function KpiTile({
 }: { className?: string; tint: "neutral"|"amber"|"emerald"; icon: any; label: string; value: string; change: string; spark?: number[] }) {
   const map = {
     neutral: { chip: "bg-foreground/[0.06] text-foreground/80 ring-foreground/10", badge: "bg-foreground/[0.06] text-foreground/70", stroke: "rgb(148 163 184)", fill: "rgb(148 163 184 / 0.18)" },
-    amber:   { chip: "bg-amber-400/15 text-amber-300 ring-amber-400/30",           badge: "bg-amber-400/10 text-amber-300",          stroke: "#fbbf24", fill: "rgba(251,191,36,0.2)" },
-    emerald: { chip: "bg-emerald-400/15 text-emerald-300 ring-emerald-400/30",     badge: "bg-emerald-400/10 text-emerald-300",      stroke: "#34d399", fill: "rgba(52,211,153,0.2)" },
+    amber:   { chip: "bg-amber-600/15 text-amber-600 ring-amber-500/30",           badge: "bg-amber-500/10 text-amber-600",          stroke: "#d97706", fill: "rgba(251,191,36,0.2)" },
+    emerald: { chip: "bg-emerald-500/15 text-emerald-600 ring-emerald-500/30",     badge: "bg-emerald-500/10 text-emerald-600",      stroke: "#059669", fill: "rgba(52,211,153,0.2)" },
   }[tint];
   const path = spark && spark.length > 1 ? (() => {
     const w = 100, h = 28;
@@ -506,7 +506,7 @@ function PulseStat({ label, value, delta, positive }: { label: string; value: st
       <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-1.5">{label}</p>
       <div className="flex items-baseline gap-1.5">
         <span className="text-xl font-headline font-bold text-foreground tabular-nums leading-none">{value}</span>
-        <span className={`text-[10px] font-semibold tabular-nums ${positive ? "text-emerald-300" : "text-rose-300"}`}>{delta}</span>
+        <span className={`text-[10px] font-semibold tabular-nums ${positive ? "text-emerald-600" : "text-rose-600"}`}>{delta}</span>
       </div>
     </div>
   );
