@@ -98,13 +98,18 @@ export default function Dashboard() {
         <div className="absolute -top-32 -right-20 w-[28rem] h-[28rem] rounded-full bg-gradient-to-br from-emerald-500/25 via-teal-500/10 to-transparent blur-3xl" />
         <div className="absolute -bottom-32 left-1/4 w-96 h-96 rounded-full bg-gradient-to-br from-sky-500/20 via-violet-500/10 to-transparent blur-3xl" />
         <div className="relative flex items-end justify-between gap-6 flex-wrap">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-400/10 border border-emerald-400/20 text-emerald-300 text-xs font-medium mb-3">
-              <span className="relative flex w-1.5 h-1.5">
-                <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-75" />
-                <span className="relative rounded-full bg-emerald-400 w-1.5 h-1.5" />
-              </span>
-              Live · Synced just now
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-3 flex-wrap">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-400/10 border border-emerald-400/20 text-emerald-300 text-xs font-medium">
+                <span className="relative flex w-1.5 h-1.5">
+                  <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-75" />
+                  <span className="relative rounded-full bg-emerald-400 w-1.5 h-1.5" />
+                </span>
+                Live · synced now
+              </div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-foreground/5 border border-border/40 text-xs text-muted-foreground">
+                <Calendar className="w-3 h-3" /> {new Date().toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" })}
+              </div>
             </div>
             <h1 className="text-4xl font-headline font-bold tracking-tight bg-gradient-to-br from-foreground via-foreground to-foreground/50 bg-clip-text text-transparent">
               Welcome back, Nayeem
@@ -112,6 +117,28 @@ export default function Dashboard() {
             <p className="text-muted-foreground mt-2 max-w-xl text-sm">
               <span className="text-emerald-300 font-semibold">{liveBuyers} live</span> · <span className="text-foreground font-semibold">{activeBuyers} active</span> · <span className="text-amber-300 font-semibold">{stuckBuyers} need attention</span> — your funnel today.
             </p>
+
+            {/* Weekly pulse strip */}
+            <div className="mt-6 flex items-end gap-5 flex-wrap">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-1.5">This week</p>
+                <div className="flex items-end gap-1.5 h-10">
+                  {[24, 32, 18, 41, 36, 52, 47].map((v, i) => {
+                    const today = i === 6;
+                    return (
+                      <div key={i} className="flex flex-col items-center gap-1">
+                        <div className={`w-2.5 rounded-sm transition-all ${today ? "bg-gradient-to-t from-emerald-500 to-teal-400 shadow shadow-emerald-500/30" : "bg-foreground/15"}`} style={{ height: `${v * 0.75}%`, minHeight: 4 }} />
+                        <span className={`text-[9px] ${today ? "text-emerald-300 font-bold" : "text-muted-foreground/60"}`}>{["M","T","W","T","F","S","S"][i]}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              <PulseStat label="Onboarded" value="47" delta="+8" positive />
+              <PulseStat label="Conv. rate" value={`${conversion}%`} delta="+2.1pt" positive />
+              <PulseStat label="Cycle time" value={`${avgDays}d`} delta="-1.4d" positive />
+              <PulseStat label="Stuck" value={String(stuckBuyers)} delta="0" positive={stuckBuyers === 0} />
+            </div>
           </div>
           <div className="flex items-center gap-3">
             <div className="flex items-center bg-surface-container-high/80 backdrop-blur rounded-xl p-1 border border-border/40">
