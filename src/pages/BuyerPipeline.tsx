@@ -190,7 +190,7 @@ export default function BuyerPipeline() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Tabs
+          <Tabs<QueueFilter>
             value={queueFilter}
             onChange={setQueueFilter}
             options={[
