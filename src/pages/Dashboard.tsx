@@ -428,12 +428,11 @@ function Glow({ className }: { className: string }) {
 
 function KpiTile({
   className = "", tint, icon: Icon, label, value, change,
-}: { className?: string; tint: "sky"|"violet"|"amber"|"emerald"; icon: any; label: string; value: string; change: string }) {
+}: { className?: string; tint: "neutral"|"amber"|"emerald"; icon: any; label: string; value: string; change: string }) {
   const map = {
-    sky:     { chip: "bg-sky-400/15 text-sky-300 ring-sky-400/30",         badge: "bg-sky-400/10 text-sky-300" },
-    violet:  { chip: "bg-violet-400/15 text-violet-300 ring-violet-400/30", badge: "bg-violet-400/10 text-violet-300" },
-    amber:   { chip: "bg-amber-400/15 text-amber-300 ring-amber-400/30",   badge: "bg-amber-400/10 text-amber-300" },
-    emerald: { chip: "bg-emerald-400/15 text-emerald-300 ring-emerald-400/30", badge: "bg-emerald-400/10 text-emerald-300" },
+    neutral: { chip: "bg-foreground/[0.06] text-foreground/80 ring-foreground/10", badge: "bg-foreground/[0.06] text-foreground/70" },
+    amber:   { chip: "bg-amber-400/15 text-amber-300 ring-amber-400/30",           badge: "bg-amber-400/10 text-amber-300" },
+    emerald: { chip: "bg-emerald-400/15 text-emerald-300 ring-emerald-400/30",     badge: "bg-emerald-400/10 text-emerald-300" },
   }[tint];
   return (
     <BentoCard className={className}>
