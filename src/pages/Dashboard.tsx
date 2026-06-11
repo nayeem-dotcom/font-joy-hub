@@ -122,13 +122,16 @@ export default function Dashboard() {
             <div className="mt-6 flex items-end gap-5 flex-wrap">
               <div>
                 <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-1.5">This week</p>
-                <div className="flex items-end gap-1.5 h-10">
+                <div className="flex items-end gap-2">
                   {[24, 32, 18, 41, 36, 52, 47].map((v, i) => {
                     const today = i === 6;
+                    const max = 52;
                     return (
-                      <div key={i} className="flex flex-col items-center gap-1">
-                        <div className={`w-2.5 rounded-sm transition-all ${today ? "bg-gradient-to-t from-emerald-500 to-teal-400 shadow shadow-emerald-500/30" : "bg-foreground/15"}`} style={{ height: `${v * 0.75}%`, minHeight: 4 }} />
-                        <span className={`text-[9px] ${today ? "text-emerald-300 font-bold" : "text-muted-foreground/60"}`}>{["M","T","W","T","F","S","S"][i]}</span>
+                      <div key={i} className="flex flex-col items-center gap-1.5">
+                        <div className="h-10 flex items-end">
+                          <div className={`w-3 rounded-sm transition-all ${today ? "bg-gradient-to-t from-emerald-500 to-teal-400 shadow shadow-emerald-500/40" : "bg-foreground/15 group-hover:bg-foreground/25"}`} style={{ height: `${(v / max) * 100}%`, minHeight: 4 }} />
+                        </div>
+                        <span className={`text-[10px] tabular-nums ${today ? "text-emerald-300 font-bold" : "text-muted-foreground/60"}`}>{["M","T","W","T","F","S","S"][i]}</span>
                       </div>
                     );
                   })}
