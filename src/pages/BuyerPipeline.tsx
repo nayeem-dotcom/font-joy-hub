@@ -16,9 +16,9 @@ import { toast } from "@/hooks/use-toast";
 
 // Lane theming per stage
 const LANES = [
-  { stage: "Buyer Created",       accent: "from-sky-400 to-blue-500",        chip: "bg-sky-400/15 text-sky-300 ring-sky-400/30",        dot: "bg-sky-400" },
-  { stage: "Paperwork",           accent: "from-violet-400 to-purple-500",   chip: "bg-violet-400/15 text-violet-300 ring-violet-400/30",dot: "bg-violet-400" },
-  { stage: "Creative Submission", accent: "from-fuchsia-400 to-pink-500",    chip: "bg-fuchsia-400/15 text-fuchsia-300 ring-fuchsia-400/30", dot: "bg-fuchsia-400" },
+  { stage: "Buyer Created",       accent: "from-emerald-400/70 to-teal-500/70",        chip: "bg-foreground/[0.06] text-foreground/80 ring-foreground/10",        dot: "bg-foreground/40" },
+  { stage: "Paperwork",           accent: "from-emerald-400/80 to-teal-500/80",   chip: "bg-foreground/[0.08] text-foreground/85 ring-foreground/10",dot: "bg-foreground/50" },
+  { stage: "Creative Submission", accent: "from-emerald-400/90 to-teal-500/90",    chip: "bg-emerald-400/10 text-emerald-300/90 ring-emerald-400/20", dot: "bg-emerald-300/70" },
   { stage: "Technical Setup",     accent: "from-amber-400 to-orange-500",    chip: "bg-amber-400/15 text-amber-300 ring-amber-400/30",   dot: "bg-amber-400" },
   { stage: "Live",                accent: "from-emerald-400 to-teal-500",    chip: "bg-emerald-400/15 text-emerald-300 ring-emerald-400/30", dot: "bg-emerald-400" },
   { stage: "Voided/Stuck",        accent: "from-rose-400 to-red-500",        chip: "bg-rose-400/15 text-rose-300 ring-rose-400/30",      dot: "bg-rose-400" },

@@ -10,15 +10,15 @@ type Period = "Week" | "Month" | "Year";
 
 const activities = [
   { icon: CheckCircle2, color: "text-emerald-300", bg: "bg-emerald-400/10", title: "SolarTech Inc. went live", sub: "Nayeem Ahmad", time: "2h" },
-  { icon: FileText,     color: "text-sky-300",     bg: "bg-sky-400/10",     title: "Note on BlueWave Logistics", sub: "Pending final docs", time: "5h" },
+  { icon: FileText,     color: "text-foreground/70",  bg: "bg-foreground/[0.06]",     title: "Note on BlueWave Logistics", sub: "Pending final docs", time: "5h" },
   { icon: AlertTriangle,color: "text-amber-300",   bg: "bg-amber-400/10",   title: "Drop-off: Nexus Retail", sub: "Stuck 5 days in Qualification", time: "1d" },
-  { icon: UserPlus,     color: "text-violet-300",  bg: "bg-violet-400/10",  title: "New buyer assigned",      sub: "Assigned to Joe Austin", time: "2d" },
+  { icon: UserPlus,     color: "text-foreground/70",  bg: "bg-foreground/[0.06]",  title: "New buyer assigned",      sub: "Assigned to Joe Austin", time: "2d" },
 ];
 
 const VERTICAL_COLORS = [
-  "from-emerald-400 to-teal-500","from-sky-400 to-blue-500","from-violet-400 to-purple-500",
-  "from-amber-400 to-orange-500","from-pink-400 to-rose-500","from-cyan-400 to-sky-500",
-  "from-lime-400 to-emerald-500","from-fuchsia-400 to-pink-500",
+  "from-emerald-300 to-teal-400","from-emerald-400 to-teal-500","from-emerald-500 to-teal-600",
+  "from-teal-400 to-cyan-500","from-emerald-400/80 to-teal-500/80","from-emerald-300/70 to-teal-400/70",
+  "from-emerald-500/90 to-teal-600/90","from-teal-500 to-emerald-600",
 ];
 
 export default function Dashboard() {
@@ -49,7 +49,7 @@ export default function Dashboard() {
     return entries.map(([name, value], i) => ({
       name, value, pct: Math.round((value / total) * 100),
       gradient: VERTICAL_COLORS[i % VERTICAL_COLORS.length],
-      color: ["#34d399","#38bdf8","#a78bfa","#fbbf24","#f472b6","#22d3ee","#a3e635","#e879f9"][i % 8],
+      color: ["#34d399","#10b981","#059669","#5eead4","#2dd4bf","#14b8a6","#047857","#6ee7b7"][i % 8],
     }));
   }, [buyers]);
 
@@ -109,7 +109,7 @@ export default function Dashboard() {
               Welcome back, Nayeem
             </h1>
             <p className="text-muted-foreground mt-2 max-w-xl text-sm">
-              <span className="text-emerald-300 font-semibold">{liveBuyers} live</span> · <span className="text-sky-300 font-semibold">{activeBuyers} active</span> · <span className="text-amber-300 font-semibold">{stuckBuyers} need attention</span> — your funnel today.
+              <span className="text-emerald-300 font-semibold">{liveBuyers} live</span> · <span className="text-foreground font-semibold">{activeBuyers} active</span> · <span className="text-amber-300 font-semibold">{stuckBuyers} need attention</span> — your funnel today.
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -166,9 +166,9 @@ export default function Dashboard() {
         </BentoCard>
 
         {/* Active */}
-        <KpiTile className="col-span-6 md:col-span-3 row-span-1" tint="sky" icon={Zap} label="Active" value={String(activeBuyers)} change="+4.2%" />
+        <KpiTile className="col-span-6 md:col-span-3 row-span-1" tint="emerald" icon={Zap} label="Active" value={String(activeBuyers)} change="+4.2%" />
         {/* Conversion */}
-        <KpiTile className="col-span-6 md:col-span-2 row-span-1" tint="violet" icon={Target} label="Conv." value={`${conversion}%`} change="+2.1pt" />
+        <KpiTile className="col-span-6 md:col-span-2 row-span-1" tint="neutral" icon={Target} label="Conv." value={`${conversion}%`} change="+2.1pt" />
         {/* Avg days */}
         <KpiTile className="col-span-6 md:col-span-2 row-span-1" tint="amber" icon={Clock} label="Avg days" value={avgDays} change="-2d" />
 
@@ -179,8 +179,8 @@ export default function Dashboard() {
               <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-semibold">New today</p>
               <p className="text-3xl font-headline font-bold text-foreground mt-1 tabular-nums">{newBuyers}</p>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-sky-400/15 ring-1 ring-sky-400/30 flex items-center justify-center">
-              <UserPlus className="w-5 h-5 text-sky-300" />
+            <div className="w-10 h-10 rounded-xl bg-foreground/[0.06] ring-1 ring-foreground/10 flex items-center justify-center">
+              <UserPlus className="w-5 h-5 text-foreground/70" />
             </div>
           </div>
         </BentoCard>
@@ -207,7 +207,7 @@ export default function Dashboard() {
             </div>
             <div className="flex items-center gap-3 text-[11px]">
               <span className="inline-flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-400" /> <span className="text-muted-foreground">Onboarded</span></span>
-              <span className="inline-flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-sky-400/40" /> <span className="text-muted-foreground">Target</span></span>
+              <span className="inline-flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-foreground/30" /> <span className="text-muted-foreground">Target</span></span>
             </div>
           </div>
           <div className="relative flex-1 -mx-2">
@@ -240,7 +240,7 @@ export default function Dashboard() {
           <div className="flex items-start justify-between mb-2">
             <div>
               <h2 className="text-base font-headline font-bold text-foreground flex items-center gap-2">
-                <Layers className="w-4 h-4 text-violet-300" /> By Category
+                <Layers className="w-4 h-4 text-emerald-300" /> By Category
               </h2>
               <p className="text-xs text-muted-foreground mt-0.5">Top verticals</p>
             </div>
@@ -291,11 +291,11 @@ export default function Dashboard() {
           <div className="space-y-2.5 flex-1 flex flex-col justify-center">
             {(() => {
               const stages = [
-                { label: "Buyer Created",    color: "from-sky-400 to-blue-500",        chip: "bg-sky-400/15 text-sky-300" },
-                { label: "Paperwork",        color: "from-violet-400 to-purple-500",   chip: "bg-violet-400/15 text-violet-300" },
-                { label: "Creative Submission", color: "from-fuchsia-400 to-pink-500", chip: "bg-fuchsia-400/15 text-fuchsia-300" },
-                { label: "Technical Setup",  color: "from-amber-400 to-orange-500",    chip: "bg-amber-400/15 text-amber-300" },
-                { label: "Live",             color: "from-emerald-400 to-teal-500",    chip: "bg-emerald-400/15 text-emerald-300" },
+                { label: "Buyer Created",       color: "from-emerald-300/40 to-teal-400/40",  chip: "bg-foreground/[0.06] text-foreground/80" },
+                { label: "Paperwork",           color: "from-emerald-400/55 to-teal-500/55", chip: "bg-foreground/[0.08] text-foreground/85" },
+                { label: "Creative Submission", color: "from-emerald-400/70 to-teal-500/70", chip: "bg-emerald-400/10 text-emerald-300/80" },
+                { label: "Technical Setup",     color: "from-emerald-400/85 to-teal-500/85", chip: "bg-emerald-400/15 text-emerald-300" },
+                { label: "Live",                color: "from-emerald-400 to-teal-500",       chip: "bg-emerald-400/20 text-emerald-200" },
               ];
               const counts = stages.map(s => buyers.filter(b => b.stage === s.label).length);
               const max = Math.max(...counts, 1);
@@ -319,7 +319,7 @@ export default function Dashboard() {
         <BentoCard className="col-span-12 md:col-span-4 row-span-3">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-base font-headline font-bold text-foreground flex items-center gap-2">
-              <Activity className="w-4 h-4 text-sky-300" /> Activity
+              <Activity className="w-4 h-4 text-emerald-300" /> Activity
             </h2>
             <span className="text-[11px] text-muted-foreground">Today</span>
           </div>
@@ -389,7 +389,7 @@ export default function Dashboard() {
         <BentoCard className="col-span-12 md:col-span-5 row-span-3">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-base font-headline font-bold text-foreground flex items-center gap-2">
-              <Flame className="w-4 h-4 text-pink-300" /> All Verticals
+              <Flame className="w-4 h-4 text-amber-300" /> All Verticals
             </h2>
             <span className="text-[11px] text-muted-foreground">{categoryData.length} active</span>
           </div>
@@ -428,12 +428,11 @@ function Glow({ className }: { className: string }) {
 
 function KpiTile({
   className = "", tint, icon: Icon, label, value, change,
-}: { className?: string; tint: "sky"|"violet"|"amber"|"emerald"; icon: any; label: string; value: string; change: string }) {
+}: { className?: string; tint: "neutral"|"amber"|"emerald"; icon: any; label: string; value: string; change: string }) {
   const map = {
-    sky:     { chip: "bg-sky-400/15 text-sky-300 ring-sky-400/30",         badge: "bg-sky-400/10 text-sky-300" },
-    violet:  { chip: "bg-violet-400/15 text-violet-300 ring-violet-400/30", badge: "bg-violet-400/10 text-violet-300" },
-    amber:   { chip: "bg-amber-400/15 text-amber-300 ring-amber-400/30",   badge: "bg-amber-400/10 text-amber-300" },
-    emerald: { chip: "bg-emerald-400/15 text-emerald-300 ring-emerald-400/30", badge: "bg-emerald-400/10 text-emerald-300" },
+    neutral: { chip: "bg-foreground/[0.06] text-foreground/80 ring-foreground/10", badge: "bg-foreground/[0.06] text-foreground/70" },
+    amber:   { chip: "bg-amber-400/15 text-amber-300 ring-amber-400/30",           badge: "bg-amber-400/10 text-amber-300" },
+    emerald: { chip: "bg-emerald-400/15 text-emerald-300 ring-emerald-400/30",     badge: "bg-emerald-400/10 text-emerald-300" },
   }[tint];
   return (
     <BentoCard className={className}>
