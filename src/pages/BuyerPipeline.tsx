@@ -100,21 +100,72 @@ export default function BuyerPipeline() {
 
   const totalVisible = visible.length;
 
+  // Conversion funnel data — cumulative buyers at or beyond each stage
+  const funnelData = useMemo(() => {
+    const order = FUNNEL_STEPS as readonly string[];
+    return order.map((stage, i) => {
+      const cum = visible.filter((b) => {
+        const bi = order.indexOf(b.stage);
+        return bi >= i && b.stage !== "Voided/Stuck";
+      }).length;
+      return { stage, cum };
+    });
+  }, [visible]);
+  const topFunnel = funnelData[0]?.cum || 1;
+
   return (
     <div className="animate-fade-in space-y-5">
       {/* ===== HERO HEADER ===== */}
-      <div className="relative overflow-hidden rounded-3xl border border-border/50 bg-gradient-to-br from-card via-card to-surface-container-high p-6">
-        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-gradient-to-br from-blue-700/20 via-blue-700/10 to-transparent blur-3xl" />
-        <div className="absolute -bottom-32 left-1/3 w-96 h-96 rounded-full bg-gradient-to-br from-violet-500/15 via-fuchsia-500/10 to-transparent blur-3xl" />
-        <div className="relative flex items-end justify-between gap-4 flex-wrap">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-700/10 border border-blue-600/20 text-blue-700 text-xs font-medium mb-3">
-              <Layers className="w-3 h-3" /> Swimlane funnel
+      <div className="relative overflow-hidden rounded-3xl border border-border/50 bg-card p-6">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,hsl(220_70%_35%/0.06),transparent_55%)]" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-700/30 to-transparent" />
+        <div className="relative flex items-end justify-between gap-6 flex-wrap">
+          <div className="flex-1 min-w-[280px]">
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-blue-700/[0.08] border border-blue-700/15 text-blue-700 text-[11px] font-semibold tracking-wide mb-3">
+              <Layers className="w-3 h-3" /> BUYER FUNNEL
             </div>
-            <h1 className="text-3xl font-headline font-bold tracking-tight text-foreground">Buyer Funnel</h1>
-            <p className="text-muted-foreground mt-1 text-sm">
-              Click <ArrowRight className="inline w-3.5 h-3.5 text-blue-700" /> to advance a buyer to the next lane. {totalVisible} buyers visible.
+            <h1 className="text-[2.25rem] leading-[1.05] font-headline font-bold tracking-tight text-foreground">
+              Pipeline at a glance
+            </h1>
+            <p className="text-muted-foreground mt-1.5 text-sm">
+              <span className="text-foreground font-semibold tabular-nums">{totalVisible}</span> buyers visible · click
+              <span className="mx-1 inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-blue-700/10 text-blue-700 font-semibold text-[11px]">Advance <ArrowRight className="w-3 h-3" /></span>
+              on any card to push it to the next lane.
             </p>
+          </div>
+
+          {/* Mini conversion funnel — horizontal strip */}
+          <div className="flex items-center gap-0 flex-wrap">
+            {funnelData.map((f, i) => {
+              const pct = Math.round((f.cum / topFunnel) * 100);
+              const drop = i > 0 ? Math.round(((funnelData[i - 1].cum - f.cum) / (funnelData[i - 1].cum || 1)) * 100) : 0;
+              const isLast = i === funnelData.length - 1;
+              return (
+                <div key={f.stage} className="flex items-center">
+                  <div className="flex flex-col items-center px-2">
+                    <div className="relative flex items-end justify-center w-14 h-14 rounded-xl bg-blue-700/[0.06] ring-1 ring-blue-700/15 overflow-hidden">
+                      <div
+                        className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-blue-700 to-blue-600"
+                        style={{ height: `${Math.max(pct, 6)}%` }}
+                      />
+                      <span className="relative text-sm font-bold text-foreground tabular-nums mix-blend-difference text-white">{f.cum}</span>
+                    </div>
+                    <span className="text-[9px] uppercase tracking-wider text-muted-foreground font-semibold mt-1.5 max-w-[70px] text-center leading-tight">
+                      {f.stage.split(" ")[0]}
+                    </span>
+                    <span className="text-[9px] tabular-nums text-blue-700 font-bold">{pct}%</span>
+                  </div>
+                  {!isLast && (
+                    <div className="flex flex-col items-center -mt-4">
+                      <ArrowRight className="w-3 h-3 text-muted-foreground/40" />
+                      <span className={`text-[9px] font-bold tabular-nums ${drop > 30 ? "text-rose-600" : drop > 15 ? "text-amber-600" : "text-muted-foreground/60"}`}>
+                        −{drop}%
+                      </span>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -154,29 +205,39 @@ export default function BuyerPipeline() {
       </div>
 
       {/* ===== SWIMLANES ===== */}
-      <div className="space-y-3">
+      <div className="space-y-2.5">
         {LANES.map((lane, laneIdx) => {
           const items = byStage[lane.stage] || [];
           const isLive = lane.stage === "Live";
           const isVoid = lane.stage === "Voided/Stuck";
           return (
-            <div key={lane.stage} className="relative overflow-hidden rounded-2xl border border-border/50 bg-card group/lane">
+            <div key={lane.stage} className="relative overflow-hidden rounded-2xl border border-border/50 bg-card group/lane hover:border-border transition-colors">
               {/* Left accent bar */}
-              <div className={`absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b ${lane.accent}`} />
+              <div className={`absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b ${lane.accent}`} />
 
-              <div className="grid grid-cols-[220px_1fr] gap-3 items-center pl-4">
+              <div className="grid grid-cols-[240px_1fr] gap-3 items-stretch pl-5">
                 {/* Lane header */}
-                <div className="py-4 pr-2 border-r border-border/30">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className={`w-2 h-2 rounded-full ${lane.dot}`} />
-                    <h3 className="text-sm font-headline font-bold text-foreground">{lane.stage}</h3>
+                <div className="py-4 pr-3 border-r border-border/40 flex flex-col justify-center">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-[9px] tabular-nums font-bold text-muted-foreground/60 tracking-wider">
+                      STAGE {String(laneIdx + 1).padStart(2, "0")}
+                    </span>
+                    {/* progress dots */}
+                    <div className="flex items-center gap-1">
+                      {LANES.slice(0, -1).map((_, di) => (
+                        <span key={di} className={`w-1 h-1 rounded-full ${di <= laneIdx && !isVoid ? "bg-blue-700" : "bg-foreground/15"}`} />
+                      ))}
+                    </div>
                   </div>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-2xl font-headline font-bold text-foreground tabular-nums">{items.length}</span>
-                    <span className="text-[11px] text-muted-foreground">buyer{items.length === 1 ? "" : "s"}</span>
+                  <h3 className="text-sm font-headline font-bold text-foreground leading-tight">{lane.stage}</h3>
+                  <div className="flex items-baseline gap-2 mt-1.5">
+                    <span className="text-3xl font-headline font-bold text-foreground tabular-nums leading-none">{items.length}</span>
+                    <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">buyer{items.length === 1 ? "" : "s"}</span>
                   </div>
                   {laneIdx < FUNNEL_STEPS.length - 1 && !isVoid && (
-                    <p className="text-[10px] text-muted-foreground mt-1">→ {FUNNEL_STEPS[laneIdx + 1]}</p>
+                    <p className="text-[10px] text-muted-foreground/70 mt-2 inline-flex items-center gap-1">
+                      <ArrowRight className="w-2.5 h-2.5" /> {FUNNEL_STEPS[laneIdx + 1]}
+                    </p>
                   )}
                 </div>
 
