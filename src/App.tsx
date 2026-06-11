@@ -12,6 +12,9 @@ import BuyerPipeline from "./pages/BuyerPipeline";
 import TeamPerformance from "./pages/TeamPerformance";
 import AddNewBuyer from "./pages/AddNewBuyer";
 import LegalPaperwork from "./pages/LegalPaperwork";
+import PricingList from "./pages/PricingList";
+import BuyerDataBucket from "./pages/BuyerDataBucket";
+import CreativeHub from "./pages/CreativeHub";
 import AppLayout from "./components/layout/AppLayout";
 import NotFound from "./pages/NotFound";
 
@@ -34,7 +37,9 @@ const App = () => (
             <Route path="/pipeline" element={<BuyerPipeline />} />
             <Route path="/team" element={<TeamPerformance />} />
             <Route path="/legal" element={<LegalPaperwork />} />
-            
+            <Route path="/pricing" element={<PricingList />} />
+            <Route path="/data-bucket" element={<BuyerDataBucket />} />
+            <Route path="/creative-hub" element={<CreativeHub />} />
             <Route path="/settings" element={<Settings />} />
           </Route>
           <Route path="*" element={<NotFound />} />
