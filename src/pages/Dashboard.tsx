@@ -19,7 +19,7 @@ const activities = [
 const VERTICAL_COLORS = [
   "from-blue-500 to-blue-500","from-blue-700 to-blue-800","from-blue-700 to-blue-800",
   "from-blue-500 to-cyan-500","from-blue-600/80 to-blue-700/80","from-blue-500/70 to-blue-500/70",
-  "from-blue-700/90 to-blue-800/90","from-blue-700 to-emerald-600",
+  "from-blue-700/90 to-blue-800/90","from-blue-700 to-blue-800",
 ];
 
 export default function Dashboard() {
