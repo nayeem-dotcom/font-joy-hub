@@ -194,33 +194,35 @@ export default function Dashboard() {
         </BentoCard>
 
         {/* Active */}
-        <KpiTile className="col-span-6 md:col-span-3 row-span-1" tint="emerald" icon={Zap} label="Active" value={String(activeBuyers)} change="+4.2%" />
+        <KpiTile className="col-span-6 md:col-span-3 row-span-1" tint="emerald" icon={Zap} label="Active" value={String(activeBuyers)} change="+4.2%" spark={[40,38,44,42,48,46,52,55]} />
         {/* Conversion */}
-        <KpiTile className="col-span-6 md:col-span-2 row-span-1" tint="neutral" icon={Target} label="Conv." value={`${conversion}%`} change="+2.1pt" />
+        <KpiTile className="col-span-6 md:col-span-2 row-span-1" tint="neutral" icon={Target} label="Conv." value={`${conversion}%`} change="+2.1pt" spark={[12,14,13,18,22,24,28,30]} />
         {/* Avg days */}
-        <KpiTile className="col-span-6 md:col-span-2 row-span-1" tint="amber" icon={Clock} label="Avg days" value={avgDays} change="-2d" />
+        <KpiTile className="col-span-6 md:col-span-2 row-span-1" tint="amber" icon={Clock} label="Avg days" value={avgDays} change="-2d" spark={[70,65,60,58,55,52,48,42]} />
 
         {/* New buyers */}
         <BentoCard className="col-span-6 md:col-span-3 row-span-1">
-          <div className="flex items-center justify-between h-full">
-            <div>
-              <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-semibold">New today</p>
-              <p className="text-3xl font-headline font-bold text-foreground mt-1 tabular-nums">{newBuyers}</p>
+          <div className="flex items-start justify-between mb-1">
+            <div className="w-9 h-9 rounded-lg bg-foreground/[0.06] ring-1 ring-foreground/10 flex items-center justify-center">
+              <UserPlus className="w-4 h-4 text-foreground/70" />
             </div>
-            <div className="w-10 h-10 rounded-xl bg-foreground/[0.06] ring-1 ring-foreground/10 flex items-center justify-center">
-              <UserPlus className="w-5 h-5 text-foreground/70" />
-            </div>
+            <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-foreground/[0.06] text-foreground/70 tabular-nums">+{newBuyers} today</span>
           </div>
+          <p className="text-2xl font-headline font-bold text-foreground tabular-nums mt-auto">{newBuyers}</p>
+          <p className="text-[11px] text-muted-foreground uppercase tracking-wider mt-0.5">New buyers</p>
         </BentoCard>
 
         {/* Stuck */}
-        <BentoCard className="col-span-6 md:col-span-2 row-span-1 bg-gradient-to-br from-rose-500/10 via-card to-card border-rose-400/20">
-          <a href="/pipeline" className="flex items-center justify-between h-full group">
-            <div>
-              <p className="text-[10px] uppercase tracking-[0.18em] text-rose-300/80 font-semibold">Stuck</p>
-              <p className="text-3xl font-headline font-bold text-foreground mt-1 tabular-nums">{stuckBuyers}</p>
+        <BentoCard className={`col-span-6 md:col-span-2 row-span-1 ${stuckBuyers > 0 ? "bg-gradient-to-br from-rose-500/10 via-card to-card border-rose-400/20" : ""}`}>
+          <a href="/pipeline" className="flex flex-col h-full group">
+            <div className="flex items-start justify-between mb-1">
+              <div className={`w-9 h-9 rounded-lg ring-1 flex items-center justify-center ${stuckBuyers > 0 ? "bg-rose-400/15 ring-rose-400/30" : "bg-foreground/[0.06] ring-foreground/10"}`}>
+                <AlertTriangle className={`w-4 h-4 ${stuckBuyers > 0 ? "text-rose-300" : "text-foreground/70"}`} />
+              </div>
+              <ArrowUpRight className="w-3.5 h-3.5 text-muted-foreground/40 group-hover:text-foreground transition-colors" />
             </div>
-            <AlertTriangle className="w-5 h-5 text-rose-300 group-hover:scale-110 transition-transform" />
+            <p className="text-2xl font-headline font-bold text-foreground tabular-nums mt-auto">{stuckBuyers}</p>
+            <p className="text-[11px] text-muted-foreground uppercase tracking-wider mt-0.5">Stuck</p>
           </a>
         </BentoCard>
 
