@@ -95,7 +95,7 @@ export default function Dashboard() {
     <div className="animate-fade-in space-y-5">
       {/* ===== HERO ===== */}
       <div className="relative overflow-hidden rounded-3xl border border-border/40 bg-gradient-to-br from-card via-card to-surface-container-high p-7">
-        <div className="absolute -top-32 -right-20 w-[28rem] h-[28rem] rounded-full bg-gradient-to-br from-emerald-500/25 via-blue-700/10 to-transparent blur-3xl" />
+        <div className="absolute -top-32 -right-20 w-[28rem] h-[28rem] rounded-full bg-gradient-to-br from-blue-700/25 via-blue-700/10 to-transparent blur-3xl" />
         <div className="absolute -bottom-32 left-1/4 w-96 h-96 rounded-full bg-gradient-to-br from-sky-500/20 via-violet-500/10 to-transparent blur-3xl" />
         <div className="relative flex items-end justify-between gap-6 flex-wrap">
           <div className="flex-1 min-w-0">
@@ -165,9 +165,9 @@ export default function Dashboard() {
       <div className="grid grid-cols-12 auto-rows-[140px] gap-4">
         {/* Hero KPI — Total Buyers, big */}
         <BentoCard className="col-span-12 md:col-span-5 row-span-2 group bg-gradient-to-br from-blue-700/10 via-card to-card border-blue-600/20">
-          <Glow className="from-emerald-500/30" />
+          <Glow className="from-blue-700/30" />
           <div className="flex items-start justify-between mb-4">
-            <div className="w-12 h-12 rounded-2xl bg-blue-700/15 ring-1 ring-emerald-500/30 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-2xl bg-blue-700/15 ring-1 ring-blue-700/30 flex items-center justify-center">
               <Users className="w-6 h-6 text-blue-700" />
             </div>
             <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-md bg-blue-700/10 text-blue-700">
@@ -465,7 +465,7 @@ function KpiTile({
   const map = {
     neutral: { chip: "bg-foreground/[0.06] text-foreground/80 ring-foreground/10", badge: "bg-foreground/[0.06] text-foreground/70", stroke: "rgb(148 163 184)", fill: "rgb(148 163 184 / 0.18)" },
     amber:   { chip: "bg-amber-600/15 text-amber-600 ring-amber-500/30",           badge: "bg-amber-500/10 text-amber-600",          stroke: "#d97706", fill: "rgba(251,191,36,0.2)" },
-    emerald: { chip: "bg-blue-700/15 text-blue-700 ring-emerald-500/30",     badge: "bg-blue-700/10 text-blue-700",      stroke: "#1d4ed8", fill: "rgba(29,78,216,0.2)" },
+    blue: { chip: "bg-blue-700/15 text-blue-700 ring-blue-700/30",     badge: "bg-blue-700/10 text-blue-700",      stroke: "#1d4ed8", fill: "rgba(29,78,216,0.2)" },
   }[tint];
   const path = spark && spark.length > 1 ? (() => {
     const w = 100, h = 28;

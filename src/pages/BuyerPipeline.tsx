@@ -18,9 +18,9 @@ import { toast } from "@/hooks/use-toast";
 const LANES = [
   { stage: "Buyer Created",       accent: "from-blue-700/70 to-blue-800/70",        chip: "bg-foreground/[0.06] text-foreground/80 ring-foreground/10",        dot: "bg-foreground/40" },
   { stage: "Paperwork",           accent: "from-blue-700/80 to-blue-800/80",   chip: "bg-foreground/[0.08] text-foreground/85 ring-foreground/10",dot: "bg-foreground/50" },
-  { stage: "Creative Submission", accent: "from-blue-700/90 to-blue-800/90",    chip: "bg-blue-700/10 text-blue-700/90 ring-emerald-500/20", dot: "bg-blue-500/70" },
+  { stage: "Creative Submission", accent: "from-blue-700/90 to-blue-800/90",    chip: "bg-blue-700/10 text-blue-700/90 ring-blue-700/20", dot: "bg-blue-500/70" },
   { stage: "Technical Setup",     accent: "from-amber-500 to-orange-600",    chip: "bg-amber-600/15 text-amber-600 ring-amber-500/30",   dot: "bg-amber-400" },
-  { stage: "Live",                accent: "from-blue-700 to-blue-800",    chip: "bg-blue-700/15 text-blue-700 ring-emerald-400/30", dot: "bg-blue-600" },
+  { stage: "Live",                accent: "from-blue-700 to-blue-800",    chip: "bg-blue-700/15 text-blue-700 ring-blue-600/30", dot: "bg-blue-600" },
   { stage: "Voided/Stuck",        accent: "from-rose-500 to-red-600",        chip: "bg-rose-500/15 text-rose-600 ring-rose-500/30",      dot: "bg-rose-400" },
 ] as const;
 
